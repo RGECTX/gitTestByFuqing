@@ -1,0 +1,1 @@
+INSERT INTO `category`(`categoryId`, `appCode`, `parentId`, `parentName`, `parents`, `categoryCode`, `categoryName`, `icons`, `sortNum`, `state`, `remark`, `outKey1`, `outKey2`, `bak1`, `bak2`) VALUES (124555165171712, 'homlin-menu', 0, 'root', '0', 'AUX_NOTICE', '通知通报管理', NULL, 0, 1, NULL, NULL, NULL, '', NULL);

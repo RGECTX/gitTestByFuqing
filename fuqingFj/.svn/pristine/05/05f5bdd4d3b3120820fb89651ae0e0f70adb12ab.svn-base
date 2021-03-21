@@ -1,0 +1,14 @@
+ALTER TABLE aux_dagl ADD jz varchar(64) COMMENT '驾照,字典:DRIVER_CARD' ;
+ALTER TABLE aux_dagl ADD fby varchar(64) COMMENT '服兵役,字典:YES_NO:1、是 0、否' ;
+ALTER TABLE aux_dagl ADD mz varchar(64) COMMENT '民族,字典:MZ' ;
+ALTER TABLE aux_dagl ADD jgszss varchar(64) COMMENT '籍贯所在省市' ;
+ALTER TABLE aux_dagl ADD hyzk varchar(64) COMMENT '婚姻状况，字典:HYZK,1、已婚、2、未婚、4、离异、8、丧偶' ;
+ALTER TABLE aux_dagl ADD zzmm varchar(64) COMMENT '政治面貌,字典:AM_ZZMM:1、中共党员，2、预备党员，4、共青团员，8、群众' ;
+ALTER TABLE aux_dagl ADD xl varchar(64) COMMENT '学历,字典:AM_XL' ;
+ALTER TABLE aux_dagl ADD byys varchar(64) COMMENT '毕业院校' ;
+ALTER TABLE aux_dagl ADD zy varchar(64) COMMENT '专业' ;
+ALTER TABLE aux_dagl ADD byrq varchar(10) COMMENT '毕业日期' ;
+ALTER TABLE aux_dagl ADD aihao varchar(255) COMMENT '爱好' ;
+ALTER TABLE aux_dagl ADD techang varchar(255) COMMENT '特长' ;
+ALTER TABLE aux_dagl ADD xjtzz varchar(255) COMMENT '现家庭住址' ;
+ALTER TABLE aux_dagl ADD hjdlx varchar(64) COMMENT '户籍地类型，字典，1、疆内 ，2、疆外' ;

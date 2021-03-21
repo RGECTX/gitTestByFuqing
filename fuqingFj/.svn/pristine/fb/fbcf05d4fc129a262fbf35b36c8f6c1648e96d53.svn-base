@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.system.IConfigDAO">
+	<parameterMap id="parameterConfig" type="com.greathack.homlin.pojo.system.Config">
+    	<parameter property="dataKey" />
+    	<parameter property="data"/>
+    	<parameter property="remark"/>
+  	</parameterMap>
+	<resultMap id="resultConfig" type="com.greathack.homlin.pojo.system.Config">
+		<result column="dataKey" property="dataKey" />
+		<result column="data" property="data" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<insert id="add" parameterMap="parameterConfig">
+    INSERT INTO config(dataKey,data,remark)
+    VALUES(?,?,?)
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.String">
+    DELETE FROM config 
+    WHERE dataKey=#{value}
+  	</delete>
+  	<update id="update" parameterMap="parameterConfig">
+    UPDATE config
+    SET data=#{data},remark=#{remark}
+    WHERE dataKey=#{dataKey}
+  	</update>
+	<select id="findById" parameterType="java.lang.String" resultMap="resultConfig" >
+	select * from config where dataKey=#{value}
+	</select>
+	<select id="findByExample" parameterMap="parameterConfig"  resultMap="resultConfig" >
+	select * from config where dataKey=#{dataKey}
+	</select>
+	<select id="findAll" parameterType="java.lang.String"  resultMap="resultConfig" >
+	select * from config
+	</select>
+</mapper>

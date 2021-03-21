@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxDwkqDAO">
+    <parameterMap id="parameterAuxDwkq" type="com.greathack.homlin.pojo.auxiliary.AuxDwkq">
+        <parameter property="dwkqId"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="nd"/>
+        <parameter property="yd"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+    </parameterMap>
+
+
+    <insert id="add" parameterMap="parameterAuxDwkq">
+    INSERT INTO aux_dwkq(dwkqId,orgId,orgName,nd,yd,createBy,createTime,outKey1,outKey2,bak1,bak2)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_dwkq WHERE dwkqId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxDwkq">
+		update aux_dwkq
+		set
+		orgId=#{orgId},
+		orgName=#{orgName},
+		nd=#{nd},
+		yd=#{yd},
+		createBy=#{createBy},
+		createTime=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where dwkqId=#{dwkqId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxDwkq">
+		select * from aux_dwkq where dwkqId = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxDwkq" resultType="com.greathack.homlin.pojo.auxiliary.AuxDwkq">
+        select * from aux_dwkq where 1=1
+        <if test="orgId != null and orgId !='' ">and orgId=#{orgId}</if>
+        <if test="orgName != null and orgName !='' ">and orgName=#{orgName}</if>
+        <if test="nd != null and nd !='' ">and nd=#{nd}</if>
+        <if test="yd != null and yd !='' ">and yd=#{yd}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxDwkq">
+		select * from aux_dwkq
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDwkqSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxDwkq">
+        SELECT
+        b.*
+        FROM aux_dwkq b
+        left join organization org on org.orgId=b.orgId
+        WHERE 1 = 1
+        <if test="nd != null  and nd !='' "> and b.nd = #{nd}</if>
+        <if test="yd != null  and yd !='' "> and b.yd = #{yd}</if>
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDwkqSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.dwkqId) FROM aux_dwkq b
+        left join organization org on org.orgId=b.orgId
+
+        WHERE 1 = 1
+
+        <if test="nd != null  and nd !='' "> and b.nd = #{nd}</if>
+        <if test="yd != null  and yd !='' "> and b.yd = #{yd}</if>
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+
+    <!--<select id="getFjqktj" parameterType="com.greathack.homlin.pojo.auxiliary.AuxAttendancdSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxAttendance">
+
+        SELECT
+        k.kqtjId AS kqtjId,
+        k.xm AS xm,
+        k.orgId AS orgId,
+        k.orgName AS orgName,
+        k.nd AS nd,
+        k.yd AS yd,
+        k.qqTs AS qqTs,
+        k.isWorkFullHours AS isWorkFullHours,
+        k.createBy AS createBy,
+        k.createTime AS createTime,
+        k.idcard AS idcard,
+        d.daId AS daId,
+        d.xb AS xb,
+        d.fjType AS fjType,
+        d.state AS state
+        FROM
+        aux_kqtj k
+        LEFT JOIN aux_dagl d ON k.idcard = d.idcard
+        LEFT JOIN organization org ON org.orgId = k.orgId
+        WHERE 1 = 1
+
+        <if test="nd != null  and nd !='' "> and nd = #{nd}</if>
+        <if test="yd != null  and yd !='' "> and yd = #{yd}</if>
+        <if test="orgName != null  and orgName !='' "> and orgName = #{orgName}</if>
+        &lt;!&ndash;<if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>&ndash;&gt;
+        <if test="orgIdList!=null and orgIdList.size>0">
+            and k.orgId in
+            <foreach collection="orgIdList" item="orgId" separator="," open="(" close=")">
+                #{orgId}
+            </foreach>
+        </if>
+        <if test="ryStateList!=null and ryStateList.size>0">
+            and k.state in
+            <foreach collection="ryStateList" item="ryState" separator="," open="(" close=")">
+                #{ryState}
+            </foreach>
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+
+
+    <select id="getSearchResultCounts" parameterType="com.greathack.homlin.pojo.auxiliary.AuxAttendancdSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.kqtjId) FROM aux_kqtj b
+        left join organization org on org.orgId=b.orgId
+
+        WHERE 1 = 1
+
+        <if test="nd != null  and nd !='' "> and b.nd = #{nd}</if>
+        <if test="yd != null  and yd !='' "> and b.yd = #{yd}</if>
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>-->
+
+</mapper>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>菜单管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+	<style>
+		#setRolePower{
+			height:370px
+		}
+    </style>
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+  <script src="js/outBox.js" charset="utf-8"></script>
+</head>
+<body>  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">        
+          <div class="layui-card-header">    
+          <form class="layui-form" action="" lay-filter="searchForm">          
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">关键词</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="keyword" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button type="button" class="layui-btn" lay-submit lay-filter="searchBtn">查询</button>
+                </div>
+              </div>
+          </form>
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="innerMessageList" lay-filter="innerMessageList"></table> 
+			<script type="text/html" id="toolbarDemo">
+              <div class="layui-btn-container">
+			  	<button class="layui-btn layui-btn-sm" lay-event="addMsg">发信</button>       
+              </div>
+            </script>
+             
+            <script type="text/html" id="barDemo">
+              {{#if(d.msgState==1){ }}
+                <a class="layui-btn layui-btn-xs " lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="del">删除</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs " lay-event="send">发送</a>
+              {{#} }}
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="layui-fluid" id="addMsgPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="addMsg" id="addMsg">
+	  <input type="hidden" name="msgState" class="msgState" />
+      <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-inline">
+          <input type="text" name="title" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">消息类型</label>
+        <div class="layui-input-inline">
+			<select name="msgType" class="msgType" lay-filter="aihao" lay-verify="required">
+			</select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">收件人</label>
+        <div class="layui-input-inline">
+          <input type="text" name="recipientNames" readonly="readonly" placeholder="请点击选择收件人" class="layui-input recipientNames">
+		  <span class="layui-badge layui-bg-gray btn_cleanUser" style="top: -28px;left: 165px;cursor: pointer;">X</span>
+		</div>
+        <!-- <div class="layui-input-inline" style="width: 92px;">
+			<button type="button" class="layui-btn" id="selectRy">指定人员</button>
+        </div>
+        <div class="layui-input-inline" style="width: 92px;">
+			<button type="button" class="layui-btn" id="allRy">全部人员</button>
+        </div> -->
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">消息内容</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入消息内容" name="content" class="layui-textarea"></textarea>
+          </div>
+      </div>
+		<div class="layui-form-item">
+		    <div class="layui-upload">
+		      <button type="button" class="layui-btn layui-btn-normal" id="add_selectFileBtn">选择文件</button> 
+		      <div class="layui-upload-list">
+		        <table class="layui-table">
+		          <thead>
+		            <tr>
+						<th>文件名</th>
+						<th>大小</th>
+						<th>状态</th>
+						<th>操作</th>
+		            </tr>
+				  </thead>
+		          <tbody id="add_uploadList"></tbody>
+		        </table>
+		      </div>
+		    </div> 
+		</div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="addMsgSubmit"  lay-filter="addMsg" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+
+<div class="layui-fluid" id="editMsgPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="editMsg" id="editMsg">
+	  <input type="hidden" name="innerMessageId" />
+	  <input type="hidden" name="msgState" class="msgState" />
+      <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-inline">
+          <input type="text" name="title" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">消息类型</label>
+        <div class="layui-input-inline">
+			<select name="msgType" class="msgType" lay-filter="aihao" lay-verify="required">
+			</select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">收件人</label>
+        <div class="layui-input-inline">
+          <input type="text" name="recipientNames" readonly="readonly" placeholder="请点击选择收件人" class="layui-input recipientNames">
+        </div>
+        <div class="layui-input-inline">
+		  <span class="layui-badge layui-bg-gray btn_cleanUser" style="top: 10px;left: -35px;cursor: pointer;">X</span>
+		</div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">消息内容</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入消息内容" name="content" class="layui-textarea"></textarea>
+          </div>
+      </div>
+		<div class="layui-form-item">
+		    <div class="layui-upload">
+		      <button type="button" class="layui-btn layui-btn-normal " id="edit_selectFileBtn">选择文件</button> 
+		      <div class="layui-upload-list">
+		        <table class="layui-table">
+		          <thead>
+		            <tr>
+						<th>文件名</th>
+						<th>大小</th>
+						<th>状态</th>
+						<th>操作</th>
+		            </tr>
+				  </thead>
+		          <tbody id="edit_uploadList"></tbody>
+		        </table>
+		      </div>
+		    </div> 
+		</div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="editMsgSubmit"  lay-filter="editMsg" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+</body>
+</html>

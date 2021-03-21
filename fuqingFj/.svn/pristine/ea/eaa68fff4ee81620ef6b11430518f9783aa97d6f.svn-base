@@ -1,0 +1,1 @@
+INSERT INTO `poweritem`(`powerItemId`, `appCode`, `powerCode`, `itemType`, `itemName`, `referer`, `resource`, `parameter`, `remark`, `outKey1`, `outKey2`, `bak1`, `bak2`) VALUES (126951209566208, 'am-adminpermission', 'AM_JBXX_EXPORT_JBXX_CARD', NULL, '打印基本信息', '', '/auxDagl/exportJbxxCard', '', '', '112428482297856', NULL, NULL, NULL);

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.process.IProcessNodeTemplateDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.process.ProcessNodeTemplate">
+    INSERT INTO ProcessNodeTemplate(processNodeId,nodeName,nodeCode,approvalRoleId,processTemplateId,passRequire,passNum,approvalType,preNodeCode,nextNodeCode,nodeEventImpl,beforeParameter,afterParameter,sort)
+    VALUES(#{processNodeId},#{nodeName},#{nodeCode},#{approvalRoleId},#{processTemplateId},#{passRequire},#{passNum},#{approvalType},#{preNodeCode},#{nextNodeCode},#{nodeEventImpl},#{beforeParameter},#{afterParameter},#{sort});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM ProcessNodeTemplate WHERE processNodeId=#{value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.process.ProcessNodeTemplate">
+    UPDATE ProcessNodeTemplate
+    SET 
+    nodeName=#{nodeName},
+    nodeCode=#{nodeCode},
+    approvalRoleId=#{approvalRoleId},  
+    processTemplateId=#{processTemplateId} ,  
+    passRequire=#{passRequire} ,  
+    passNum=#{passNum} ,
+    approvalType=#{approvalType} ,
+    preNodeCode=#{preNodeCode} ,  
+    nextNodeCode=#{nextNodeCode} ,
+    nodeEventImpl=#{nodeEventImpl} ,
+    beforeParameter=#{beforeParameter} ,
+    afterParameter=#{afterParameter} ,
+    sort=#{sort}
+    WHERE processNodeId=${processNodeId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.process.ProcessNodeTemplate" >
+	select * from ProcessNodeTemplate where processNodeId=#{value}
+	</select>
+
+	<select id="findByNodeCode" parameterType="java.lang.String" resultType="com.greathack.homlin.pojo.process.ProcessNodeTemplate" >
+		select * from ProcessNodeTemplate where nodeCode=#{nodeCode}
+		limit 1
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.process.ProcessNodeTemplate"  resultType="com.greathack.homlin.pojo.process.ProcessNodeTemplate" >	
+	select * from ProcessNodeTemplate where 1=1
+	<if test="nodeName != null"> and nodeName=#{nodeName}</if>
+	<if test="nodeCode != null"> and nodeCode=#{nodeCode}</if>
+	<if test="approvalRoleId != null"> and approvalRoleId=#{approvalRoleId}</if>
+	<if test="processTemplateId != null"> and processTemplateId=#{processTemplateId}</if>
+	<if test="preNodeCode != null"> and preNodeCode=#{preNodeCode}</if>
+	<if test="nextNodeCode != null"> and nextNodeCode=#{nextNodeCode}</if>
+	order by sort desc
+	</select>
+</mapper>

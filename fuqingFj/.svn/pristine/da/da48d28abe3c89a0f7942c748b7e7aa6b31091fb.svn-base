@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>选择辅警人员</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css?v=1.60" media="all">
+    <!--[if lt IE 9]>
+    <script src="baseJs/html5shiv.min.js"></script>
+    <script src="baseJs/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+    <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+    <!--[if lt IE 9]>
+    <script src="baseJs/jquery.xdomainrequest.min.js"></script>
+    <![endif]-->
+    <script src="baseJs/function.js?v=1.60"></script>
+    <script src="js/config.js?v=1.60"></script>
+    <script src="js/global.js?v=1.60"></script>
+    <script src="js/userLive.js?v=1.60"></script>
+    <script src="js/selectFjry.js?v=1.60" charset="utf-8"></script>
+    <style>
+        .layui-form-label {
+            width: 76px;
+        }
+
+        .layui-form-item {
+            margin-bottom: 0px;
+        }
+
+        #oneKeyPassPage .layui-form-item {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-sm4 layui-col-md4 layui-col-lg2">
+            <div class="layui-card" style="overflow:auto">
+                <div id="amUnitTree" class="demo-tree demo-tree-box"></div>
+            </div>
+        </div>
+        <div class="layui-col-sm8 layui-col-md8 layui-col-lg10">
+            <div class="layui-card col2">
+                <div class="layui-fluid" style="padding: 15px 0px;">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    <div class="layui-fluid" style="padding:0px;">
+                                        <form class="layui-form" action="" lay-filter="searchForm">
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label" style="width: 42px;">关键词</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="keyword" autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <div class="layui-input-inline" style="width: 135px;">
+                                                        <input type="checkbox" lay-skin="primary" name="onlyCurrnetOrg" value="true" title="只显示本单位">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                                                    <button type="button" class="layui-btn" id="clean">清空选择</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="ryTable" lay-filter="ryTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

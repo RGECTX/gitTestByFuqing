@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>招录大批次</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+  <style type="text/css">
+  	.cos-label {width: 25%!important;}
+  	.cos-line {width: 70%!important;}
+  </style>
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+  <script src="js/dictDataList.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">        
+          <div class="layui-card-header">    
+          <form class="layui-form" action="" lay-filter="searchForm">          
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">当前字典类型</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="dictCode" id="dictCode" autocomplete="off" class="layui-input" disabled="disabled" value="">
+                  </div>
+                </div>
+               <!-- <div class="layui-inline">
+                  <button type="submit" class="layui-btn" lay-submit lay-filter="search">查询</button>
+                </div> -->
+              </div>
+          </form>
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="dictList" lay-filter="dictList"></table> 
+			<script type="text/html" id="toolbarDemo">
+              <div class="layui-btn-container">
+			  	<button class="layui-btn layui-btn-sm SYS_SETTING_DICT_DATA_ADD" lay-event="add">添加</button>               
+              </div>
+            </script>
+            <script type="text/html" id="barDemo">
+              <a class="layui-btn layui-btn-xs SYS_SETTING_DICT_DATA_UPDATE" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs SYS_SETTING_DICT_DATA_DELETE" lay-event="del">删除</a>	  
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layui-fluid" id="addPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="add" id="add">
+        <div class="layui-form-item">
+          <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典数据名称</label>
+          <div class="layui-input-inline cos-line">
+            <input type="text" name="dataName" lay-verify="required" placeholder="请输入字典数据名称" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典数据编码</label>
+		  <div class="layui-input-inline cos-line">
+		    <input type="text" name="dataCode" lay-verify="required" placeholder="请输入字典数据编码" autocomplete="off" class="layui-input">
+		  </div>
+		</div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label cos-label ">字典数据内容</label>
+		  <div class="layui-input-inline cos-line">
+		    <input type="text" name="content" placeholder="请输入字典数据内容" autocomplete="off" class="layui-input">
+		  </div>
+		</div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典排序</label>
+		  <div class="layui-input-inline cos-line">
+		  	<input type="text" name="sortNum" id="sortNum" placeholder="数字" autocomplete="off" class="layui-input" lay-verify="required|numbermsg">
+		  </div>
+		</div>
+		<div class="layui-form-item">
+		    <button type="button" id="addSubmit"  lay-filter="add" style="display:none" lay-submit></button>
+		</div>
+    </form>
+  </div>
+  <div class="layui-fluid" id="editPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit" id="edit">
+  	  <input type="hidden" name="dictId" />
+	  <input type="hidden" name="dictDataId" />
+	  <div class="layui-form-item">
+	    <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典数据名称</label>
+	    <div class="layui-input-inline cos-line">
+	      <input type="text" name="dataName" lay-verify="required" placeholder="请输入字典数据名称" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典数据编码</label>
+	    <div class="layui-input-inline cos-line">
+	      <input type="text" name="dataCode" lay-verify="required" placeholder="请输入字典数据编码" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label cos-label ">字典数据内容</label>
+		  <div class="layui-input-inline cos-line">
+		    <input type="text" name="content" placeholder="请输入字典数据内容" autocomplete="off" class="layui-input">
+		  </div>
+		</div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label cos-label "><font color="#ff0000"><strong>*</strong></font>字典排序</label>
+		  <div class="layui-input-inline cos-line">
+		  	<input type="text" name="sortNum" id="sortNum" placeholder="数字" autocomplete="off" class="layui-input" lay-verify="required|numbermsg">
+		  </div>
+		</div>
+		
+	  <div class="layui-form-item">
+	      <button type="button" id="editSubmit"  lay-filter="edit" style="display:none" lay-submit></button>
+	  </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.holiday.IHolidayDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.holiday.Holiday">
+    INSERT INTO Holiday(holidayId,holidayDate,holidayName,holidayType,isRest,remark)
+    VALUES(#{holidayId},#{holidayDate},#{holidayName},#{holidayType},#{isRest},#{remark})
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM holiday 
+    WHERE holidayId=#{value}
+  	</delete>
+  	<update id="update" parameterType="com.greathack.homlin.pojo.holiday.Holiday">
+    UPDATE holiday
+    SET holidayDate=#{holidayDate},
+    holidayName=#{holidayName},
+    holidayType=#{holidayType},
+    isRest=#{isRest},
+    remark=#{remark}
+    WHERE holidayId=#{holidayId}
+  	</update>
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.holiday.Holiday" >
+	select * from holiday where holidayId=#{value} 
+	</select>
+    <select id="findByDate" parameterType="java.lang.Integer" resultType="com.greathack.homlin.pojo.holiday.Holiday" >
+    select * from holiday where holidayDate=#{value} 
+    </select>
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.holiday.Holiday" resultType="com.greathack.homlin.pojo.holiday.Holiday" >	
+	select * from holiday where 1=1
+	<if test="holidayDate != null"> and holidayDate=#{holidayDate}</if>
+	<if test="holidayName != null"> and holidayName=#{holidayName}</if>
+	<if test="holidayType != null"> and holidayType=#{holidayType}</if>
+	<if test="isRest != null"> and isRest=#{isRest}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	</select>
+  	
+	<!-- 	search  -->	
+	<select id="search" parameterType="com.greathack.homlin.pojo.holiday.HolidaySearchCriteria" resultType="com.greathack.homlin.pojo.holiday.Holiday" >	
+		select * from holiday where 1=1 
+		<if test="holidayTypeList!=null and holidayTypeList.size>0">
+			 and holidayType in
+			<foreach collection="holidayTypeList" item="holidayType" separator=" , " open="(" close=")">
+			#{holidayType}
+			</foreach>
+		</if> 
+		<if test="isRestList!=null and isRestList.size>0">
+			 and isRest in
+			<foreach collection="isRestList" item="isRest" separator=" , " open="(" close=")">
+			#{isRest}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="holidayDate != null"> and holidayDate=#{holidayDate}</if>
+		<if test="beginDate != null"> and holidayDate &gt;= #{beginDate}</if>
+		<if test="endDate != null"> and holidayDate &lt;= #{endDate}</if>
+		order by holidayDate asc
+	    LIMIT #{startLine},#{pageSize}
+	</select>
+  	
+	<!-- 	getSearchResultCount  -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.holiday.HolidaySearchCriteria" resultType="long" >	
+		select count(holidayId) from holiday where 1=1  
+		<if test="holidayTypeList!=null and holidayTypeList.size>0">
+			 and level in
+			<foreach collection="holidayTypeList" item="holidayType" separator=" , " open="(" close=")">
+			#{holidayType}
+			</foreach>
+		</if>
+		<if test="isRestList!=null and isRestList.size>0">
+			 and isRest in
+			<foreach collection="isRestList" item="isRest" separator=" , " open="(" close=")">
+			#{isRest}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="holidayDate != null"> and holidayDate=#{holidayDate}</if>
+		<if test="beginDate != null"> and holidayDate &gt;= #{beginDate}</if>
+		<if test="endDate != null"> and holidayDate &lt;= #{endDate}</if>
+	</select>
+</mapper>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxGzglDAO">
+    <parameterMap id="parameterAuxGzgl" type="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+        <parameter property="gzglId"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="sbState"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+        <parameter property="xm"/>
+        <parameter property="yfgz"/>
+        <parameter property="sbDate"/>
+        <parameter property="tzhgz"/>
+        <parameter property="gztzState"/>
+        <parameter property="idcard"/>
+    </parameterMap>
+
+
+    <insert id="add" parameterMap="parameterAuxGzgl">
+    INSERT INTO aux_gzgl(gzglId,orgId,orgName,sbState,createBy,createTime,outKey1,outKey2,bak1,bak2,xm,yfgz,sbDate,tzhgz,gztzState,idcard)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_gzgl WHERE gzglId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxGzgl">
+		update aux_gzgl
+		set
+		orgId=#{orgId},
+		orgName=#{orgName},
+		sbState=#{sbState},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+        xm=#{xm},
+        yfgz=#{yfgz},
+        tzhgz=#{tzhgz},
+        gztzState=#{gztzState},
+        idcard=#{idcard}
+		where gzglId=#{gzglId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+		select * from aux_gzgl where gzglId = ${value}
+	</select>
+
+    <select id="getFjqktj" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+
+        SELECT
+        *
+        FROM
+        aux_gzgl g
+        LEFT JOIN organization org ON org.orgId = g.orgId
+        WHERE g.sbState = "4"
+
+        <!--<if test="nd != null  and nd !='' "> and nd = #{nd}</if>
+        <if test="yd != null  and yd !='' "> and yd = #{yd}</if>-->
+        <if test="orgName != null  and orgName !='' "> and orgName = #{orgName}</if>
+        <!--<if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>-->
+        <if test="orgIdList!=null and orgIdList.size>0">
+            and g.orgId in
+            <foreach collection="orgIdList" item="orgId" separator="," open="(" close=")">
+                #{orgId}
+            </foreach>
+        </if>
+        <!--<if test="ryStateList!=null and ryStateList.size>0">
+            and k.state in
+            <foreach collection="ryStateList" item="ryState" separator="," open="(" close=")">
+                #{ryState}
+            </foreach>
+        </if>-->
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by g.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="findByExample" parameterMap="parameterAuxGzgl" resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+        select * from aux_gzgl where 1=1
+
+        <if test="orgId != null and orgId !='' ">and orgId=#{orgId}</if>
+        <if test="orgName != null and orgName !='' ">and orgName=#{orgName}</if>
+        <if test="sbState != null and sbState !='' ">and sbState=#{sbState}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        <if test="xm != null and xm !='' ">and xm=#{xm}</if>
+        <if test="yfgz != null and yfgz !='' ">and yfgz=#{yfgz}</if>
+        <if test="sbDate != null and sbDate !='' ">and sbDate=#{sbDate}</if>
+        <if test="tzhgz != null and tzhgz !='' ">and tzhgz=#{tzhgz}</if>
+        <if test="gztzState != null and gztzState !='' ">and gztzState=#{gztzState}</if>
+        <if test="idcard != null and idcard !='' ">and idcard=#{idcard}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+		select * from aux_gzgl
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+        SELECT
+        b.*
+        FROM aux_gzgl b
+        left join organization org on org.orgId=b.orgId
+        WHERE (b.sbState = '1' or b.sbState = '8')
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="sbState != null  and sbState !='' "> and sbState = #{sbState}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchGzglSp" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+        SELECT
+        b.*
+        FROM aux_gzgl b
+        left join organization org on org.orgId=b.orgId
+        WHERE b.sbState = '2'
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="sbState != null  and sbState !='' "> and sbState = #{sbState}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchGzmx" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGzgl">
+        SELECT
+        b.*
+        FROM aux_gzgl b
+        left join organization org on org.orgId=b.orgId
+        WHERE b.sbState = '4'
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="sbState != null  and sbState !='' "> and sbState = #{sbState}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGzglSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.gzglId) FROM aux_gzgl b
+        left join organization org on org.orgId=b.orgId
+
+        WHERE 1 = 1
+
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="sbState != null  and sbState !='' "> and sbState = #{sbState}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

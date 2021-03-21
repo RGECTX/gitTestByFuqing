@@ -1,0 +1,378 @@
+package com.greathack.homlin.service.auxiliary;
+
+import com.greathack.homlin.common.Common;
+import com.greathack.homlin.common.ErrCode;
+import com.greathack.homlin.dao.factory.DAOFactory;
+import com.greathack.homlin.daointerface.auxiliary.IAuxDaglDAO;
+import com.greathack.homlin.daointerface.org.IOrganizationDAO;
+import com.greathack.homlin.exception.BusinessException;
+import com.greathack.homlin.exception.ServiceException;
+import com.greathack.homlin.pojo.auxiliary.AuxDagl;
+import com.greathack.homlin.pojo.auxiliary.AuxDaglImportVo;
+import com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria;
+import com.greathack.homlin.pojo.dict.Dict;
+import com.greathack.homlin.pojo.dict.DictData;
+import com.greathack.homlin.pojo.org.Organization;
+import com.greathack.homlin.serviceinterface.auxiliary.IAuxDaglService;
+import com.greathack.homlin.serviceinterface.dict.IDictDataService;
+import com.greathack.homlin.serviceinterface.dict.IDictService;
+import com.greathack.homlin.serviceinterface.org.IOrganizationService;
+import com.greathack.homlin.system.IdCreator;
+import com.greathack.homlin.system.SystemConfig;
+import com.greathack.homlin.utils.DateUtils;
+import com.greathack.homlin.utils.IdCardNumberVerify;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class AuxDaglService implements IAuxDaglService {
+
+    @Autowired
+    private IDictService dictService;
+    @Autowired
+    private IDictDataService dictDataService;
+    @Autowired
+    private IOrganizationService organizationService;
+
+    private static Logger logger = LoggerFactory.getLogger(AuxDaglService.class);
+    private static IAuxDaglDAO auxDaglDAO = (IAuxDaglDAO) DAOFactory.createDAO("IAuxDaglDAO");
+    private static IOrganizationDAO organizationDAO = (IOrganizationDAO) DAOFactory.createDAO("IOrganizationDAO");
+
+
+    @Override
+    public List<AuxDagl> search(AuxDaglSearchCriteria criteria) {
+        List<AuxDagl> auxZljdList = new ArrayList<AuxDagl>();
+        if (criteria == null) {
+            return auxZljdList;
+        }
+        return auxDaglDAO.search(criteria);
+    }
+
+    @Override
+    public long getSearchResultCount(AuxDaglSearchCriteria criteria) {
+        if (criteria == null) {
+            return 0;
+        }
+        System.out.println(criteria.toString());
+        String count = "0";
+        count = Long.toString(auxDaglDAO.getSearchResultCount(criteria));
+
+        return Long.parseLong(count);
+    }
+
+    @Override
+    public List<AuxDagl> findIdcard(String idcard) {
+        return auxDaglDAO.findIdcard(idcard);
+    }
+
+    @Override
+    public void updateFjlb(AuxDagl auxDagl) {
+        auxDaglDAO.updateFjlb(auxDagl);
+    }
+
+    @Override
+    public void updateDwjs(AuxDagl auxDagl) {
+        auxDaglDAO.updateDwjs(auxDagl);
+    }
+
+
+    @Override
+    public AuxDagl add(AuxDagl auxDagl) throws ServiceException {
+        try {
+            //获取性别
+            int sexByCertId = IdCardNumberVerify.getSexByCertId(auxDagl.getIdcard());
+            auxDagl.setXb(String.valueOf(sexByCertId));
+            auxDagl.setCreateTime(Common.getCurrentTime());
+            auxDagl.setDaId(IdCreator.createId("daId"));
+            List<Organization> org = organizationDAO.findOrgName(auxDagl.getOrgId());//查出单位名进行添加
+            if (org.size() != 0) {
+                auxDagl.setOrgName(org.get(0).getOrgName());
+            }
+
+            //拼接辅警编号
+            String fjbh = "FJ" + auxDagl.getFjbh();
+            auxDagl.setFjbh(fjbh);
+            auxDaglDAO.add(auxDagl);
+            return auxDagl;
+        } catch (ServiceException e) {
+            throw new ServiceException(ErrCode.UNKNOWN_ERROR, e.getErrMsg());
+        }
+    }
+
+    @Override
+    public void delete(Long auxDaglId) {
+        auxDaglDAO.delete(auxDaglId);
+    }
+
+    @Override
+    public void update(AuxDagl auxDagl) {
+        //获得性别
+        /*auxDagl.setXb(String.valueOf(IdCardNumberVerify.getSexByCertId(auxDagl.getIdcard())));*/
+        //修改辅警编号
+        /*String fjbh = "FJ" + auxDagl.getFjbh();
+        auxDagl.setFjbh(fjbh);*/
+
+        List<Organization> org = organizationDAO.findOrgName(auxDagl.getOrgId());//查出单位名进行添加
+        if (org.size() != 0) {
+            auxDagl.setOrgName(org.get(0).getOrgName());
+        }
+        auxDaglDAO.update(auxDagl);
+
+    }
+
+    @Override
+    public AuxDagl get(Long auxDaglId) {
+        return auxDaglDAO.findById(auxDaglId);
+    }
+
+    @Override
+    public List<AuxDagl> findByExample(AuxDagl auxDagl) {
+        return auxDaglDAO.findByExample(auxDagl);
+    }
+
+    @Override
+    public List<AuxDagl> findAll() {
+        return auxDaglDAO.findAll();
+    }
+
+
+    public void updateState(AuxDagl auxDagl) {
+        auxDaglDAO.updateState(auxDagl);
+    }
+
+    @Override
+    public String importJbxx(List<AuxDaglImportVo> auxDaglImportVoList, Map<String, Object> params) {
+        if (auxDaglImportVoList == null || auxDaglImportVoList.size() == 0) {
+            throw new BusinessException("导入辅警基本信息不能为空！");
+        }
+
+        List<Dict> dictList = dictService.getList(SystemConfig.getConfigData("DICT_APP_CODE"));
+        Map<String, List<DictData>> dictMap = new HashMap<>();
+        for (Dict dict : dictList) {
+            List<DictData> dictDataList = dictDataService.getList(dict.getDictId());
+            dictMap.put(dict.getDictCode() + "", dictDataList);
+        }
+
+        Long createBy = Long.parseLong(params.get("createBy").toString());
+        String isJbxxCover = params.get("isJbxxCover").toString();//0、遇到相同身份证号不操作  1、遇到相同身份证号覆盖
+
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        for (AuxDaglImportVo auxDaglImportVo : auxDaglImportVoList) {
+            try {
+                String auxState = getDictLabel(auxDaglImportVo.getState(), "AUX_DASTATE", "", dictMap);
+                if (StringUtils.isEmpty(auxDaglImportVo.getXm())) {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、姓名 " + auxDaglImportVo.getXm() + " 姓名不能为空");
+                    continue;
+                } else if (StringUtils.isEmpty(auxDaglImportVo.getIdcard())) {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、姓名 " + auxDaglImportVo.getXm() + " 身份证号不能为空");
+                    continue;
+                }/*else if(StringUtils.isEmpty(amJbxxImportVo.getOrgCode())){
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、姓名 " + amJbxxImportVo.getXm()+ " 机构编码不能为空");
+                    continue;
+                }*//*else if(StringUtils.isEmpty(auxState)){
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、姓名 " + auxDaglImportVo.getXm()+ " 人员状态为空或者不正确");
+                    continue;
+                }*/
+
+                Organization organization = organizationDAO.findByOrgCode(auxDaglImportVo.getOrgCode());
+                if (organization == null) {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、姓名 " + auxDaglImportVo.getXm() + " 机构编码无效");
+                    continue;
+                }
+                // 实例化档案人员
+                AuxDagl auxDagl = new AuxDagl();
+                //通过导入模板的身份证信息查询档案管理对应的人员信息集合
+                List<AuxDagl> oldAuxDagl = auxDaglDAO.findIdcard(auxDaglImportVo.getIdcard());
+
+                if (oldAuxDagl.size() == 0) {
+                    //找不到对应的档案人员信息 那么进行添加
+                    //基本信息
+                    auxDagl.setCreateTime(Common.getCurrentTime());
+                    auxDagl.setCreateBy(createBy);
+                    auxDagl.setDaId(IdCreator.createId("AuxDagl"));
+                    auxDagl.setIdcard(auxDaglImportVo.getIdcard());//身份证号
+                } else {
+                    auxDagl.setCreateTime(Common.getCurrentTime());
+                    auxDagl.setCreateBy(createBy);
+                    auxDagl.setDaId(oldAuxDagl.get(0).getDaId());
+                    auxDagl.setIdcard(auxDaglImportVo.getIdcard());//身份证号
+                }
+                Long daId = auxDagl.getDaId();
+
+                auxDagl.setXm(auxDaglImportVo.getXm());//姓名
+                auxDagl.setXb(getDictLabel(auxDaglImportVo.getXb(), "SEX", "", dictMap));//性别
+                auxDagl.setMz(getDictLabel(auxDaglImportVo.getMz(), "MZ", "", dictMap));//民族
+                auxDagl.setJgszss(auxDaglImportVo.getJgszss());//籍贯
+                auxDagl.setJz(getDictLabel(auxDaglImportVo.getJz(), "DRIVER_CARD", "", dictMap));//驾照
+                if ("是".equals(auxDaglImportVo.getFby())) {
+                    auxDagl.setFby("1");//服兵役
+                } else if ("否".equals(auxDaglImportVo.getFby())) {
+                    auxDagl.setFby("0");//服兵役
+                }
+
+                auxDagl.setHyzk(getDictLabel(auxDaglImportVo.getHyzk(), "HYZK", "", dictMap));//婚姻状况
+                auxDagl.setZzmm(getDictLabel(auxDaglImportVo.getZzmm(), "AM_ZZMM", "", dictMap));//政治面貌
+                auxDagl.setXl(getDictLabel(auxDaglImportVo.getXl(), "AM_XL", "", dictMap));//学历
+                auxDagl.setByys(auxDaglImportVo.getByys());//毕业院校
+                auxDagl.setZy(auxDaglImportVo.getZy());//专业
+                if (auxDaglImportVo.getByrq() != null) {
+                    String byrq = auxDaglImportVo.getByrq();
+                    byrq = DateUtils.formateDateStrTo8(byrq);
+                    if (byrq != null) {
+                        auxDagl.setByrq(byrq);//毕业日期
+                    }
+                }
+
+                auxDagl.setAihao(auxDaglImportVo.getAihao());//爱好
+                auxDagl.setTechang(auxDaglImportVo.getTechang());//毕业日期
+                auxDagl.setXjtzz(auxDaglImportVo.getXjtzz());//现家庭住址
+                auxDagl.setLxfs(auxDaglImportVo.getLxfs());//联系方式
+
+                auxDagl.setFjbh(auxDaglImportVo.getFjbh());//辅警编号
+                auxDagl.setHjdz(auxDaglImportVo.getHjdz());//户籍地址
+                if ("是".equals(auxDaglImportVo.getIsdy())) {
+                    auxDagl.setIsdy("1");//是否党员
+                } else if ("否".equals(auxDaglImportVo.getIsdy())) {
+                    auxDagl.setIsdy("0");//是否党员
+                }
+                auxDagl.setRzrq(auxDaglImportVo.getRzrq());//入职日期
+                auxDagl.setJtzz(auxDaglImportVo.getJtzz());//具体职责
+                if ("是".equals(auxDaglImportVo.getIsbx())) {
+                    auxDagl.setIsbx("1");//是否保险
+                } else if ("否".equals(auxDaglImportVo.getIsbx())) {
+                    auxDagl.setIsbx("0");//是否保险
+                }
+                /*auxDagl.setHjdlx(getDictLabel(auxDaglImportVo.getHjdlx(),"AM_HJDLX","",dictMap));//户籍地类型*/
+
+                /*jbxx.setRylb(getDictLabel(amJbxxImportVo.getRylb(),"AM_RYLB","",dictMap));//人员类别*/
+                /*auxDagl.setState(getDictLabel(auxDaglImportVo.getState(),"AUX_DASTATE","",dictMap));//辅警人员状态*/
+                auxDagl.setState("1");//辅警人员状态
+                auxDagl.setFjType(getDictLabel(auxDaglImportVo.getFjType(), "AUX_FJLB", "", dictMap));//辅警类别
+
+                auxDagl.setRemark(auxDaglImportVo.getRemark());
+                auxDagl.setOrgId(organization.getOrgId());//工作单位ID
+                List<Organization> orgName = organizationService.findOrgName(organization.getOrgId());
+                auxDagl.setOrgName(orgName.get(0).getOrgName());//工作单位名
+
+
+                if (oldAuxDagl.size() == 0) {
+                    auxDaglDAO.add(auxDagl);
+                    //更新基本信息
+                    /*hrJbxxService.updateByAmJbxx(a);*/
+                } else {
+                    if ("1".equals(isJbxxCover)) {
+                        //覆盖
+                        auxDaglDAO.update(auxDagl);
+
+                    } else if ("2".equals(isJbxxCover)) {
+                        /*auxDaglDAO.delete(oldAuxDagl.get(0).getDaId());*/
+                        auxDaglDAO.updatePart(auxDagl);
+                    }
+                }
+
+
+                if (oldAuxDagl.size() == 0) {
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、姓名 " + auxDaglImportVo.getXm() + " 导入成功");
+                } else {
+                    if ("1".equals(isJbxxCover) || "2".equals(isJbxxCover)) {
+                        successNum++;
+                        successMsg.append("<br/>" + successNum + "、姓名 " + auxDaglImportVo.getXm() + " 导入成功");
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、姓名 " + auxDaglImportVo.getXm() + " 导入失败：";
+                failureMsg.append(msg + e.getMessage());
+                //log.error(msg, e);
+            }
+        }
+        if (failureNum > 0) {
+            failureMsg.insert(0, "很抱歉！共 " + successNum + " 条数据导入成功！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            return failureMsg.toString();
+            //throw new BusinessException(failureMsg.toString());
+        } else {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
+    }
+
+    @Override
+    public List<AuxDaglImportVo> searchExport(AuxDaglSearchCriteria criteria) {
+        List<AuxDaglImportVo> auxDaglImportVoList = new ArrayList<AuxDaglImportVo>();
+        if (criteria == null) {
+            return auxDaglImportVoList;
+        }
+        return auxDaglDAO.searchExport(criteria);
+    }
+
+    @Override
+    public Integer findByOrgId(Long orgId, String fjType) {
+        return auxDaglDAO.findByOrgId(orgId, fjType);
+    }
+
+    @Override
+    public void addZl(AuxDagl auxDagl) {
+
+        //获取性别
+        int sexByCertId = IdCardNumberVerify.getSexByCertId(auxDagl.getIdcard());
+        auxDagl.setXb(String.valueOf(sexByCertId));
+        auxDagl.setCreateTime(Common.getCurrentTime());
+        try {
+            auxDagl.setDaId(IdCreator.createId("daId"));
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        //拼接辅警编号
+        String fjbh = "FJ" + auxDagl.getFjbh();
+        auxDagl.setFjbh(fjbh);
+        auxDaglDAO.add(auxDagl);
+
+    }
+
+    @Override
+    public void updateYfgz(AuxDagl auxDagl) {
+        auxDaglDAO.updateYfgz(auxDagl);
+    }
+
+
+    /**
+     * 通过类型及字典中文名获得code
+     *
+     * @param value        值如：在岗（正式辅警）
+     * @param type         类型如AM_STATE
+     * @param defaultLabel 如：1
+     * @param dictMap
+     * @return
+     */
+    public static String getDictLabel(String value, String type, String defaultLabel, Map<String, List<DictData>> dictMap) {
+        List<DictData> dictDataList = dictMap.get(type);
+        if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)) {
+            for (DictData dictData : dictDataList) {
+                if (value.equals(dictData.getDataName())) {
+                    return dictData.getDataCode();
+                }
+            }
+        }
+        return defaultLabel;
+    }
+
+
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="greathack-homlin-dao" />
+        <module name="greathack-homlin-serviceinterface" />
+        <module name="greathack-homlin-daointerface" />
+        <module name="greathack-homlin-service" />
+        <module name="greathack-homlin-api" />
+        <module name="greathack-homlin-common" />
+        <module name="greathack-homlin-pojo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="greathack-homlin" target="1.5" />
+      <module name="greathack-homlin-api" target="7" />
+      <module name="greathack-homlin-common" target="1.8" />
+      <module name="greathack-homlin-dao" target="1.5" />
+      <module name="greathack-homlin-daointerface" target="1.5" />
+      <module name="greathack-homlin-pojo" target="1.5" />
+      <module name="greathack-homlin-service" target="1.8" />
+      <module name="greathack-homlin-serviceinterface" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,1 @@
+INSERT INTO `dict`(`dictId`, `appCode`, `dictName`, `dictCode`, `remark`, `createTime`, `outKey1`, `outKey2`, `bak1`, `bak2`) VALUES (121717252947969, 'am-dict', '授奖类别', 'AUX_SJLB', NULL, 1604311309779, NULL, NULL, NULL, NULL);

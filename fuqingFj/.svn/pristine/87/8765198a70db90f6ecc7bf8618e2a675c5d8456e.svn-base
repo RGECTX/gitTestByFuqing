@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxDaglDAO">
+    <parameterMap id="parameterAuxDagl" type="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        <parameter property="daId"/>
+        <parameter property="xm"/>
+        <parameter property="xb"/>
+        <parameter property="idcard"/>
+        <parameter property="lxfs"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="fjType"/>
+        <parameter property="state"/>
+        <parameter property="remark"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+        <parameter property="jz"/>
+        <parameter property="fby"/>
+
+        <parameter property="mz"/>
+        <parameter property="jgszss"/>
+        <parameter property="hyzk"/>
+        <parameter property="zzmm"/>
+        <parameter property="xl"/>
+        <parameter property="byys"/>
+        <parameter property="zy"/>
+        <parameter property="byrq"/>
+        <parameter property="techang"/>
+        <parameter property="aihao"/>
+        <parameter property="xjtzz"/>
+        <!--<parameter property="hjdlx"/>-->
+
+        <parameter property="fjbh"/>
+        <parameter property="hjdz"/>
+        <parameter property="isdy"/>
+        <parameter property="rzrq"/>
+        <parameter property="jtzz"/>
+        <parameter property="isbx"/>
+
+        <parameter property="yfgz"/>
+    </parameterMap>
+
+
+    <insert id="add" parameterMap="parameterAuxDagl">
+    INSERT INTO aux_dagl(daId,xm,xb,idcard,lxfs,orgId,orgName,fjType,state,remark,createBy,createTime,outKey1,outKey2,bak1,bak2,jz,fby,mz,jgszss,hyzk,zzmm,xl,byys,zy,byrq,techang,aihao,xjtzz,fjbh,hjdz,isdy,rzrq,jtzz,isbx,yfgz)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_dagl WHERE daId=${value}
+  	</delete>
+
+
+    <update id="update" parameterMap="parameterAuxDagl">
+		update aux_dagl
+		set
+		xm=#{xm},
+		xb=#{xb},
+		idcard=#{idcard},
+		lxfs=#{lxfs},
+		orgId=#{orgId},
+		orgName=#{orgName},
+		fjType=#{fjType},
+		state=#{state},
+		remark=#{remark},
+		createBy=#{createBy},
+		createTime=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		jz=#{jz},
+		fby=#{fby},
+		mz=#{mz},
+		jgszss=#{jgszss},
+		hyzk=#{hyzk},
+		zzmm=#{zzmm},
+		xl=#{xl},
+		byys=#{byys},
+		zy=#{zy},
+		byrq=#{byrq},
+		techang=#{techang},
+		aihao=#{aihao},
+		xjtzz=#{xjtzz},
+		fjbh=#{fjbh},
+		hjdz=#{hjdz},
+		isdy=#{isdy},
+		rzrq=#{rzrq},
+		jtzz=#{jtzz},
+		isbx=#{isbx},
+		yfgz=#{yfgz}
+		where daId=#{daId}
+  	</update>
+
+    <update id="updateYfgz" parameterMap="parameterAuxDagl">
+		update aux_dagl
+		set
+		yfgz=#{yfgz}
+		where daId=#{daId}
+  	</update>
+
+    <update id="updatePart" parameterMap="parameterAuxDagl">
+        update aux_dagl
+        <trim prefix="set" suffixOverrides=",">
+            <if test="xm != null and xm !='' ">xm=#{xm},</if>
+            <if test="xb != null and xb !='' ">xb=#{xb},</if>
+            <if test="idcard != null and idcard !='' ">idcard=#{idcard},</if>
+            <if test="lxfs != null and lxfs !='' ">lxfs=#{lxfs},</if>
+            <if test="orgId != null and orgId !='' ">orgId=#{orgId},</if>
+            <if test="orgName != null and orgName !='' ">orgName=#{orgName},</if>
+            <if test="fjType != null and fjType !='' ">fjType=#{fjType},</if>
+            <if test="state != null and state !='' ">state=#{state},</if>
+            <if test="remark != null and remark !='' ">remark=#{remark},</if>
+            <if test="createBy != null and createBy !='' ">createBy=#{createBy},</if>
+            <if test="createTime != null and createTime !='' ">createTime=#{createTime},</if>
+            <if test="outKey1 != null and outKey1 !='' ">outKey1=#{outKey1},</if>
+            <if test="outKey2 != null and outKey2 !='' ">outKey2=#{outKey2},</if>
+            <if test="bak1 != null and bak1 !='' ">bak1=#{bak1},</if>
+            <if test="bak2 != null and bak2 !='' ">bak2=#{bak2},</if>
+            <if test="jz != null and jz !='' ">jz=#{jz},</if>
+            <if test="fby != null and fby !='' ">fby=#{fby},</if>
+            <if test="mz != null and mz !='' ">mz=#{mz},</if>
+            <if test="jgszss != null and jgszss !='' ">jgszss=#{jgszss},</if>
+            <if test="hyzk != null and hyzk !='' ">hyzk=#{hyzk},</if>
+            <if test="zzmm != null and zzmm !='' ">zzmm=#{zzmm},</if>
+            <if test="xl != null and xl !='' ">xl=#{xl},</if>
+            <if test="byys != null and byys !='' ">byys=#{byys},</if>
+            <if test="zy != null and zy !='' ">zy=#{zy},</if>
+            <if test="byrq != null and byrq !='' ">byrq=#{byrq},</if>
+            <if test="techang != null and techang !='' ">techang=#{techang},</if>
+            <if test="aihao != null and aihao !='' ">aihao=#{aihao},</if>
+            <if test="xjtzz != null and xjtzz !='' ">xjtzz=#{xjtzz},</if>
+            <if test="fjbh != null and fjbh !='' ">fjbh=#{fjbh},</if>
+            <if test="hjdz != null and hjdz !='' ">hjdz=#{hjdz},</if>
+            <if test="isdy != null and isdy !='' ">isdy=#{isdy},</if>
+            <if test="rzrq != null and rzrq !='' ">rzrq=#{rzrq},</if>
+            <if test="jtzz != null and jtzz !='' ">jtzz=#{jtzz},</if>
+            <if test="isbx != null and isbx !='' ">isbx=#{isbx},</if>
+            <if test="yfgz != null and yfgz !='' ">yfgz=#{yfgz},</if>
+        </trim>
+
+        where daId=#{daId}
+    </update>
+
+
+    <update id="updateDwjs" parameterMap="parameterAuxDagl">
+		update aux_dagl
+		set
+		orgId=#{orgId}
+		where daId=#{daId}
+  	</update>
+
+    <update id="updateFjlb" parameterMap="parameterAuxDagl">
+		update aux_dagl
+		set
+		fjType=#{fjType}
+		where daId=#{daId}
+  	</update>
+
+    <update id="updateState" parameterMap="parameterAuxDagl">
+		update aux_dagl
+		set
+		state=#{state}
+		where daId=#{daId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+		select * from aux_dagl where daId = #{value}
+	</select>
+
+    <select id="findIdcard" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        select * from aux_dagl where 1=1
+        <if test="_parameter != null  and _parameter !='' ">and idcard = #{idcard}</if>
+    </select>
+
+    <select id="findByExample" parameterMap="parameterAuxDagl" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        select * from aux_dagl where 1=1
+        <if test="xm != null and xm !='' ">and xm=#{xm}</if>
+        <if test="xb != null and xb !='' ">and xb=#{xb}</if>
+        <if test="idcard != null and idcard !='' ">and idcard=#{idcard}</if>
+        <if test="lxfs != null and lxfs !='' ">and lxfs=#{lxfs}</if>
+        <if test="orgId != null and orgId !='' ">and orgId=#{orgId}</if>
+        <if test="orgName != null and orgName !='' ">and orgName=#{orgName}</if>
+        <if test="fjType != null and fjType !='' ">and fjType=#{fjType}</if>
+        <if test="state != null and state !='' ">and state=#{state}</if>
+        <if test="remark != null and remark !='' ">and remark=#{remark}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        <if test="jz != null and jz !='' ">and jz=#{jz}</if>
+        <if test="fby != null and fby !='' ">and fby=#{fby}</if>
+        <if test="mz != null and mz !='' ">and mz=#{mz}</if>
+        <if test="jgszss != null and jgszss !='' ">and jgszss=#{jgszss}</if>
+        <if test="hyzk != null and hyzk !='' ">and hyzk=#{hyzk}</if>
+        <if test="zzmm != null and zzmm !='' ">and zzmm=#{zzmm}</if>
+        <if test="xl != null and xl !='' ">and xl=#{xl}</if>
+        <if test="byys != null and byys !='' ">and byys=#{byys}</if>
+        <if test="zy != null and zy !='' ">and zy=#{zy}</if>
+        <if test="byrq != null and byrq !='' ">and byrq=#{byrq}</if>
+        <if test="techang != null and techang !='' ">and techang=#{techang}</if>
+        <if test="aihao != null and aihao !='' ">and aihao=#{aihao}</if>
+        <if test="xjtzz != null and xjtzz !='' ">and xjtzz=#{xjtzz}</if>
+        <if test="fjbh != null and fjbh !='' ">and fjbh=#{fjbh}</if>
+        <if test="hjdz != null and hjdz !='' ">and hjdz=#{hjdz}</if>
+        <if test="isdy != null and isdy !='' ">and isdy=#{isdy}</if>
+        <if test="rzrq != null and rzrq !='' ">and rzrq=#{rzrq}</if>
+        <if test="jtzz != null and jtzz !='' ">and jtzz=#{jtzz}</if>
+        <if test="isbx != null and isbx !='' ">and isbx=#{isbx}</if>
+        <if test="yfgz != null and yfgz !='' ">and yfgz=#{yfgz}</if>
+
+
+        <!-- <if test="kinshipTerm != null and kinshipTerm !='' ">and kinshipTerm=#{kinshipTerm}</if>
+         <if test="qsname != null and qsname !='' ">and qsname=#{qsname}</if>
+         <if test="ownIdcard != null and ownIdcard !='' ">and ownIdcard=#{ownIdcard}</if>
+         <if test="birthdayStr != null and birthdayStr !='' ">and birthdayStr=#{birthdayStr}</if>
+         <if test="workUnit != null and workUnit !='' ">and workUnit=#{workUnit}</if>
+         <if test="post != null and post !='' ">and post=#{post}</if>
+         <if test="eduLevel != null and eduLevel !='' ">and eduLevel=#{eduLevel}</if>
+         <if test="nowStatus != null and nowStatus !='' ">and nowStatus=#{nowStatus}</if>
+         <if test="healthState != null and healthState !='' ">and healthState=#{healthState}</if>
+         <if test="healthDetail != null and healthDetail !='' ">and healthDetail=#{healthDetail}</if>
+         <if test="kjysgbFlag != null and kjysgbFlag !='' ">and kjysgbFlag=#{kjysgbFlag}</if>
+         <if test="cgjFlag != null and cgjFlag !='' ">and cgjFlag=#{cgjFlag}</if>
+         <if test="fzFlag != null and fzFlag !='' ">and fzFlag=#{fzFlag}</if>
+         <if test="sysjFlag != null and sysjFlag !='' ">and sysjFlag=#{sysjFlag}</if>
+         <if test="rhflFlag != null and rhflFlag !='' ">and rhflFlag=#{rhflFlag}</if>
+         <if test="bjgzFlag != null and bjgzFlag !='' ">and bjgzFlag=#{bjgzFlag}</if>
+         <if test="bjOrgId != null and bjOrgId !='' ">and bjOrgId=#{bjOrgId}</if>
+         <if test="bjOrgName != null and bjOrgName !='' ">and bjOrgName=#{bjOrgName}</if>
+         <if test="gzddSheng != null and gzddSheng !='' ">and gzddSheng=#{gzddSheng}</if>
+         <if test="gzddShi != null and gzddShi !='' ">and gzddShi=#{gzddShi}</if>
+         <if test="gzddXian != null and gzddXian !='' ">and gzddXian=#{gzddXian}</if>
+         <if test="gzddAddress != null and gzddAddress !='' ">and gzddAddress=#{gzddAddress}</if>
+         <if test="gzddssfw != null and gzddssfw !='' ">and gzddssfw=#{gzddssfw}</if>
+         <if test="gzdwxz != null and gzdwxz !='' ">and gzdwxz=#{gzdwxz}</if>
+         <if test="jzddSheng != null and jzddSheng !='' ">and jzddSheng=#{jzddSheng}</if>
+         <if test="jzddShi != null and jzddShi !='' ">and jzddShi=#{jzddShi}</if>
+         <if test="jzddXian != null and jzddXian !='' ">and jzddXian=#{jzddXian}</if>
+         <if test="jzddAddress != null and jzddAddress !='' ">and jzddAddress=#{jzddAddress}</if>
+         <if test="jzddssfw != null and jzddssfw !='' ">and jzddssfw=#{jzddssfw}</if>
+         <if test="others != null and others !='' ">and others=#{others}</if>-->
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+		select * from aux_dagl
+	</select>
+
+    <select id="searchJyry" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+		select * from aux_dagl where aux_dagl.state = '1';
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        b.*
+        FROM aux_dagl b
+        left join organization org on org.orgId=b.orgId
+        WHERE 1 = 1
+        <if test="xm != null  and xm !='' ">and b.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null  and idcard !='' ">and b.idcard = #{idcard}</if>
+        <if test="xb != null  and xb !='' ">and b.xb = #{xb}</if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="orgName != null  and orgName !='' ">and b.orgName = #{orgName}</if>
+        <if test="fjType != null  and fjType !='' ">and b.fjType = #{fjType}</if>
+        <if test="state != null  and state !='' ">and b.state = #{state}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="rytj2" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        GROUP BY
+        aux_dagl.orgId
+        HAVING
+        aux_dagl.orgId=#{orgId}
+    </select>
+
+    <select id="rytj" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        WHERE
+        aux_dagl.xb = '1'
+        GROUP BY
+        aux_dagl.orgId
+        HAVING
+        aux_dagl.orgId=#{orgId}
+    </select>
+
+    <select id="rytj4" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        GROUP BY
+        aux_dagl.orgId
+    </select>
+
+    <select id="rytj3" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        WHERE
+        aux_dagl.xb = '1'
+        GROUP BY
+        aux_dagl.orgId
+    </select>
+
+    <!--<select id="rytj2" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        GROUP BY
+        aux_dagl.orgId
+        HAVING
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="rytj" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxDagl">
+        SELECT
+        aux_dagl.*,
+        count( aux_dagl.orgId ) AS countorgId,
+        sum( aux_dagl.isbx ) AS countisbx,
+        count( aux_dagl.xb ) AS countxb
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        WHERE
+        aux_dagl.xb = '1'
+        GROUP BY
+        aux_dagl.orgId
+        HAVING
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>-->
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria"
+            resultType="long">
+        SELECT
+        count( * )
+        FROM
+        aux_dagl b
+        LEFT JOIN organization org ON org.orgId = b.orgId
+        WHERE
+        1 =1
+        <if test="xm != null  and xm !='' ">and b.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null  and idcard !='' ">and b.idcard = #{idcard}</if>
+        <if test="xb != null  and xb !='' ">and b.xb = #{xb}</if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="orgName != null  and orgName !='' ">and b.orgName = #{orgName}</if>
+        <if test="fjType != null  and fjType !='' ">and b.fjType = #{fjType}</if>
+        <if test="state != null  and state !='' ">and b.state = #{state}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getSearchResultCount2" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria"
+            resultType="long">
+        SELECT
+        aux_dagl.countorgId
+        FROM
+        aux_dagl
+        LEFT JOIN organization org ON org.orgId = aux_dagl.orgId
+        GROUP BY
+        aux_dagl.orgId
+        HAVING
+        <if test="orgId != null  and orgId !='' ">and aux_dagl.orgId = #{orgId}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="searchExport" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxDaglImportVo">
+        SELECT
+        b.*
+        FROM aux_dagl b
+        left join organization org on org.orgId=b.orgId
+        WHERE 1 = 1
+
+        <if test="xm != null  and xm !='' ">and xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null  and idcard !='' ">and idcard = #{idcard}</if>
+        <if test="xb != null  and xb !='' ">and xb = #{xb}</if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="orgName != null  and orgName !='' ">and orgName = #{orgName}</if>
+        <if test="fjType != null  and fjType !='' ">and fjType = #{fjType}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by createTime desc
+    </select>
+
+    <select id="findByOrgId"  resultType="java.lang.Integer" >
+        SELECT count(*) FROM aux_dagl where orgId =#{0} and fjType=#{1} AND state='1'
+    </select>
+</mapper>

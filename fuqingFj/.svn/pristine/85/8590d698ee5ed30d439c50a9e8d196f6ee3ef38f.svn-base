@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>角色管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <!--[if lt IE 9]>
+  <script src="baseJs/html5shiv.min.js"></script>
+  <script src="baseJs/respond.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+	<style>
+		#setRolePower{
+			height:370px
+		}
+    </style>
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+    <script src="baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+    <!--[if lt IE 9]>
+    <script src="baseJs/jquery.xdomainrequest.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="zTree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="zTree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="zTree/js/jquery.ztree.exedit.js"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+</head>
+<body>  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">        
+          <div class="layui-card-header">    
+          <form class="layui-form" action="" lay-filter="searchForm">          
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">关键词</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="keyword" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">角色类型</label>
+                  <div class="layui-input-inline">
+                     <select name="roleType" lay-filter="aihao" class="roleType">
+                        <option value="3"></option>
+                      </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button type="button" class="layui-btn" lay-submit lay-filter="searchBtn">查询</button>
+                </div>
+              </div>
+          </form>
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="roleList" lay-filter="roleList"></table> 
+			<script type="text/html" id="toolbarDemo">
+              <div class="layui-btn-container">
+			  	<button class="layui-btn layui-btn-sm SYS_ROLE_ADD" lay-event="addRole">添加角色</button>                
+              </div>
+            </script>
+             
+            <script type="text/html" id="barDemo">
+              <a class="layui-btn layui-btn-xs SYS_ROLE_UPDATE" lay-event="edit">编辑</a>
+			  {{#  if(d.isSys !='1'){ }}
+              <a class="layui-btn layui-btn-danger layui-btn-xs SYS_ROLE_DELETE" lay-event="del">删除</a>
+			  {{#  } }}
+              <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-blue SYS_ROLE_ASSIGN_USERS" lay-event="assignsUsersToRole">选择人员</a>
+			  {{#  if(d.roleType !='1'){ }}
+              <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-blue SYS_ROLE_ASSIGN_POWERS" lay-event="addPowersToRole">设置权限</a>
+			  {{#  } }}
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="layui-fluid" id="addRolePage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="addRole" id="addRole">
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>角色名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="roleName" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">角色类型</label>
+          <div class="layui-input-inline">
+             <select name="roleType" lay-filter="aihao" class="roleType">
+              </select>
+          </div>
+      </div>
+	  <div class="layui-form-item SYS_ROLE_UPDATE_ISSYS">
+	      <label class="layui-form-label">是否内置</label>
+	      <div class="layui-input-inline">
+	         <select name="isSys" lay-filter="aihao" class="isSys">
+				 <option value="1">是</option>
+				 <option value="2" selected="">否</option>
+	          </select>
+	      </div>
+	  </div>	  
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">角色描述</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入角色描述" name="roleDescription" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="addRoleSubmit"  lay-filter="addRole" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+
+<div class="layui-fluid" id="editRolePage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="editRole" id="editRole">
+	  <input type="hidden" name="roleId" />
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>角色名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="roleName" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">角色类型</label>
+          <div class="layui-input-inline">
+             <select name="roleType" lay-filter="aihao" class="roleType">
+              </select>
+          </div>
+      </div>
+	  <div class="layui-form-item SYS_ROLE_UPDATE_ISSYS">
+	      <label class="layui-form-label">是否内置</label>
+	      <div class="layui-input-inline">
+	         <select name="isSys" lay-filter="aihao" class="isSys">
+				 <option value="1">是</option>
+				 <option value="2" selected="">否</option>
+	          </select>
+	      </div>
+	  </div>	  
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">角色描述</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入角色描述" name="roleDescription" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="editRoleSubmit"  lay-filter="editRole" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+
+<div class="layui-fluid" id="setRolePower" style="display:none;">
+    <div class="layui-tab">
+      <ul class="layui-tab-title">
+        <li class="layui-this">菜单权限</li>
+		<li>功能权限</li>
+      </ul>
+      <div class="layui-tab-content layui-fluid">
+        <div class="layui-tab-item layui-show">
+            <div id="menuPowerTree" class="ztree"></div>
+        </div>
+        <div class="layui-tab-item">
+            <div id="funPowerTree" class="ztree"></div>
+        </div>
+      </div>
+    </div>
+</div>
+<script src="js/roleList.js?v=1.60" charset="utf-8"></script>
+</body>
+</html>

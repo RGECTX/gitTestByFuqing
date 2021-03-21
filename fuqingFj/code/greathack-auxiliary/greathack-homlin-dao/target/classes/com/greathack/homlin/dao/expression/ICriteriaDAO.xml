@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.expression.ICriteriaDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.expression.Criteria">
+    insert into criteria (criteriaId,appCode,expressionId,criteriaType,parentId,parents,fieldName,field,
+  	comparisonOperator,criteria1,criteria2,sortNum,state,remark,outKey1,outKey2,bak1,bak2) VALUES (
+  	#{criteriaId},
+  	#{appCode},
+  	#{expressionId},
+  	#{criteriaType},
+  	#{parentId},
+  	#{parents},
+  	#{fieldName},
+  	#{field},
+  	#{comparisonOperator},
+  	#{criteria1},
+  	#{criteria2},
+  	#{sortNum},
+  	#{state},
+  	#{remark},
+  	#{outKey1},
+  	#{outKey2},
+  	#{bak1},
+  	#{bak2}
+	)
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+   DELETE FROM criteria WHERE criteriaId=${value}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.expression.Criteria">
+    	UPDATE criteria
+		SET
+		expressionId=#{expressionId},
+		criteriaType=#{criteriaType},
+		parentId=#{parentId},
+		parents=#{parents},
+		fieldName=#{fieldName},
+		field=#{field},
+		comparisonOperator=#{comparisonOperator},
+		criteria1=#{criteria1},
+		criteria2=#{criteria2},
+		sortNum=#{sortNum},
+		state=#{state},
+		remark=#{remark},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		WHERE criteriaId=#{criteriaId};
+		<if test="subCriteriaList!=null and subCriteriaList.size>0">
+			<foreach collection="subCriteriaList" item="criteria">
+			UPDATE criteria set parents=#{criteria.parents} WHERE criteriaId=#{criteria.criteriaId};
+			</foreach>
+		</if>
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.expression.Criteria" >
+	select * from criteria where criteriaId = #{id}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.expression.Criteria"  resultType="com.greathack.homlin.pojo.expression.Criteria" >
+	select * from criteria where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="expressionId != null"> and expressionId=#{expressionId}</if>
+	<if test="criteriaType != null"> and criteriaType=#{criteriaType}</if>
+	<if test="parentId != null"> and parentId=#{parentId}</if>
+	<if test="fieldName != null"> and fieldName=#{fieldName}</if>
+	<if test="field != null"> and field=#{field}</if>
+	<if test="state != null"> and state=#{state}</if>
+    <if test="remark != null"> and remark=#{remark}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	order by sortNum desc
+	</select>
+	
+	<!--获取子孙条件列表 -->
+	<select id="getDescendants" parameterType="long" resultType="com.greathack.homlin.pojo.expression.Criteria" >
+		SELECT * FROM criteria WHERE  concat(',',parents,',') like concat('%,',#{value},',%') ORDER BY sortNum DESC
+	</select>	
+	
+	<select id="search" parameterType="com.greathack.homlin.pojo.expression.CriteriaSearchCriteria" resultType="com.greathack.homlin.pojo.expression.Criteria" >
+		SELECT * FROM criteria WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="expressionId != null"> and expressionId=#{expressionId}</if>
+		<if test="parents != null"> and parentId in (#{parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="state != null"> and state= #{state}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+		order by sortNum desc
+		LIMIT #{startLine},#{pageSize}
+	</select>
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.expression.CriteriaSearchCriteria" resultType="long" >
+		SELECT count(criteriaId) FROM criteria WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="expressionId != null"> and expressionId=#{expressionId}</if>
+		<if test="parents != null"> and parentId in (#{parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="state != null"> and state= #{state}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+	</select>
+	
+</mapper>

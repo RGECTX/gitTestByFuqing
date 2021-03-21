@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>定时任务</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css?v=1.60" media="all">
+    <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+    <style>
+        #setRolePower {
+            height: 370px
+        }
+    </style>
+    <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="baseJs/function.js?v=1.60"></script>
+    <script src="js/config.js?v=1.60"></script>
+    <script src="js/global.js?v=1.60"></script>
+    <script src="js/userLive.js?v=1.60"></script>
+    <script src="js/scheduleTask.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <form class="layui-form" action="" lay-filter="searchForm">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">任务名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="taskName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn" lay-submit lay-filter="searchBtn">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="scheduleTaskList" lay-filter="scheduleTaskList"></table>
+                    <script type="text/html" id="toolbarDemo">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm SYS_SETTING_SCHEDULETASK_ADD"
+                                    lay-event="addScheduleTask">添加定时任务
+                            </button>
+                        </div>
+                    </script>
+
+                    <script type="text/html" id="barState">
+                        <input type="checkbox" name="state" lay-skin="switch" lay-text="开|关" lay-filter="stateDemo" value="{{d.id}}" {{d.state == 1 ? 'checked' : ''}}>
+                    </script>
+
+                    <script type="text/html" id="barDemo">
+				   {{#  if(d.state =='2'){ }}
+                        <a class="layui-btn layui-btn-xs SYS_SETTING_SCHEDULETASK_UPDATE" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs SYS_SETTING_SCHEDULETASK_DELETE"
+                           lay-event="del">删除</a>
+				   {{#  } }}
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="addScheduleTaskPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="addScheduleTask" id="addScheduleTask">
+        <input type="hidden" name="state" value="2"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskName" lay-verify="required" placeholder="请输入任务名称" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskCode" lay-verify="required" placeholder="请输入任务编码" autocomplete="off" 
+                       class="layui-input">
+            </div>
+        </div>
+        <!-- <div class="layui-form-item">
+            <label class="layui-form-label">任务类别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskType" placeholder="请输入任务类别" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div> -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>开始时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="startTime" lay-verify="required" placeholder="请选择开始时间" autocomplete="off" class="layui-input date-time" id="startDate">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="endTime" placeholder="请选择结束时间" autocomplete="off" class="layui-input date-time" id="endDate">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>执行次数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="times" lay-verify="positiveNumber" placeholder="请输入执行次数" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">次</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">执行间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="interval1" lay-verify="positiveNumber" placeholder="请输入执行间隔" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">毫秒</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务类</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskClass" lay-verify="required" placeholder="请输入任务类" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="addScheduleTaskSubmit" lay-filter="addScheduleTask" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+
+<div class="layui-fluid" id="editScheduleTaskPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="editScheduleTask" id="editScheduleTask">
+        <input type="hidden" name="id" />
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskName" lay-verify="required" placeholder="请输入任务名称" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskCode" lay-verify="required" placeholder="请输入任务编码" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <!-- <div class="layui-form-item">
+            <label class="layui-form-label">任务类别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskType" placeholder="请输入任务类别" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div> -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>开始时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="startTime" lay-verify="required" placeholder="请选择开始时间" autocomplete="off" class="layui-input date-time">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="endTime" placeholder="请选择结束时间" autocomplete="off" class="layui-input date-time">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>执行次数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="times" lay-verify="positiveNumber" placeholder="请输入执行次数" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">次</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">执行间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="interval1" lay-verify="positiveNumber" placeholder="请输入执行间隔" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">毫秒</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>任务类</label>
+            <div class="layui-input-inline">
+                <input type="text" name="taskClass" lay-verify="required" placeholder="请输入任务类" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="editScheduleTaskSubmit" lay-filter="editScheduleTask" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

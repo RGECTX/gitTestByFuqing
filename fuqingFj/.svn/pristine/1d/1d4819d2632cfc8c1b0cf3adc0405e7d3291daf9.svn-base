@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxNdkhDAO">
+	<parameterMap id="parameterAuxNdkh" type="com.greathack.homlin.pojo.auxiliary.AuxNdkh">
+    	<parameter property="id"/>
+    	<parameter property="instanceId"/>
+    	<parameter property="idcard"/>
+    	<parameter property="khnd"/>
+    	<parameter property="khjl"/>
+		<parameter property="remark"/>
+		<parameter property="createBy"/>
+		<parameter property="createTime"/>
+		<parameter property="outkey1"/>
+		<parameter property="outkey2"/>
+		<parameter property="bak1"/>
+		<parameter property="bak2"/>
+  	</parameterMap>
+
+	<resultMap id="resultAuxNdkh" type="com.greathack.homlin.pojo.auxiliary.AuxNdkh">
+		<result column="id" property="id" />
+		<result column="instance_id" property="instanceId" />
+		<result column="idcard" property="idcard" />
+		<result column="khnd" property="khnd" />
+		<result column="khjl" property="khjl" />
+		<result column="remark" property="remark" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="outkey1" property="outkey1" />
+		<result column="outkey2" property="outkey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<insert id="add" parameterMap="parameterAuxNdkh">
+    INSERT INTO aux_ndkh(id,instance_id,idcard,khnd,khjl,remark,create_by,create_time,outkey1,outkey2,bak1,bak2)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+ 	<delete id="delete" parameterType="java.lang.String">
+  	 	DELETE FROM aux_ndkh WHERE id=${value}
+  	</delete>
+
+	<update id="update" parameterMap="parameterAuxNdkh">
+		update aux_ndkh
+		set
+		instance_id=#{instanceId},
+		idcard=#{idcard},
+		khnd=#{khnd},
+		khjl=#{khjl},
+		remark=#{remark},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		outkey1=#{outkey1},
+		outkey2=#{outkey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where id=#{id}
+  	</update>
+
+	<select id="findById" parameterType="java.lang.String" resultMap="resultAuxNdkh" >
+		select * from aux_ndkh where id = ${value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNdkh"  resultMap="resultAuxNdkh" >
+		select * from aux_ndkh where 1=1
+		<if test="instanceId != null"> and instance_id=#{instanceId}</if>
+		<if test="idcard != null"> and idcard=#{idcard}</if>
+		<if test="khnd != null"> and khnd=#{khnd}</if>
+		<if test="khjl != null"> and khjl=#{khjl}</if>
+		<if test="remark != null"> and remark=#{remark}</if>
+		<if test="outkey1 != null"> and outkey1=#{outkey1}</if>
+		<if test="outkey2 != null"> and outkey2=#{outkey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+
+	<select id="findAll" resultMap="resultAuxNdkh" >
+		select * from aux_ndkh
+	</select>
+
+</mapper>

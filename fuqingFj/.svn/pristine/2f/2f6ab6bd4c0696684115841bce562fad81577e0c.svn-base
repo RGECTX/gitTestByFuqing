@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.area.ICircleDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.area.Circle">
+    INSERT INTO circle(circleId,appCode,areaId,circleName,circleState,remark,createTime,outKey1,outKey2,bak1,bak2)
+    VALUES(#{circleId},#{appCode},#{areaId},#{circleName},#{circleState},#{remark},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2})
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM circle 
+    WHERE circleId=${value}
+  	</delete>
+  	<update id="update" parameterType="com.greathack.homlin.pojo.area.Circle">
+    UPDATE circle
+    SET areaId=#{areaId},circleName=#{circleName},circleState=#{circleState},remark=#{remark},
+    outKey1=#{outKey1},outKey2=#{outKey2},
+    bak1=#{bak1},bak2=#{bak2}
+    WHERE circleId=${circleId}
+  	</update>
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.area.Circle" >
+	select * from circle where circleId=#{value} 
+	</select>
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.area.Circle" resultType="com.greathack.homlin.pojo.area.Circle" >	
+	select * from circle where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="areaId != null"> and areaId=#{areaId}</if>
+	<if test="circleName != null"> and circleName=#{circleName}</if>
+	<if test="circleState != null"> and circleState=#{circleState}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	</select>
+  	
+	<!-- 	search  -->	
+	<select id="search" parameterType="com.greathack.homlin.pojo.area.CircleSearchCriteria" resultType="com.greathack.homlin.pojo.area.Circle" >	
+		select * from circle where 1=1  
+		<if test="circleStateList!=null and circleStateList.size>0">
+			 and circleState in
+			<foreach collection="circleStateList" item="circleState" separator=" , " open="(" close=")">
+			#{circleState}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="areaId != null"> and areaId=#{areaId}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	    LIMIT #{startLine},#{pageSize}		
+	</select>
+  	
+	<!-- 	getSearchResultCount  -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.area.CircleSearchCriteria" resultType="long" >	
+		select count(circleId) from circle where 1=1  
+		<if test="circleStateList!=null and circleStateList.size>0">
+			 and circleState in
+			<foreach collection="circleStateList" item="circleState" separator=" , " open="(" close=")">
+			#{circleState}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="areaId != null"> and areaId=#{areaId}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	</select>
+</mapper>

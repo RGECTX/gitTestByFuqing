@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.process.IProcessDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.process.Process">
+    INSERT INTO Process(processId,processTemplateId,processState,createTime,endTime,pendingUserIds,handledUserIds,vars,approvalImpl)
+    VALUES(#{processId},#{processTemplateId},#{processState},#{createTime},#{endTime},#{pendingUserIds},#{handledUserIds},#{vars},#{approvalImpl});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM Process WHERE processId=#{value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.process.Process">
+    UPDATE Process
+    SET 
+    processTemplateId=#{processTemplateId},
+    processState=#{processState},  
+    createTime=#{createTime} ,  
+    endTime=#{endTime},  
+    pendingUserIds=#{pendingUserIds},  
+    handledUserIds=#{handledUserIds},  
+    vars=#{vars},
+    approvalImpl=#{approvalImpl}
+    WHERE processId=${processId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.process.Process" >
+	select * from Process where processId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.process.Process"  resultType="com.greathack.homlin.pojo.process.Process" >	
+	select * from Process where 1=1
+	<if test="processTemplateId != null"> and processTemplateId=#{processTemplateId}</if>
+	<if test="processState != null"> and processState=#{processState}</if>
+	</select>
+	
+</mapper>

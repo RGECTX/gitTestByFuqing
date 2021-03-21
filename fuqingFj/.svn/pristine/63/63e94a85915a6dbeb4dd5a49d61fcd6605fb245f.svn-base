@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>辅警编制分配情况报表</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all">
+    <link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+    <script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+    <!--[if lt IE 9]>
+    <script src="../baseJs/html5shiv.min.js"></script>
+    <script src="../baseJs/respond.min.js"></script>
+    <script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+    <![endif]-->
+    <script src="../baseJs/function.js?v=1.60"></script>
+    <script src="../js/config.js?v=1.60"></script>
+    <script src="../js/global.js?v=1.60"></script>
+    <script src="../js/userLive.js?v=1.60"></script>
+    <script src="../js/function.js?v=1.60"></script>
+    <script src="../js/auxiliary/fjbzfpTab.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>
+<!-- 外壳开始 -->
+<div class="layui-fluid" style="min-width: 98%;width: max-content;">
+    <div class="layui-row layui-col-space10 layui-card" style="width: 100%;">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-container" style="min-height: 700px;width: 100%;">
+                <!-- 内容开始 -->
+                <div style="margin-top:20px;float: left;font-size: 18px;">
+                    <a id="aId" onclick="exportFunc()" style="cursor:pointer;">
+                        <button type="button" class="layui-btn layui-btn-radius">导出报表</button>
+                    </a>
+                </div>
+                <!--查询条件-->
+                <form class="layui-form" style="margin-top:20px;float: left;font-size: 18px;" action="" lay-filter="searchForm">
+
+                    <div class="layui-form-item">
+						<!-- <div class="layui-inline">
+							<label class="layui-form-label">单位：</label>
+							<div class="layui-input-inline">
+								<input type="hidden" name="orgIds" id="orgIds" autocomplete="off" class="layui-input">
+								<input type="text" name="orgNames" id="orgNames" placeholder="请选择单位" autocomplete="off" class="layui-input">
+							</div>
+						</div> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<!--<div class="layui-inline">
+						  <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>开始日期</label>
+						  <div class="layui-input-inline">
+							  <input type="text" class="layui-input" id="startDate" placeholder="yyyy-MM-dd" name="startDate" lay-verify="required">
+						  </div>
+						</div>
+
+						<div class="layui-inline">
+						  <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>结束日期</label>
+						  <div class="layui-input-inline">
+							  <input type="text" class="layui-input" id="endDate" placeholder="yyyy-MM-dd" name="endDate" lay-verify="required">
+						  </div>
+						</div>-->
+                      <!--  <div class="layui-inline">
+                            <label class="layui-form-label">年度</label>
+                            <div class="layui-input-inline">
+                                <select name="nd" class="nd" lay-filter="ndEdit">
+                                    <option value="" selected=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">月度</label>
+                            <div class="layui-input-inline">
+                                <select name="yd" class="yd" lay-filter="yd">
+                                    <option value="" selected></option>
+                                </select>
+                            </div>
+                        </div>-->
+
+						<!--<div class="layui-inline">
+						<label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>状态</label>
+							<div class="layui-input-block" style="margin-left: 70px;">
+						      <input type="checkbox" name="state" value="1" title="在岗(正式辅警)" checked>
+						      <input type="checkbox" name="state" value="2" title="离职" >
+	&lt;!&ndash;					      <input type="checkbox" name="state" value="4" title="离岗">
+						      <input type="checkbox" name="state" value="8" title="借调">
+						      <input type="checkbox" name="state" value="32" title="在岗(劳务派遣)">&ndash;&gt;
+						    </div>
+						</div>-->
+
+                        <div class="layui-inline">
+							<button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">生成报表</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="printReport">
+                    <style type="text/css">
+                        body {
+                            /*line-height: 1.6em;*/
+                        }
+
+                        h1 {
+                            text-align: center;
+                            /*padding-left: 500px;*/
+                            color: #2cabef;
+                            font-size: 30px;
+                            line-height: 50px;
+                        }
+
+                        .captionCss {
+                            text-align: center;
+                            /*padding-left: 500px;*/
+                            color: #2cabef;
+                            font-size: 30px;
+                            line-height: 50px;
+                        }
+
+                        tr th {
+                            position: sticky;
+                            top: 0;
+                            background-color: #c0e4f7;
+							padding: 3px;
+							font-size: 12;
+                        }
+
+                        .lock {
+							position: sticky;
+                            top: 26px;
+							background-color: #c0e4f7;
+							padding: 3px;
+							font-size: 12;
+                        }
+
+						.lock1 {
+							position: sticky;
+						    top: 52px;
+							background-color: #c0e4f7;
+							padding: 3px;
+							font-size: 12;
+						}
+
+                        td {
+                            text-align: center;
+							padding: 3px;
+                        }
+
+                        .selected {
+                            background-color: #6bbd88
+                        }
+
+                        .selected1 {
+                            background-color: #acceef
+                        }
+
+                        .exportCss {
+                            margin-top: 20px;
+                            float: left;
+                            font-size: 18px;
+                        }
+
+                        #selectStatus {
+                            margin-top: 20px;
+                            margin-left: 30px;
+                            float: left;
+                            font-size: 18px;
+                        }
+
+                        #selectButton {
+                            height: 24px;
+                            line-height: 24px;
+                            font-size: 8px;
+                        }
+						.cls-ws-n {
+							white-space:nowrap;
+						}
+						.cls-wb-ba {
+							text-align: justify;
+							text-justify: newspaper;
+							word-break: break-all;
+						}
+                    </style>
+					<table id="tableId" cellpadding="0" cellspacing="0" border="1" style="border-collapse:collapse;width: max-content;width:100%;">
+					    <caption class="captionCss" id="title"></caption>
+						<tbody id="tbodyId"></tbody>
+					</table>
+                </div>
+                <!-- 内容结束 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

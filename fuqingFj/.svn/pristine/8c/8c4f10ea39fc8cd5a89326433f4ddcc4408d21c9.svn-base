@@ -1,0 +1,1 @@
+INSERT INTO `poweritem`(`powerItemId`, `appCode`, `powerCode`, `itemType`, `itemName`, `referer`, `resource`, `parameter`, `remark`, `outKey1`, `outKey2`, `bak1`, `bak2`) VALUES (122390432448512, 'am-adminpermission', 'AUX_GZGL_GZGLSP_SEARCH_ALL', NULL, '全部工资审批列表', '', '/auxGzgl/searchGzglSp', '1=1', '', '117533722017792', NULL, NULL, NULL);

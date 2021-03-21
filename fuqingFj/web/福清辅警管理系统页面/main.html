@@ -1,0 +1,373 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title class="siteName"></title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layui/css/layui.css?v=1.60" media="all">
+    <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+    <script src="baseJs/jquery-3.2.1.js?v=1.60"></script>
+    <script src="layui/layui.js?v=1.60"></script>
+    <script src="baseJs/function.js?v=1.60"></script>
+    <script src="baseJs/greathackCheckbox.js?v=1.60"></script>
+    <script src="js/config.js?v=1.60"></script>
+    <script src="js/global.js?v=1.60"></script>
+    <script src="js/userLive.js?v=1.60"></script>
+    <script src="js/main.js?v=1.60"></script>
+</head>
+<body class="layui-layout-body">
+
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a lay-href="inBox.html?v=1.60" layadmin-event="message" id="message" lay-text="消息中心">
+                        <i class="layui-icon layui-icon-notice"></i>
+
+                        <!-- 如果有新消息，则显示小圆点 -->
+                        <span class=""></span>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite id="name"></cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" id="editUserBtn">基本资料</a></dd>
+                        <dd><a href="javascript:;" id="mdfyPwdBtn">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a href="javascript:logout();">退出</a>
+                        </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="about"><i
+                            class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo" lay-href="console.html?v=1.60">
+                    <div class="layui-row"><span><img src="images/badge.png" width="95" height="95"
+                                                      style="margin:10px;"></span></div>
+                    <div class="layui-row" style="white-space:pre"><span class="siteName"
+                                                                         style="line-height: 1.5em;"></span></div>
+                </div>
+
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+                    lay-filter="layadmin-system-side-menu">
+                    <li class="layui-nav-item AUX_NOTICE">
+                        <a href="javascript:;" lay-href="auxiliary/auxNoticeList.html?v=1.60" lay-tips="通知通报管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-tabs"></i><cite>通知通报管理</cite>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item AUX_HMDGL AUX_HMDGL_LIST">
+                        <a href="javascript:;" lay-tips="黑名单管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-group"></i><cite>黑名单管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_HMDGL_LIST"><a lay-href="auxiliary/hmdList.html?v=1.60">黑名单管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item AUX_ZLGL AUX_ZLGL_ZLJD AUX_ZLGL_RYFP AUX_ZLGL_DWJS AUX_ZLGL_DCLZLJD AUX_ZLGL_YCLZLJD">
+                        <a href="javascript:;" lay-tips="招录管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-template-1"></i><cite>招录管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_ZLGL_ZLJD"><a lay-href="auxiliary/zljdList.html?v=1.60">招录建档申请</a></dd>
+                            <dd class="AUX_ZLGL_DCLZLJD"><a lay-href="auxiliary/dclZljdList.html?v=1.60">待处理招录建档</a>
+                            </dd>
+                            <dd class="AUX_ZLGL_YCLZLJD"><a lay-href="auxiliary/yclZljdList.html?v=1.60">已处理招录建档</a>
+                            </dd>
+                            <dd class="AUX_ZLGL_RYFP"><a lay-href="auxiliary/ryfpList.html?v=1.60">人员分配</a></dd>
+                            <dd class="AUX_ZLGL_DWJS"><a lay-href="auxiliary/dwjsList.html?v=1.60">单位接收</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item AUX_DAGL AUX_DAGL_DAGL">
+                        <a href="javascript:;" lay-tips="档案" lay-direction="2">
+                            <i class="layui-icon layui-icon-form"></i><cite>档案管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <!--<dd class="AUX_DAGL_DAGL"><a lay-href="auxiliary/daglList.html?v=1.60">档案管理</a></dd>-->
+                            <dd class="AUX_DAGL_DAGL"><a lay-href="auxiliary/archiveList.html?v=1.60">档案管理</a></dd>
+							<dd class="AUX_DAGL_FJBZFP"><a lay-href="auxiliary/fjbzfpList.html?v=1.60">辅警编制分配情况</a></dd>
+							<dd class="AUX_DAGL_FJBZFPBB"><a lay-href="auxiliary/fjbzfpTab.html?v=1.60">辅警编制分配情况报表</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item AUX_JYGL AUX_JYGL_JYSB">
+                        <a href="javascript:;" lay-tips="减员管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-friends"></i><cite>减员管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_JYGL_JYSB"><a lay-href="auxiliary/jyglList.html?v=1.60">减员申报</a></dd>
+                            <dd class="AUX_ZLGL_DCLJYSB"><a lay-href="auxiliary/dcljyglList.html?v=1.60">待处理减员申报</a>
+                            </dd>
+                            <dd class="AUX_ZLGL_YCLJYSB"><a lay-href="auxiliary/ycljyglList.html?v=1.60">已处理减员申报</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item AUX_KQGL 	AUX_KQGL_KQLR AUX_KQGL_KQTJ AUX_KQGL_QJSQ AUX_KQGL_QJSH">
+                        <a href="javascript:;" lay-tips="考勤管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-date"></i><cite>考勤管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="	AUX_KQGL_KQLR"><a lay-href="auxiliary/kqlrList.html?v=1.60">考勤录入</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="	AUX_KQGL_KQTJ"><a lay-href="auxiliary/reportKqtjb.html?v=1.60">考勤统计</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="	AUX_KQGL_DWKQ"><a lay-href="auxiliary/dwkqList.html?v=1.60">单位考勤</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="	AUX_KQGL_QJSQ"><a lay-href="auxiliary/qjsqList.html?v=1.60">请假申请</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class=" AUX_KQGL_QJSH"><a lay-href="auxiliary/qjshList.html?v=1.60">请假审核</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item AUX_GZGL AUX_GZGL_GZMX AUX_GZGL_GZGLSP AUX_GZGL_GZMXXQ AUX_GZGL_GZTJ">
+                        <a href="javascript:;" lay-tips="工资管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-templeate-1"></i><cite>工资管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GZGL_GZMX"><a lay-href="auxiliary/gzmxList.html?v=1.60">工资申报</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GZGL_GZGLSP"><a lay-href="auxiliary/gzmxSpList.html?v=1.60">工资审批</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GZGL_GZMXXQ"><a lay-href="auxiliary/gzmxXqList.html?v=1.60">工资明细</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GZGL_GZTJ"><a lay-href="auxiliary/gztjList.html?v=1.60">工资统计</a></dd>
+                        </dl>
+
+                    </li>
+
+                    <li class="layui-nav-item AUX_GSGL AUX_GSGL_GSSB AUX_GSGL_GSSH">
+                        <a href="javascript:;" lay-tips="工伤管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-chart"></i><cite>工伤管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GSGL_GSSB"><a lay-href="auxiliary/gssbList.html?v=1.60">工伤登记</a></dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_GSGL_GSSH"><a lay-href="auxiliary/gsshList.html?v=1.60">工伤审核</a></dd>
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item AUX_BZGL AUX_BZGL_BZSB">
+                        <a href="javascript:;" lay-tips="被装管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-util"></i><cite>被装管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="AUX_BZGL_BZSB"><a lay-href="auxiliary/bzsbList.html?v=1.60">被装申报</a></dd>
+                            <dd class="AUX_BZGL_DCLBZSB"><a lay-href="auxiliary/dclBzsbList.html?v=1.60">待处理被装申报</a>
+                            </dd>
+                            <dd class="AUX_BZGL_YCLBZSB"><a lay-href="auxiliary/yclBzsbList.html?v=1.60">已处理被装申报</a>
+                            </dd>
+                        </dl>
+
+                    </li>
+
+                    <li data-name="message" class="layui-nav-item OUT_BOX IN_BOX">
+                        <a href="javascript:;" lay-tips="消息通知" lay-direction="2">
+                            <i class="layui-icon layui-icon-notice"></i>
+                            <cite>消息通知</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="OUT_BOX">
+                                <a lay-href="outBox.html?v=1.60">发件箱</a>
+                            </dd>
+                            <dd class="IN_BOX">
+                                <a lay-href="inBox.html?v=1.60">收件箱</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="home" class="layui-nav-item AM_UNIT_INFO_LIST ">
+                        <a href="javascript:;" lay-href="console.html?v=1.60" lay-tips="单位管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>单位管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console" class="layui-this AM_UNIT_INFO_LIST">
+                                <a lay-href="unitInfo.html?v=1.60">单位信息</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="user" class="layui-nav-item
+			SYS_USER_LIST
+			SYS_ROLE_LIST
+			">
+                        <a href="javascript:;" lay-tips="用户" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>用户</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="SYS_USER_LIST">
+                                <a lay-href="adminList.html?v=1.60">用户管理</a>
+                            </dd>
+                            <dd class="SYS_ROLE_LIST">
+                                <a lay-href="roleList.html?v=1.60">角色管理</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="set" class="layui-nav-item
+			SYS_SETTING_MENU
+			SYS_SETTING_POWER
+			SYS_SETTING_PROCESS
+			SYS_SETTING_DICT
+			">
+                        <a href="javascript:;" lay-tips="设置" lay-direction="2">
+                            <i class="layui-icon layui-icon-set"></i>
+                            <cite>设置</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="SYS_SETTING_MENU">
+                                <a lay-href="menuList.html?v=1.60">菜单管理</a>
+                            </dd>
+                            <dd class="SYS_SETTING_POWER">
+                                <a lay-href="funPowerItemList.html?v=1.60">功能权限管理</a>
+                            </dd>
+                            <dd class="SYS_SETTING_PROCESS">
+                                <a lay-href="processTemplateList.html?v=1.60">流程配置</a>
+                            </dd>
+                            <dd class="SYS_SETTING_DICT">
+                                <a lay-href="dictList.html?v=1.60">字典管理</a>
+                            </dd>
+                            <dd class="SYS_SETTING_SCHEDULETASK">
+                                <a lay-href="scheduleTask.html?v=1.60">定时任务</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li lay-id="console.html?v=1.60" lay-attr="console.html?v=1.60" class="layui-this"><i
+                            class="layui-icon layui-icon-home"></i></li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-body">
+                            <iframe src="console.html?v=1.60" frameborder="0" class="layadmin-iframe"
+                                    id="mainIframe"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 辅助元素，一般用于移动设备下遮罩 -->
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="editUserPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="editUserForm" id="editUserForm">
+        <input type="hidden" name="userId"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>登录名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="loginName" lay-verify="required|loginName" disabled="" placeholder="请输入登录名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" placeholder="请输入姓名" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <select name="sex" class="sex">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="editUserSubmit" lay-filter="editUserSubmit" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+<div class="layui-fluid" id="mdfyPwdPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="mdfyPwdForm" id="mdfyPwdForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">原密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="oldPassword" id="oldPassword" lay-verify="repuired" placeholder="请输入原密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" id="password" lay-verify="password|repuired" placeholder="请输入新密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="repassword" id="repassword" lay-verify="password|repassword|repuired"
+                       placeholder="请再输入一次新密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="mdfyPwdPageSubmit" lay-filter="mdfyPwdPageSubmit" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

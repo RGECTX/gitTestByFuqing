@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>选择减员人员</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css?v=1.58"  media="all">
+    <link rel="stylesheet" href="../css/admin.css?v=1.58" media="all">
+    <script src="../layui/layui.js?v=1.58" charset="utf-8"></script>
+    <script src="../baseJs/function.js?v=1.58"></script>
+    <script src="../js/config.js?v=1.58"></script>
+    <script src="../js/global.js?v=1.58"></script>
+    <script src="../js/userLive.js?v=1.58"></script>
+    <script src="../js/auxiliary/selectJyry.js?v=1.60" charset="utf-8"></script>
+    <style>
+        .layui-form-label{
+            width:76px;
+        }
+        .layui-form-item{
+            margin-bottom:0px;
+        }
+        #oneKeyPassPage .layui-form-item{
+            margin-bottom:15px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space10">
+       <!-- <div class="layui-col-sm4 layui-col-md4 layui-col-lg2">
+            <div class="layui-card" style="overflow:auto">
+                <div id="amUnitTree" class="demo-tree demo-tree-box"></div>
+            </div>
+        </div>-->
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg10">
+            <div class="layui-card col2">
+                <div class="layui-fluid" style="padding: 15px 0px;">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    <div class="layui-fluid" style="padding:0px;">
+                                        <form class="layui-form" action="" lay-filter="searchForm">
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label" style="width: 90px;">减员人员姓名</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="xm" autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label" style="width: 75px;">身份证号码</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="idcard" autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <table class="layui-hide" id="ryTable" lay-filter="ryTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

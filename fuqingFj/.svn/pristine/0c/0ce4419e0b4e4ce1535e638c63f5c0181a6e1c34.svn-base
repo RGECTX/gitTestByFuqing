@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxFjbzfpDAO">
+    <parameterMap id="auxFjbzfp" type="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+        <parameter property="fjbzfpId" />
+        <parameter property="orgId"/>
+        <parameter property="orgName" />
+        <parameter property="state" />
+        <parameter property="fjType" />
+        <parameter property="existingPeople" />
+        <parameter property="formationPeople" />
+    </parameterMap>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp" >
+        SELECT f.* FROM aux_fjbzfp f left join organization org on f.orgId=org.orgId  where 1=1
+        <if test="orgId != null and orgId != '' ">and (org.orgId=#{orgId} or concat(',',org.parents,',') like
+        concat('%,',#{orgId},',%') ) </if>
+        <if test="orgName !=null and orgName!=''" >and f.orgName=#{orgName}</if>
+        <if test="fjType !=null and fjType!=''">and f.fjType=#{fjType}</if>
+        <if test="state !=null and state !='' ">and f.state=#{state}</if>
+        <if test="existingPeople !=null and existingPeople !=''">and f.existingPeople=#{existingPeople}</if>
+        <if test="formationPeople !=null and formationPeople !=''">and f.formationPeople=#{formationPeople}</if>
+        <if test="filterList !=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator="or" open="(" close=")"> ${filter}</foreach>
+        </if>
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria" resultType="long" >
+        select count(*) from aux_fjbzfp f LEFT JOIN organization org ON org.orgId = f.orgId where 1=1
+        <if test="orgId !=null and orgId !=''">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )</if>
+        <if test="orgName !=null and orgName !=''">and f.orgName=#{orgName}</if>
+        <if test="fjType !=null and fjType !=''">and f.fjType=#{fjType}</if>
+        <if test="existingPeople !=null and existingPeople !=''">and f.existingPeople=#{existingPeople}</if>
+        <if test="formationPeople !=null and formationPeople !=''">and f.formationPeople=#{formationPeople}</if>
+        <if test="filterList !=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator="or" open="(" close=")"> ${filter}</foreach>
+        </if>
+
+    </select>
+     <insert id="add" parameterMap="auxFjbzfp" >
+         insert into aux_fjbzfp(fjbzfpId,orgId,orgName,state,fjType,existingPeople,formationPeople) VALUES(?,?,?,?,?,?,?)
+     </insert>
+
+     <delete id="delete" parameterType="java.lang.Long">
+         delete from aux_fjbzfp where fjbzfpId=#{fjbzfpId}
+     </delete>
+
+     <update id="update" parameterMap="auxFjbzfp">
+         update  aux_fjbzfp set orgId=#{orgId},orgName=#{orgName},state=#{state},fjType=#{fjType},existingPeople=#{existingPeople},formationPeople=#{formationPeople} where fjbzfpId=#{fjbzfpId}
+     </update>
+
+     <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+         select * from aux_fjbzfp where fjbzfpId=#{fjbzfpId}
+     </select>
+
+     <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+          select * from aux_fjbzfp
+     </select>
+
+    <select id="findFjType1" parameterType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+       SELECT f.*  FROM aux_fjbzfp f LEFT JOIN organization org ON org.orgId = f.orgId where 1=1
+        <if test="orgId !=null and orgId !=''">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )</if>
+        <if test="orgName !=null and orgName !=''">and f.orgName=#{orgName}</if>
+        <if test="fjType !=null and fjType !=''">and f.fjType=#{fjType}</if>
+        <if test="existingPeople !=null and existingPeople !=''">and f.existingPeople=#{existingPeople}</if>
+        <if test="formationPeople !=null and formationPeople !=''">and f.formationPeople=#{formationPeople}</if>
+        <if test="filterList !=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator="or" open="(" close=")"> ${filter}</foreach>
+        </if>
+        GROUP BY f.orgId
+    </select>
+    <select id="findFjType2" parameterType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+        SELECT f.*  FROM aux_fjbzfp f LEFT JOIN organization org ON org.orgId = f.orgId where 1=1
+        <if test="orgId !=null and orgId !=''">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )</if>
+        <if test="orgName !=null and orgName !=''">and f.orgName=#{orgName}</if>
+        <if test="fjType !=null and fjType !=''">and f.fjType=#{fjType}</if>
+        <if test="existingPeople !=null and existingPeople !=''">and f.existingPeople=#{existingPeople}</if>
+        <if test="formationPeople !=null and formationPeople !=''">and f.formationPeople=#{formationPeople}</if>
+        <if test="filterList !=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator="or" open="(" close=")"> ${filter}</foreach>
+        </if>
+        GROUP BY f.orgId
+    </select>
+    <select id="findFjType4" parameterType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+        SELECT f.*  FROM aux_fjbzfp f LEFT JOIN organization org ON org.orgId = f.orgId where 1=1
+        <if test="orgId !=null and orgId !=''">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )</if>
+        <if test="orgName !=null and orgName !=''">and f.orgName=#{orgName}</if>
+        <if test="fjType !=null and fjType !=''">and f.fjType=#{fjType}</if>
+        <if test="existingPeople !=null and existingPeople !=''">and f.existingPeople=#{existingPeople}</if>
+        <if test="formationPeople !=null and formationPeople !=''">and f.formationPeople=#{formationPeople}</if>
+        <if test="filterList !=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator="or" open="(" close=")"> ${filter}</foreach>
+        </if>
+        GROUP BY f.orgId
+    </select>
+
+
+
+    <select id="rytj" resultType="com.greathack.homlin.pojo.auxiliary.AuxFjbzfp">
+         SELECT
+           aux_fjbzfp.*,
+           sum(aux_fjbzfp.formationPeople) as countformationPeople
+         FROM
+           aux_fjbzfp
+         GROUP BY
+           aux_fjbzfp.orgId
+     </select>
+
+
+</mapper>

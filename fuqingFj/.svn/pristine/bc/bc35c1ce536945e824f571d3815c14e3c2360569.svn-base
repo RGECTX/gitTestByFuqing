@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+
+    <bean id="auxHmdService" class="com.greathack.homlin.service.auxiliary.AuxHmdService"></bean>
+    <bean id="auxZljdService" class="com.greathack.homlin.service.auxiliary.AuxZljdService"></bean>
+    <bean id="auxDaglService" class="com.greathack.homlin.service.auxiliary.AuxDaglService"></bean>
+    <bean id="auxJyglService" class="com.greathack.homlin.service.auxiliary.AuxJyglService"></bean>
+    <bean id="auxKqtjService" class="com.greathack.homlin.service.auxiliary.AuxKqtjService"></bean>
+    <bean id="auxQjsqService" class="com.greathack.homlin.service.auxiliary.AuxQjsqService"></bean>
+    <bean id="auxGzglService" class="com.greathack.homlin.service.auxiliary.AuxGzglService"></bean>
+    <bean id="auxGsglService" class="com.greathack.homlin.service.auxiliary.AuxGsglService"></bean>
+    <bean id="auxBzglService" class="com.greathack.homlin.service.auxiliary.AuxBzglService"></bean>
+    <bean id="jobResumeService" class="com.greathack.homlin.service.auxiliary.JobResumeService"></bean>
+    <bean id="eduResumeService" class="com.greathack.homlin.service.auxiliary.EduResumeService"></bean>
+    <bean id="auxNdkhService" class="com.greathack.homlin.service.auxiliary.AuxNdkhService"></bean>
+    <bean id="auxYdkhService" class="com.greathack.homlin.service.auxiliary.AuxYdkhService"></bean>
+    <bean id="auxQsgxService" class="com.greathack.homlin.service.auxiliary.AuxQsgxService"></bean>
+    <bean id="auxPayService" class="com.greathack.homlin.service.auxiliary.AuxPayService"></bean>
+    <bean id="auxFjbzfpService" class="com.greathack.homlin.service.auxiliary.AuxFjbzfpService"></bean>
+    <bean id="auxSjqkService" class="com.greathack.homlin.service.auxiliary.AuxSjqkService"></bean>
+    <bean id="auxDwkqService" class="com.greathack.homlin.service.auxiliary.AuxDwkqService"></bean>
+    <bean id="auxFjbzfpService" class="com.greathack.homlin.service.auxiliary.AuxFjbzfpService"></bean>
+
+</beans>

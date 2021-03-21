@@ -1,0 +1,33 @@
+	<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>登录</title>
+		<meta name="renderer" content="webkit" />
+		<link rel="stylesheet" href="css/index.css?v=1.60" />
+      <script src="baseJs/jquery-3.2.1.js?v=1.60"></script>
+      <script src="layui/layui.js?v=1.60"></script>
+	  <script src="baseJs/Validform_v5.3.2.js?v=1.60"></script>
+      <script src="baseJs/jquery-form.js?v=1.60"></script>
+	  <script src="baseJs/function.js?v=1.60"></script>
+      <script src="js/config.js?v=1.60"></script>     
+      <script src="js/global.js?v=1.60"></script>
+      <script src="js/index.js?v=1.60"></script>
+	</head>
+	
+	
+	<body style="background: url(image/u0.png) no-repeat;background-size: cover;">
+		<form id="adminLoginForm" method="post">
+			<img src="images/title.png" alt="" class="title">
+			<div class="loginBox">
+				<span>登 录</span>
+				<div class="login">
+					<div class="uname"><input type="text" id="loginName" name="loginName" placeholder="请输入管理账号" onblur="this.placeholder='请输入管理账号'" onclick="this.placeholder=''"datatype="*" nullmsg="请输入管理账号!"></div>
+					<div class="pwd"><input name="password" type="password" id="password" placeholder="请输入管理密码" onblur="this.placeholder='请输入管理密码'" onclick="this.placeholder=''" datatype="*" nullmsg="请输入管理密码!"/></div>
+				</div>
+				<p class="remPwd"><!--<input type="checkbox">记住密码-->如浏览器不行，请<a href="360se.exe">下载安装</a></p>
+                <input class="loginBtn" name="提交" type="submit" value="登录" />
+			</div>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxPayDAO">
+    <parameterMap id="parameterAuxPay" type="com.greathack.homlin.pojo.auxiliary.AuxPay">
+
+        <parameter property="id"/>
+        <parameter property="gzybId"/>
+        <parameter property="jbxxId"/>
+        <parameter property="idcard"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="mobile"/>
+        <parameter property="gzkh"/>
+        <parameter property="khhmc"/>
+        <parameter property="gwgz"/>
+        <parameter property="yfgz"/>
+        <parameter property="sbjf"/>
+        <parameter property="zfgjjjf"/>
+        <parameter property="sbgjjkk"/>
+        <parameter property="qtkk"/>
+        <parameter property="sfgz"/>
+        <parameter property="byrybd"/>
+        <parameter property="byzjrq"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="remark"/>
+        <parameter property="xm"/>
+    </parameterMap>
+
+    <insert id="add" parameterMap="parameterAuxPay">
+    INSERT INTO aux_pay(id,gzybId,jbxxId,idcard,orgId,orgName,mobile,gzkh,khhmc,gwgz,yfgz,sbjf,zfgjjjf,sbgjjkk,qtkk,
+						sfgz,byrybd,byzjrq,createBy,createTime,remark,xm)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_pay WHERE id=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxPay">
+		update aux_pay
+		set
+		gzybId=#{gzybId},
+		jbxxId=#{jbxxId},
+		idcard=#{idcard},
+		orgId=#{orgId},
+		orgName=#{orgName},
+		mobile=#{mobile},
+		gzkh=#{gzkh},
+		khhmc=#{khhmc},
+		gwgz=#{gwgz},
+    	yfgz=#{yfgz},
+    	sbjf=#{sbjf},
+    	zfgjjjf=#{zfgjjjf},
+    	sbgjjkk=#{sbgjjkk},
+    	qtkk=#{qtkk},
+    	sfgz=#{sfgz},
+    	byrybd=#{byrybd},
+    	byzjrq=#{byzjrq},
+    	createBy=#{createBy},
+    	createTime=#{createTime},
+    	remark=#{remark},
+    	xm=#{xm}
+		where id=#{id}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxPay">
+		select aux_pay.*,aux_dagl.xm from aux_pay
+		LEFT JOIN aux_dagl on aux_dagl.daId = aux_pay.jbxxId
+		where aux_pay.id = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxPay" resultType="com.greathack.homlin.pojo.auxiliary.AuxPay">
+        select * from aux_pay where 1=1
+        <if test="gzybId != null">and gzybId=#{gzybId}</if>
+        <if test="jbxxId != null">and jbxxId=#{jbxxId}</if>
+        <if test="idcard != null">and idcard=#{idcard}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxPay">
+		select * from aux_pay
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxPaySearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxPay">
+        select aux_pay.*,aux_dagl.xm from aux_pay
+        LEFT JOIN aux_dagl on aux_dagl.daId = aux_pay.jbxxId
+        left join organization org on org.orgId=aux_pay.orgId
+        where 1=1
+        <if test="gzybId != null and gzybId != ''">and aux_pay.gzybId=#{gzybId}</if>
+        <if test="xm != null and xm != ''">and aux_dagl.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null and idcard != ''">and aux_pay.idcard LIKE concat('%',#{idcard},'%')</if>
+        <if test="khhmc != null and khhmc != ''">and aux_pay.khhmc LIKE concat('%',#{khhmc},'%')</if>
+        <if test="orgIdList!=null and orgIdList.size>0">
+            and am_payroll.org_id in
+            <foreach collection="orgIdList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+            and
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+                am_payroll.${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <if test="sortField == 1">ORDER BY aux_pay.createTime DESC</if>
+        <if test="sortField == 2">ORDER BY aux_pay.createTime ASC</if>
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxPaySearchCriteria"
+            resultType="long">
+        select count(*) from aux_pay
+        LEFT JOIN aux_dagl on aux_dagl.daId = aux_pay.jbxxId
+        left join organization org on org.orgId=aux_pay.orgId
+        where 1=1
+        <if test="gzybId != null and gzybId != ''">and aux_pay.gzybId=#{gzybId}</if>
+        <if test="xm != null and xm != ''">and aux_dagl.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null and idcard != ''">and aux_pay.idcard LIKE concat('%',#{idcard},'%')</if>
+        <if test="khhmc != null and khhmc != ''">and aux_pay.khhmc LIKE concat('%',#{khhmc},'%')</if>
+        <if test="orgIdList!=null and orgIdList.size>0">
+            and am_payroll.org_id in
+            <foreach collection="orgIdList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+            and
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+                ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+    </select>
+
+   <!-- &lt;!&ndash; 查询工资表 （参数本月月份,单位id参数,工资月报id)&ndash;&gt;
+    <select id="searchGzb" parameterType="com.greathack.homlin.pojo.am.AmPayrollSearchCriteria"
+            resultMap="resultAmPayroll">
+        select
+        am_jbxx.xm,am_jbxx.idcard,organization.orgName,thisMonthAmPayroll.gzkh,
+        thisMonthAmPayroll.khhmc,thisMonthAmPayroll.glgdj,thisMonthAmPayroll.gwgz,
+        thisMonthAmPayroll.xj,thisMonthAmPayroll.xjgz,thisMonthAmPayroll.wwkhgz,
+        thisMonthAmPayroll.bfsyzkxlqjgz,thisMonthAmPayroll.bfgz,thisMonthAmPayroll.sbjf,
+        thisMonthAmPayroll.zfgjjjf,thisMonthAmPayroll.qtkk,thisMonthAmPayroll.sfgz,
+        thisMonthAmPayroll.mobile,lastMonthAmPayroll.*
+        from am_payroll as thisMonthAmPayroll
+        LEFT JOIN (
+        select jbxx_id as lastMonthJbxxId, lastMonthOrganization.orgName as lastMonthOrgName,
+        glgdj as lastMonthGlgdj, gwgz as lastMonthGwgz, xj as lastMonthXj, xjgz as lastMonthXjgz,
+        sbjf as lastMonthSbjf, zfgjjjf as lastMonthZfgjjjf
+        from am_payroll lastMonthAmPayroll
+        left join organization lastMonthOrganization on lastMonthOrganization.orgId=lastMonthAmPayroll.org_id
+        where gzyb_id=(SELECT id FROM am_gzyb WHERE PERIOD_DIFF(#{month}, am_gzyb.month) =1 and am_gzyb.orgId =#{orgId})
+        ) as lastMonthAmPayroll on lastMonthAmPayroll.lastMonthJbxxId = thisMonthAmPayroll.jbxx_id
+        LEFT JOIN am_jbxx on am_jbxx.id = thisMonthAmPayroll.jbxx_id
+        left join organization on organization.orgId=thisMonthAmPayroll.org_id
+        where thisMonthAmPayroll.gzyb_id = #{gzybId}
+        <if test="xm != null and xm != ''">and am_jbxx.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null and idcard != ''">and thisMonthAmPayroll.idcard LIKE concat('%',#{idcard},'%')</if>
+        <if test="khhmc != null and khhmc != ''">and thisMonthAmPayroll.khhmc LIKE concat('%',#{khhmc},'%')</if>
+    </select>
+
+    &lt;!&ndash; 工资各项合计&ndash;&gt;
+    <select id="getTotalByGzybIdList" parameterType="java.util.List" resultType="com.greathack.homlin.pojo.am.AmGzbb">
+        select
+        COALESCE(cast(SUM(am_payroll.gwgz) AS DECIMAL (19, 2)),0) as gwgzSum,
+        COALESCE(cast(SUM(am_payroll.xjgz) AS DECIMAL (19, 2)),0) as xjgzSum,
+        COALESCE(cast(SUM(am_payroll.wwkhgz) AS DECIMAL (19, 2)),0) as wwkhgzSum,
+        COALESCE(cast(SUM(am_payroll.bfgz) AS DECIMAL (19, 2)),0) as bfgzSum,
+        COALESCE(cast(SUM(am_payroll.sbjf) AS DECIMAL (19, 2)),0) as sbjfSum,
+        COALESCE(cast(SUM(am_payroll.zfgjjjf) AS DECIMAL (19, 2)),0) as zfgjjjfSum,
+        COALESCE(cast(SUM(am_payroll.qtkk) AS DECIMAL (19, 2)),0) as qtkkSum,
+        COALESCE(cast(SUM(am_payroll.sfgz) AS DECIMAL (19, 2)),0) as sfgzSum,
+        COALESCE(cast(SUM(am_payroll.bfsyzkxlqjgz) AS DECIMAL (19, 2)),0) as bfsyzkxlqjgzSum
+        from am_payroll
+        where am_payroll.gzyb_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteByGzybId" parameterType="java.lang.Long">
+  	 	DELETE FROM am_payroll WHERE gzyb_id=${value}
+  	</delete>
+
+    &lt;!&ndash; 根据工资月报id查询维稳考核工资为空的数据 &ndash;&gt;
+    <select id="findWwkhgzIsNullByGzybId" parameterType="java.lang.Long" resultMap="resultAmPayroll">
+		select am_payroll.*,am_jbxx.xm from am_payroll
+		LEFT JOIN am_jbxx on am_jbxx.id = am_payroll.jbxx_id
+		where am_payroll.wwkhgz is null and am_payroll.gzyb_id=${value}
+		order by am_payroll.create_time desc
+	</select>-->
+</mapper>

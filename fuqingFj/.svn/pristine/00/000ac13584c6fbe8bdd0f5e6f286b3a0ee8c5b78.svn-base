@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.ILinkItemTypeDAO">
+
+	<parameterMap type="com.greathack.homlin.pojo.user.LinkItemType" id="parameterLinkItemType">
+    	<parameter property="itemTypeId"  />
+    	<parameter property="appCode"/>
+    	<parameter property="itemTypeName"/>
+  	</parameterMap>
+  	
+	<resultMap id="resultLinkItemType" type="com.greathack.homlin.pojo.user.LinkItemType">
+		<result column="itemTypeId" property="itemTypeId" />
+		<result column="appCode" property="appCode" />
+		<result column="itemTypeName" property="itemTypeName"/>
+	</resultMap>
+	
+	<insert id="add" parameterMap="parameterLinkItemType">
+    INSERT INTO linkitemtype (itemTypeId,appCode,itemTypeName)
+    VALUES(?,?,?)
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM linkitemtype 
+    WHERE itemTypeId=#{id}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.user.LinkItemType" >
+    UPDATE linkitemtype    
+    SET 
+    	itemTypeName=#{itemTypeName}
+    WHERE itemTypeId=#{itemTypeId}
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long"  resultMap="resultLinkItemType">
+	select * from linkitemtype where itemTypeId=#{id}
+	</select>
+	
+	<select id="findByExample" parameterMap="parameterLinkItemType" resultMap="resultLinkItemType" >	
+	select * from linkitemtype where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="itemTypeName != null"> and itemTypeName=#{itemTypeName}</if>
+	</select>
+	
+</mapper>

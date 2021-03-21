@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>流程配置</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.56"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.56" media="all">
+  <script src="layui/layui.js?v=1.56" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.56"></script>
+   <script src="js/config.js?v=1.56"></script>     
+   <script src="js/global.js?v=1.56"></script>
+   <script src="js/userLive.js?v=1.56"></script>
+  <script src="js/processTemplateList.js?v=1.56" charset="utf-8"></script>
+</head>
+<body>  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">        
+          <div class="layui-card-header">    
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="processTemplateList" lay-filter="processTemplateList"></table> 
+			<script type="text/html" id="toolbarDemo">
+              <div class="layui-btn-container">
+			  	<button class="layui-btn layui-btn-sm SYS_SETTING_PROCESS_TEMPLETE_ADD" lay-event="addProcessTemplate">添加流程</button>                
+              </div>
+            </script>
+             
+            <script type="text/html" id="barDemo">
+              <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-blue" lay-event="addProcessNodeTemplate">配置流程</a>
+              <a class="layui-btn layui-btn-xs SYS_SETTING_PROCESS_TEMPLETE_UPDATE" lay-event="edit">编辑</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="layui-fluid" id="addProcessTemplatePage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="addProcessTemplate" id="addProcessTemplate">
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>流程名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="processName" lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>流程编码</label>
+        <div class="layui-input-inline">
+          <input type="text" name="templateCode" lay-verify="required" placeholder="请输入流程编码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">流程类型</label>
+          <div class="layui-input-inline">
+             <select name="category" class="category">
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>审批Bean名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="approvalImpl" lay-verify="required" placeholder="请输入审批Bean名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="addProcessTemplateSubmit"  lay-filter="addProcessTemplate" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+
+<div class="layui-fluid" id="editProcessTemplatePage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="editProcessTemplate" id="editProcessTemplate">
+	  <input type="hidden" name="processTemplateId" />
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>流程名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="processName" lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>流程编码</label>
+        <div class="layui-input-inline">
+          <input type="text" name="templateCode" lay-verify="required" placeholder="请输入流程编码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">流程类型</label>
+          <div class="layui-input-inline">
+             <select name="category" class="category">
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>审批Bean名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="approvalImpl" lay-verify="required" placeholder="请输入审批Bean名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="editProcessTemplateSubmit"  lay-filter="editProcessTemplate" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+</body>
+</html>

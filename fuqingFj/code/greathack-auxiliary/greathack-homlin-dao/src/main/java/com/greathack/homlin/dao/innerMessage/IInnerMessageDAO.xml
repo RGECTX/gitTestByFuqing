@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.innerMessage.IInnerMessageDAO">
+
+	<insert id="add" parameterType="com.greathack.homlin.pojo.innerMessage.InnerMessage">
+    INSERT INTO InnerMessage(innerMessageId,appCode,sender,senderName,msgState,msgType,title,content,attachments,remark,createTime,outKey1,outKey2,bak1,bak2)
+    VALUES(#{innerMessageId},#{appCode},#{sender},#{senderName},#{msgState},#{msgType},#{title},#{content},#{attachments},#{remark},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2});
+ 	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM InnerMessage WHERE innerMessageId=${value};
+  	</delete>
+	<!-- 	<delete id="empty" parameterType="java.lang.String">
+       DELETE FROM InnerMessage WHERE userId=${value};
+         </delete> -->
+
+	<update id="update" parameterType="com.greathack.homlin.pojo.innerMessage.InnerMessage">
+    UPDATE InnerMessage
+    SET 
+     sender=#{sender},
+     senderName=#{senderName},
+    msgState=#{msgState},
+    msgType=#{msgType},
+    title=#{title},
+    content=#{content},
+    attachments=#{attachments},
+    remark=#{remark},
+    outKey1=#{outKey1},
+    outKey2=#{outKey2},
+    bak1=#{bak1},
+    bak2=#{bak2}
+    WHERE innerMessageId=${innerMessageId};
+  	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.innerMessage.InnerMessage" >
+	select * from InnerMessage where innerMessageId=#{value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.innerMessage.InnerMessage"  resultType="com.greathack.homlin.pojo.innerMessage.InnerMessage" >
+		select * from InnerMessage where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="sender != null"> and sender=#{sender}</if>
+		<if test="senderName != null"> and senderName=#{senderName}</if>
+		<if test="msgState != null"> and msgState=#{msgState}</if>
+		<if test="msgType != null"> and  msgType=#{msgType}</if>
+		<if test="title != null"> and  title=#{title}</if>
+		<if test="content != null"> and  content=#{content}</if>
+		<if test="attachments != null"> and  attachments=#{attachments}</if>
+		<if test="createTime != null"> and  createTime=#{createTime}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+
+	<!-- 	search  -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.innerMessage.InnerMessageSearchCriteria" resultType="com.greathack.homlin.pojo.innerMessage.InnerMessage" >
+		select * from InnerMessage where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="sender != null"> and sender=#{sender}</if>
+		<if test="msgType != null"> and msgType=#{msgType}</if>
+		<if test="msgState != null"> and msgState=#{msgState}</if>
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+		<if test="sortField == 2"> ORDER BY createTime ASC</if>
+		LIMIT #{startLine},#{pageSize}
+	</select>
+
+	<!-- 	getSearchResultCount  -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.innerMessage.InnerMessageSearchCriteria" resultType="long" >
+		select count(*) from InnerMessage where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="sender != null"> and sender=#{sender}</if>
+		<if test="msgType != null"> and msgType=#{msgType}</if>
+		<if test="msgState != null"> and msgState=#{msgState}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	</select>
+</mapper>

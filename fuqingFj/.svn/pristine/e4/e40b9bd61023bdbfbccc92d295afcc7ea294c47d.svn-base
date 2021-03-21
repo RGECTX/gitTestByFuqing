@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css?v=1.74" media="all">
+    <link rel="stylesheet" href="../css/admin.css?v=1.74" media="all">
+    <style type="text/css">
+        .cos-label {
+            width: 10% !important;
+        }
+
+        .cos-line {
+            width: 22% !important;
+        }
+
+        .cos-view {
+            width: 22% !important;
+            background: #FFF !important;
+        }
+    </style>
+    <script src="../layui/layui.js?v=1.74" charset="utf-8"></script>
+    <script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+    <!--[if lt IE 9]>
+    <script src="../baseJs/html5shiv.min.js"></script>
+    <script src="../baseJs/respond.min.js"></script>
+    <script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+    <![endif]-->
+    <script src="../baseJs/function.js?v=1.74"></script>
+    <script src="../js/config.js?v=1.74"></script>
+    <script src="../js/global.js?v=1.74"></script>
+    <script src="../js/userLive.js?v=1.74"></script>
+    <script src="../js/auxiliary/viewRyfp.js?v=1.74" charset="utf-8"></script>
+</head>
+<body>
+<!-- 外壳开始 -->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space10 layui-card">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-container">
+                <div class="layui-tab  layui-tab-card"><!-- 外壳结束 -->
+                    <!-- 内容开始 -->
+                    <div class="layui-fluid" id="saveEnrollPage" style="min-height: 700px;">
+                        <form class="layui-form layui-form-pane" action="" lay-filter="addAdmin" id="addAdmin">
+                            <div class="layui-form-item">
+                                招录建档申请
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="xm" id="xm" lay-verify="required" placeholder="请选择人员姓名" autocomplete="off" class="layui-input" readonly>
+                                </div>
+
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="idcard" id="idcard" lay-verify="required" placeholder="请选择身份证号" autocomplete="off" class="layui-input" readonly>
+                                </div>
+
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>上报单位</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="orgName" id="orgName" placeholder="请输入上报单位" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+                                </div>
+                                <div>
+                                    <label class="layui-form-label cos-sm-1">
+                                        辅警类别
+                                    </label>
+                                    <div class="layui-input-inline cos-sm-3">
+                                        <select name="fjType" class="fjType" id="fjType" lay-filter="aihao" lay-search="" disabled="disabled">
+                                            <option value="" selected="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-upload">
+                                    <!--<button type="button" class="layui-btn layui-btn-normal" id="view_selectFileBtn">选择文件</button>-->
+                                    <div class="layui-upload-list">
+                                        <table class="layui-table">
+                                            <thead>
+                                            <tr>
+                                                <th>文件名</th>
+                                                <th>大小</th>
+                                                <th>状态</th>
+                                                <!--<th>操作</th>-->
+                                            </tr>
+                                            </thead>
+                                            <tbody id="view_uploadList"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div class="layui-form-item">
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>办案人</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="zbmjName" id="zbmjName" lay-verify="required" placeholder="请选择案件" autocomplete="off" class="layui-input"
+                                           readonly>
+                                </div>
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>办案单位</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="orgName" id="orgName" lay-verify="required" placeholder="请选择案件" autocomplete="off" class="layui-input"
+                                           readonly>
+                                </div>
+                                <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>申请人</label>
+                                <div class="layui-input-inline cos-sm-3">
+                                    <input type="text" name="sqrName" placeholder="请输入申请人" autocomplete="off" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">加分理由</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入加分理由" name="sqjfly" class="layui-textarea" readonly></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">简要案情</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入简要案情" name="jyaq" class="layui-textarea" readonly></textarea>
+                                </div>
+                            </div>-->
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <textarea name="remark" class="layui-textarea" maxlength="255" readonly="readonly"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                审批信息
+                            </div>
+                            <div class="layui-form-item">
+                                <table class="layui-hide" id="approvalElem" lay-filter="approvalElem"></table>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <a class="layui-btn layui-btn-warn" id="approvalBtn">审批</a>
+                                <a class="layui-btn layui-btn-danger" onclick="closeTab();">关闭</a>
+                                <a class="layui-btn layui-btn-warm" id="printExcel">打印</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-fluid" id="approvalPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="approval" id="approval">
+        <input type="hidden" name="zlId"/>
+        <input type="hidden" name="processId"/>
+        <input type="hidden" name="itemState"/>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">审批意见</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入审批意见" name="remark" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="approvalSubmit" lay-filter="approval" style="display:none" lay-submit></button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

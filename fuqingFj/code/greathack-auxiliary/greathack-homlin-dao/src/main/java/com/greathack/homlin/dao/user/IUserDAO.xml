@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.IUserDAO">
+	<parameterMap type="com.greathack.homlin.pojo.user.User" id="parameterUser">
+    	<parameter property="userId" />
+    	<parameter property="appCode"/>
+    	<parameter property="userState"/>
+    	<parameter property="nickName"/>
+    	<parameter property="avatar"/>
+    	<parameter property="userName"/>
+        <parameter property="mobile"/>
+        <parameter property="tel"/>
+        <parameter property="email"/>
+    	<parameter property="sex"/>
+    	<parameter property="birthday"/>
+    	<parameter property="chineseBirthday"/>
+    	<parameter property="companyName"/>
+    	<parameter property="position"/>
+    	<parameter property="createTime"/>
+    	<parameter property="certificationNo"/>
+    	<parameter property="outKey1"/>
+    	<parameter property="outKey2"/>
+    	<parameter property="bak1"/>
+    	<parameter property="bak2"/>
+    	<parameter property="idcard"/>
+  	</parameterMap>
+	<resultMap id="resultUser"
+		type="com.greathack.homlin.pojo.user.User">
+		<result column="userId" property="userId" />
+		<result column="appCode" property="appCode" />
+		<result column="userState" property="userState" />
+		<result column="nickName" property="nickName" />
+		<result column="avatar" property="avatar" />
+		<result column="userName" property="userName" />
+        <result column="mobile" property="mobile" />
+        <result column="tel" property="tel" />
+        <result column="email" property="email" />
+		<result column="sex" property="sex" />
+		<result column="birthday" property="birthday" />
+		<result column="chineseBirthday" property="chineseBirthday" />
+		<result column="companyName" property="companyName" />
+		<result column="position" property="position" />
+		<result column="createTime" property="createTime" />
+		<result column="certificationNo" property="certificationNo" />
+		<result column="outKey1" property="outKey1" />
+		<result column="outKey2" property="outKey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="idcard" property="idcard" />
+	</resultMap>
+	<insert id="add" parameterMap="parameterUser">
+    INSERT INTO user(userId,appCode,userState,nickName,avatar,userName,mobile,tel,email,sex,birthday,chineseBirthday,companyName,position,createTime,certificationNo,outKey1,outKey2,bak1,bak2,idcard)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM user 
+    WHERE userId=#{value}
+  	</delete>
+  	<update id="update" parameterMap="parameterUser">
+    UPDATE user
+    SET userState=#{userState},nickName=#{nickName},userName=#{userName},mobile=#{mobile},tel=#{tel},email=#{email},sex=#{sex},
+    birthday=#{birthday},chineseBirthday=#{chineseBirthday},
+    companyName=#{companyName},position=#{position},certificationNo=#{certificationNo},
+    avatar=#{avatar},outKey1=#{outKey1},outKey2=#{outKey2},bak1=#{bak1},bak2=#{bak2},idcard=#{idcard}
+    WHERE userId=#{userId}
+  	</update>
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultUser" >
+	select * from user where userId=#{value} 
+	</select>
+	<select id="findByExample" parameterMap="parameterUser" resultMap="resultUser" >	
+	select * from user where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="userState != null"> and userState=#{userState}</if>
+	<if test="nickName != null"> and nickName=#{nickName}</if>
+	<if test="avatar != null"> and avatar=#{avatar}</if>
+	<if test="userName != null"> and userName=#{userName}</if>
+    <if test="mobile != null"> and mobile=#{mobile}</if>
+    <if test="tel != null"> and tel=#{tel}</if>
+    <if test="email != null"> and email=#{email}</if>
+	<if test="sex != null"> and sex=#{sex}</if>
+	<if test="birthday != null"> and birthday=#{birthday}</if>
+	<if test="chineseBirthday != null"> and chineseBirthday=#{chineseBirthday}</if>
+	<if test="companyName != null"> and companyName=#{companyName}</if>
+	<if test="position != null"> and position=#{position}</if>
+	<if test="certificationNo != null"> and certificationNo=#{certificationNo}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	<if test="idcard != null"> and bak2=#{idcard}</if>
+	</select>
+	
+	<select id="getUserListByIds" resultMap="resultUser" >	
+		select * from user where 1&lt;&gt;1
+		<if test="list!=null and list.size>0">
+			 OR userId in
+			<foreach collection="list" item="userId" separator=" , " open="(" close=")">
+			#{userId}
+			</foreach>
+		</if>
+		ORDER BY userId DESC
+	</select>
+  	
+  	
+	<!-- 	search  -->	
+	<select id="search" parameterType="com.greathack.homlin.pojo.user.UserSearchCriteria" resultMap="resultUser" >	
+		select * from v_user where 1=1
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="orgCode != null  and orgCode !='' "> and orgCode LIKE concat(#{orgCode},'%')</if>
+		<if test="orgId != null  and orgId !='' "> and  ( orgId=#{orgId} or concat(',',parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+		<if test="userStateList!=null and userStateList.size>0">
+			 and userState in 
+			<foreach collection="userStateList" item="userState" separator=" , " open="(" close=")">
+			#{userState}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+	    <if test="sortField == 2"> ORDER BY createTime ASC</if>
+	    LIMIT #{startLine},#{pageSize}		
+	</select>
+  	
+	<!-- 	getSearchResultCount  -->	
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.user.UserSearchCriteria" resultType="long" >	
+		select count(*) from v_user where 1=1
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="orgCode != null  and orgCode !='' "> and orgCode LIKE concat(#{orgCode},'%')</if>
+		<if test="orgId != null  and orgId !='' "> and  ( orgId=#{orgId} or concat(',',parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+		<if test="userStateList!=null and userStateList.size>0">
+			 and userState in 
+			<foreach collection="userStateList" item="userState" separator=" , " open="(" close=")">
+			#{userState}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+	</select>
+</mapper>

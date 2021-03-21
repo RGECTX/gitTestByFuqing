@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxGsglDAO">
+    <parameterMap id="parameterAuxGsgl" type="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+        <parameter property="gsglId"/>
+        <parameter property="xm"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="gsfsDate"/>
+        <parameter property="gsqkms"/>
+        <parameter property="sbDate"/>
+        <parameter property="sbState"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+
+        <parameter property="xb"/>
+        <parameter property="idcard"/>
+        <parameter property="state"/>
+    </parameterMap>
+
+
+    <insert id="add" parameterMap="parameterAuxGsgl">
+    INSERT INTO aux_gsgl(gsglId,xm,orgId,orgName,gsfsDate,gsqkms,sbDate,sbState,createBy,createTime,outKey1,outKey2,bak1,bak2,xb,idcard,state)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_gsgl WHERE gsglId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxGsgl">
+		update aux_gsgl
+		set
+		xm=#{xm},
+		orgId=#{orgId},
+		orgName=#{orgName},
+		gsfsDate=#{gsfsDate},
+		gsqkms=#{gsqkms},
+		sbDate=#{sbDate},
+		sbState=#{sbState},
+		createBy=#{createBy},
+		createTime=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		xb=#{xb},
+		idcard=#{idcard},
+		state=#{state}
+		where gsglId=#{gsglId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+		select * from aux_gsgl where gsglId = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxGsgl" resultType="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+        select * from aux_gsgl where 1=1
+        <if test="xm != null and xm !='' ">and xm=#{xm}</if>
+        <if test="orgId != null and orgId !='' ">and orgId=#{orgId}</if>
+        <if test="orgName != null and orgName !='' ">and orgName=#{orgName}</if>
+        <if test="gsfsDate != null and gsfsDate !='' ">and gsfsDate=#{gsfsDate}</if>
+        <if test="gsqkms != null and gsqkms !='' ">and gsqkms=#{gsqkms}</if>
+        <if test="sbDate != null and sbDate !='' ">and sbDate=#{sbDate}</if>
+        <if test="sbState != null and sbState !='' ">and sbState=#{sbState}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        <if test="xb != null and xb !='' ">and xb=#{xb}</if>
+        <if test="idcard != null and idcard !='' ">and idcard=#{idcard}</if>
+        <if test="state != null and state !='' ">and state=#{state}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+		select * from aux_gsgl
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGsglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+        SELECT
+        b.*
+        FROM aux_gsgl b
+        left join organization org on org.orgId=b.orgId
+        /*WHERE 1 = 1*/
+        WHERE b.state = '1'
+
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchGssh" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGsglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxGsgl">
+        SELECT
+        b.*
+        FROM aux_gsgl b
+        left join organization org on org.orgId=b.orgId
+        WHERE (b.state = '2' or b.state = '4' or
+        b.state = '8')
+        <if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxGsglSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.gsglId) FROM aux_gsgl b
+        left join organization org on org.orgId=b.orgId
+
+        WHERE 1 = 1
+
+        <if test="orgName != null  and orgName !='' ">and b.orgName = #{orgName}</if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

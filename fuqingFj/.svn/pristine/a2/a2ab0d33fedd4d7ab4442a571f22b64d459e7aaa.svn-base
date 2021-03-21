@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>菜单管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+	<style>
+		#setRolePower{
+			height:370px
+		}
+    </style>
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+  <script src="js/menuList.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">        
+          <div class="layui-card-header">    
+          <form class="layui-form" action="" lay-filter="searchForm">          
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">关键词</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="keyword" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button type="button" class="layui-btn" lay-submit lay-filter="searchBtn">查询</button>
+                </div>
+              </div>
+          </form>
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="menuList" lay-filter="menuList"></table> 
+			<script type="text/html" id="toolbarDemo">
+              <div class="layui-btn-container">
+			  	<button class="layui-btn layui-btn-sm SYS_SETTING_MENU_ADD" lay-event="addMenu">添加菜单</button>      
+			  	<button class="layui-btn layui-btn-sm" lay-event="goToParent" id="goToParent">返回上级</button>           
+              </div>
+            </script>
+             
+            <script type="text/html" id="barDemo">
+              <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-blue" lay-event="goToMenuList">查看下级菜单</a>
+              <a class="layui-btn layui-btn-xs SYS_SETTING_MENU_UPDATE" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs SYS_SETTING_MENU_DELETE" lay-event="del">删除</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="layui-fluid" id="addMenuPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="addMenu" id="addMenu">
+      <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="menuName" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">上级菜单</label>
+          <div class="layui-input-inline">
+             <select name="parentId" id="add_parentId" lay-filter="aihao">
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">菜单编码</label>
+        <div class="layui-input-inline">
+          <input type="text" name="menuCode" lay-verify="required" placeholder="请输入菜单编码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">描述</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入描述" name="remark" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="addMenuSubmit"  lay-filter="addMenu" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+
+<div class="layui-fluid" id="editMenuPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="editMenu" id="editMenu">
+	  <input type="hidden" name="menuId" />
+      <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="menuName" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">上级菜单</label>
+          <div class="layui-input-inline">
+			 <input type="text" name="parentName" disabled="" autocomplete="off" class="layui-input">
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">菜单编码</label>
+        <div class="layui-input-inline">
+          <input type="text" name="menuCode" lay-verify="required" placeholder="请输入菜单编码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">描述</label>
+          <div class="layui-input-block">
+             <textarea placeholder="请输入描述" name="remark" class="layui-textarea"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="editMenuSubmit"  lay-filter="editMenu" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+</body>
+</html>

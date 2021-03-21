@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxQsgxDAO">
+	<parameterMap id="parameterAuxQsgx" type="com.greathack.homlin.pojo.auxiliary.AuxQsgx">
+    	<parameter property="id"/>
+    	<parameter property="instanceId"/>
+		<parameter property="kinshipTerm"/>
+        <parameter property="qsname"/>
+	   	<parameter property="ownIdcard"/>
+	   	<parameter property="birthdayStr"/>
+	   	<parameter property="workUnit"/>
+		<parameter property="post"/>
+	   	<parameter property="eduLevel"/>
+	   	<parameter property="nowStatus"/>
+	   	<parameter property="healthState"/>
+	   	<parameter property="healthDetail"/>
+	   	<parameter property="kjysgbFlag"/>
+	   	<parameter property="cgjFlag"/>
+	   	<parameter property="fzFlag"/>
+	   	<parameter property="sysjFlag"/>
+	   	<parameter property="rhflFlag"/>
+	   	<parameter property="bjgzFlag"/>
+	   	<parameter property="bjOrgId"/>
+	   	<parameter property="bjOrgName"/>
+	   	<parameter property="gzddSheng"/>
+	   	<parameter property="gzddShi"/>
+	   	<parameter property="gzddXian"/>
+	   	<parameter property="gzddAddress"/>
+	   	<parameter property="gzddssfw"/>
+	   	<parameter property="gzdwxz"/>
+		<parameter property="jzddSheng"/>
+	   	<parameter property="jzddShi"/>
+	   	<parameter property="jzddXian"/>
+		<parameter property="jzddAddress"/>
+		<parameter property="jzddssfw"/>
+	   	<parameter property="others"/>
+		<parameter property="createBy"/>
+		<parameter property="createTime"/>
+		<parameter property="outkey1"/>
+		<parameter property="outkey2"/>
+		<parameter property="bak1"/>
+		<parameter property="bak2"/>
+  	</parameterMap>
+
+	<resultMap id="resultAuxQsgx" type="com.greathack.homlin.pojo.auxiliary.AuxQsgx">
+		<result column="id" property="id" />
+		<result column="instance_id" property="instanceId" />
+		<result column="kinshipTerm" property="kinshipTerm" />
+		<result column="qsname" property="qsname" />
+		<result column="ownIdcard" property="ownIdcard" />
+		<result column="birthdayStr" property="birthdayStr" />
+		<result column="workUnit" property="workUnit" />
+		<result column="post" property="post" />
+		<result column="eduLevel" property="eduLevel" />
+		<result column="nowStatus" property="nowStatus" />
+		<result column="healthState" property="healthState" />
+		<result column="healthDetail" property="healthDetail" />
+		<result column="kjysgbFlag" property="kjysgbFlag" />
+		<result column="cgjFlag" property="cgjFlag" />
+		<result column="fzFlag" property="fzFlag" />
+		<result column="sysjFlag" property="sysjFlag" />
+		<result column="rhflFlag" property="rhflFlag" />
+		<result column="bjgzFlag" property="bjgzFlag" />
+		<result column="bjOrgId" property="bjOrgId" />
+		<result column="bjOrgName" property="bjOrgName" />
+		<result column="gzddSheng" property="gzddSheng" />
+		<result column="gzddShi" property="gzddShi" />
+		<result column="gzddXian" property="gzddXian" />
+		<result column="gzddAddress" property="gzddAddress" />
+		<result column="gzddssfw" property="gzddssfw" />
+		<result column="gzdwxz" property="gzdwxz" />
+		<result column="jzddSheng" property="jzddSheng" />
+		<result column="jzddShi" property="jzddShi" />
+		<result column="jzddXian" property="jzddXian" />
+		<result column="jzddAddress" property="jzddAddress" />
+		<result column="jzddssfw" property="jzddssfw" />
+		<result column="others" property="others" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="outkey1" property="outkey1" />
+		<result column="outkey2" property="outkey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<insert id="add" parameterMap="parameterAuxQsgx">
+    INSERT INTO aux_qsgx(id,instance_id,kinshipTerm,qsname,ownIdcard,birthdayStr,workUnit,post,eduLevel,nowStatus,healthState,healthDetail,kjysgbFlag,cgjFlag,fzFlag,sysjFlag,rhflFlag,bjgzFlag,bjOrgId,bjOrgName,gzddSheng,
+    gzddShi,gzddXian,gzddAddress,gzddssfw,gzdwxz,jzddSheng,jzddShi,jzddXian,jzddAddress,jzddssfw,others,create_by,create_time,outkey1,outkey2,bak1,bak2)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+ 	<delete id="delete" parameterType="java.lang.String">
+  	 	DELETE FROM aux_qsgx WHERE id=${value}
+  	</delete>
+
+	<update id="update" parameterMap="parameterAuxQsgx">
+		update aux_qsgx
+		set
+		instance_id=#{instanceId},
+		kinshipTerm=#{kinshipTerm},
+		qsname=#{qsname},
+		ownIdcard=#{ownIdcard},
+		birthdayStr=#{birthdayStr},
+		workUnit=#{workUnit},
+		post=#{post},
+		eduLevel=#{eduLevel},
+		nowStatus=#{nowStatus},
+		healthState=#{healthState},
+		healthDetail=#{healthDetail},
+		kjysgbFlag=#{kjysgbFlag},
+		cgjFlag=#{cgjFlag},
+		fzFlag=#{fzFlag},
+		sysjFlag=#{sysjFlag},
+		rhflFlag=#{rhflFlag},
+		bjgzFlag=#{bjgzFlag},
+		bjOrgId=#{bjOrgId},
+		bjOrgName=#{bjOrgName},
+		gzddSheng=#{gzddSheng},
+		gzddShi=#{gzddShi},
+		gzddXian=#{gzddXian},
+		gzddAddress=#{gzddAddress},
+		gzddssfw=#{gzddssfw},
+		gzdwxz=#{gzdwxz},
+		jzddSheng=#{jzddSheng},
+		jzddShi=#{jzddShi},
+		jzddXian=#{jzddXian},
+		jzddAddress=#{jzddAddress},
+		jzddssfw=#{jzddssfw},
+		others=#{others},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		outkey1=#{outkey1},
+		outkey2=#{outkey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where id=#{id}
+  	</update>
+
+	<select id="findById" parameterType="java.lang.String" resultMap="resultAuxQsgx" >
+		select * from aux_qsgx where id = ${value}
+	</select>
+
+	<select id="searchExport" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria"
+			resultType="com.greathack.homlin.pojo.auxiliary.AuxQsgxImportVo">
+		select
+		d.xm as xm,
+		d.idcard as idcard,
+		b.qsname as qsname,
+		b.instance_id as instanceId,
+		b.ownIdcard as ownIdcard,
+		b.kinshipTerm as kinshipTerm,
+		b.birthdayStr as birthdayStr,
+		b.workUnit as workUnit,
+		b.post as post,
+		b.nowStatus as nowStatus,
+		b.healthState as healthState,
+		b.eduLevel as eduLevel,
+		b.healthDetail as healthDetail,
+		b.kjysgbFlag as kjysgbFlag,
+		b.cgjFlag as cgjFlag,
+		b.fzFlag as fzFlag,
+		b.sysjFlag as sysjFlag,
+		b.rhflFlag as rhflFlag,
+		b.bjgzFlag as bjgzFlag,
+		b.bjOrgId as bjOrgId,
+		b.gzddSheng as gzddSheng,
+		b.gzddShi as gzddShi,
+		b.gzddXian as gzddXian,
+		b.gzddAddress as gzddAddress,
+		b.gzddssfw as gzddssfw,
+		b.gzdwxz as gzdwxz,
+		b.jzddSheng as jzddSheng,
+		b.jzddShi as jzddShi,
+		b.jzddXian as jzddXian,
+		b.jzddAddress as jzddAddress,
+		b.jzddssfw as jzddssfw,
+		b.others as others,
+
+		org.orgName as orgName,
+		bjOrg.orgName as bjOrgName
+		FROM aux_qsgx b
+		left join aux_dagl d on d.daId=b.instance_id
+		left join organization org on org.orgId=d.orgId
+		left join organization bjOrg on bjOrg.orgId=b.bjOrgId
+		WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<!--<if test="stateList!=null and stateList.size>0">
+            and
+            <foreach collection="stateList" item="state" separator=" or " open="(" close=")">
+                d.state = #{state}
+            </foreach>
+        </if>-->
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="xm != null  and xm !='' "> and xm LIKE concat('%',#{xm},'%')</if>
+		<if test="idcard != null  and idcard !='' "> and idcard  LIKE concat('%',#{idcard},'%') </if>
+		<if test="xb != null  and xb !='' "> and xb = #{xb} </if>
+		<!-- <if test="mz != null  and mz !='' "> and j.mz = #{mz}</if>
+         <if test="orgCode != null  and orgCode !='' "> and org.orgCode LIKE concat(#{orgCode},'%')</if>-->
+		<if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+		order by idcard asc
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.auxiliary.AuxQsgx"  resultMap="resultAuxQsgx" >
+		select * from aux_qsgx where 1=1
+		<if test="instanceId != null"> and instance_id=#{instanceId}</if>
+		<if test="kinshipTerm != null and kinshipTerm !='' ">and kinshipTerm=#{kinshipTerm}</if>
+        <if test="qsname != null and qsname !='' ">and qsname=#{qsname}</if>
+        <if test="ownIdcard != null and ownIdcard !='' ">and ownIdcard=#{ownIdcard}</if>
+        <if test="birthdayStr != null and birthdayStr !='' ">and birthdayStr=#{birthdayStr}</if>
+        <if test="workUnit != null and workUnit !='' ">and workUnit=#{workUnit}</if>
+        <if test="post != null and post !='' ">and post=#{post}</if>
+        <if test="eduLevel != null and eduLevel !='' ">and eduLevel=#{eduLevel}</if>
+        <if test="nowStatus != null and nowStatus !='' ">and nowStatus=#{nowStatus}</if>
+        <if test="healthState != null and healthState !='' ">and healthState=#{healthState}</if>
+        <if test="healthDetail != null and healthDetail !='' ">and healthDetail=#{healthDetail}</if>
+        <if test="kjysgbFlag != null and kjysgbFlag !='' ">and kjysgbFlag=#{kjysgbFlag}</if>
+        <if test="cgjFlag != null and cgjFlag !='' ">and cgjFlag=#{cgjFlag}</if>
+        <if test="fzFlag != null and fzFlag !='' ">and fzFlag=#{fzFlag}</if>
+        <if test="sysjFlag != null and sysjFlag !='' ">and sysjFlag=#{sysjFlag}</if>
+        <if test="rhflFlag != null and rhflFlag !='' ">and rhflFlag=#{rhflFlag}</if>
+        <if test="bjgzFlag != null and bjgzFlag !='' ">and bjgzFlag=#{bjgzFlag}</if>
+        <if test="bjOrgId != null and bjOrgId !='' ">and bjOrgId=#{bjOrgId}</if>
+        <if test="bjOrgName != null and bjOrgName !='' ">and bjOrgName=#{bjOrgName}</if>
+        <if test="gzddSheng != null and gzddSheng !='' ">and gzddSheng=#{gzddSheng}</if>
+        <if test="gzddShi != null and gzddShi !='' ">and gzddShi=#{gzddShi}</if>
+        <if test="gzddXian != null and gzddXian !='' ">and gzddXian=#{gzddXian}</if>
+        <if test="gzddAddress != null and gzddAddress !='' ">and gzddAddress=#{gzddAddress}</if>
+        <if test="gzddssfw != null and gzddssfw !='' ">and gzddssfw=#{gzddssfw}</if>
+        <if test="gzdwxz != null and gzdwxz !='' ">and gzdwxz=#{gzdwxz}</if>
+        <if test="jzddSheng != null and jzddSheng !='' ">and jzddSheng=#{jzddSheng}</if>
+        <if test="jzddShi != null and jzddShi !='' ">and jzddShi=#{jzddShi}</if>
+        <if test="jzddXian != null and jzddXian !='' ">and jzddXian=#{jzddXian}</if>
+        <if test="jzddAddress != null and jzddAddress !='' ">and jzddAddress=#{jzddAddress}</if>
+        <if test="jzddssfw != null and jzddssfw !='' ">and jzddssfw=#{jzddssfw}</if>
+        <if test="others != null and others !='' ">and others=#{others}</if>
+		<if test="outkey1 != null"> and outkey1=#{outkey1}</if>
+		<if test="outkey2 != null"> and outkey2=#{outkey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+
+	<select id="findAll" resultMap="resultAuxQsgx" >
+		select * from aux_qsgx
+	</select>
+
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IEduResumeDAO">
+    <parameterMap id="parameterEduResume" type="com.greathack.homlin.pojo.auxiliary.EduResume">
+        <parameter property="id"/>
+        <parameter property="appCode"/>
+        <parameter property="instanceId"/>
+        <parameter property="idcard"/>
+        <parameter property="startDate"/>
+        <parameter property="endDate"/>
+        <parameter property="university"/>
+        <parameter property="specialitie"/>
+        <parameter property="eduLevel"/>
+        <parameter property="degree"/>
+        <parameter property="outkey1"/>
+        <parameter property="outkey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="remark"/>
+    </parameterMap>
+
+    <resultMap id="resultEduResume" type="com.greathack.homlin.pojo.auxiliary.EduResume">
+        <result column="id" property="id" />
+        <result column="app_code" property="appCode" />
+        <result column="instance_id" property="instanceId" />
+        <result column="idcard" property="idcard" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+        <result column="university" property="university" />
+        <result column="specialitie" property="specialitie" />
+        <result column="edu_level" property="eduLevel" />
+        <result column="degree" property="degree" />
+        <result column="outkey1" property="outkey1" />
+        <result column="outkey2" property="outkey2" />
+        <result column="bak1" property="bak1" />
+        <result column="bak2" property="bak2" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+
+    <insert id="add" parameterMap="parameterEduResume">
+    INSERT INTO edu_resume(id,app_code,instance_id,idcard,start_date,end_date,university,specialitie,edu_level,degree,outkey1,outkey2,bak1,bak2,create_by,create_time,remark)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.String">
+  	 	DELETE FROM edu_resume WHERE id=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterEduResume">
+		update edu_resume
+		set
+		app_code=#{appCode},
+		instance_id=#{instanceId},
+		idcard=#{idcard},
+		start_date=#{startDate},
+		end_date=#{endDate},
+		university=#{university},
+		specialitie=#{specialitie},
+		edu_level=#{eduLevel},
+		degree=#{degree},
+		outkey1=#{outkey1},
+		outkey2=#{outkey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		remark=#{remark}
+		where id=#{id}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="resultEduResume" >
+		select * from edu_resume where id = ${value}
+	</select>
+
+    <select id="findByExample" parameterType="com.greathack.homlin.pojo.auxiliary.EduResume"  resultMap="resultEduResume" >
+        select * from edu_resume where 1=1
+        <if test="appCode != null"> and app_code=#{appCode}</if>
+        <if test="instanceId != null"> and instance_id=#{instanceId}</if>
+        <if test="startDate != null"> and start_date=#{startDate}</if>
+        <if test="endDate != null"> and end_date=#{endDate}</if>
+        <if test="idcard != null"> and idcard=#{idcard}</if>
+        <if test="university != null"> and university=#{university}</if>
+        <if test="specialitie != null"> and specialitie=#{specialitie}</if>
+        <if test="eduLevel != null"> and edu_level=#{eduLevel}</if>
+        <if test="degree != null"> and degree=#{degree}</if>
+        <if test="outkey1 != null"> and outkey1=#{outkey1}</if>
+        <if test="outkey2 != null"> and outkey2=#{outkey2}</if>
+        <if test="bak1 != null"> and bak1=#{bak1}</if>
+        <if test="bak2 != null"> and bak2=#{bak2}</if>
+        <if test="createTime != null"> and create_time &lt; #{createTime}</if>
+        order by start_date desc
+    </select>
+
+
+    <select id="findAll" resultMap="resultEduResume" >
+		select * from edu_resume
+	</select>
+
+    <select id="searchExport" parameterType="com.greathack.homlin.pojo.auxiliary.AuxDaglSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.EduResumeImportVo" >
+        SELECT
+        d.xm as xm,
+        b.idcard as idcard,
+        b.start_date as startDate,
+        b.end_date as endDate,
+        b.university as university,
+        b.specialitie as specialitie,
+        b.edu_level as eduLevel,
+        b.remark as remark,
+        b.degree as degree
+
+        FROM edu_resume b
+        left join aux_dagl d on d.daId=b.instance_id
+        left join organization org on org.orgId=d.orgId
+        WHERE 1 = 1
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+            and
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+                ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <!--<if test="stateList!=null and stateList.size>0">
+            and
+            <foreach collection="stateList" item="state" separator=" or " open="(" close=")">
+                d.state = #{state}
+            </foreach>
+        </if>-->
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="xm != null  and xm !='' "> and d.xm LIKE concat('%',#{xm},'%')</if>
+        <if test="idcard != null  and idcard !='' "> and b.idcard  LIKE concat('%',#{idcard},'%') </if>
+        <if test="xb != null  and xb !='' "> and d.xb = #{xb} </if>
+<!--        <if test="mz != null  and mz !='' "> and d.mz = #{mz}</if>-->
+        <if test="appCode != null  and appCode !='' "> and b.app_code = #{appCode}</if>
+        <!--<if test="orgCode != null  and orgCode !='' "> and org.orgCode LIKE concat(#{orgCode},'%')</if>-->
+        <if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+        order by b.idcard asc
+    </select>
+
+</mapper>

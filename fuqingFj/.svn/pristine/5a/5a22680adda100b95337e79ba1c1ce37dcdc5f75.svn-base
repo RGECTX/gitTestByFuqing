@@ -1,0 +1,150 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>layuiAdmin 控制台主页一</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60" media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+    <link id="layuicss-layer" rel="stylesheet" href="css/layer.css?v=1.60" media="all">
+    <style id="LAY_layadmin_theme">.layui-side-menu,.layadmin-pagetabs .layui-tab-title li:after,.layadmin-pagetabs .layui-tab-title li.layui-this:after,.layui-layer-admin .layui-layer-title,.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child{background-color:#20222A !important;}.layui-nav-tree .layui-this,.layui-nav-tree .layui-this>a,.layui-nav-tree .layui-nav-child dd.layui-this,.layui-nav-tree .layui-nav-child dd.layui-this a{background-color: #009688 !important;}  .layui-layout-admin .layui-logo{background-color:#20222A !important;}</style>
+	<script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+	<script src="baseJs/function.js?v=1.60"></script>
+	<script src="js/config.js?v=1.60"></script>     
+	<script src="js/global.js?v=1.60"></script>
+	<script src="js/userLive.js?v=1.60"></script>
+	<script src="js/console.js"></script>
+</head>
+<body class="LAY_layadmin_theme">
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md6">
+              <div class="layui-card">
+                  <div class="layui-card-header">通知通告</div>
+                  <div class="layui-card-body">
+                      <table class="layui-hide" id="noticeList" lay-filter="noticeList"></table>
+                      <script type="text/html" id="noticeBarDemo">
+                          <a class="layui-btn layui-btn-xs " lay-event="noticeViewBtn">查看</a>
+                      </script>
+                  </div>
+              </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">待办事项</div>
+              <div class="layui-card-body">
+                <div class="layui-carousel layadmin-carousel layadmin-pending layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                  <div carousel-item="" style="overflow-y: auto;">
+                    <ul class="layui-row layui-col-space10 layui-this">
+                      <li class="layui-col-xs6 AUX_ZLGL_DWJS">
+                        <a lay-href="auxiliary/dwjslist.html?v=1.60" class="layadmin-backlog-body">
+                          <h3>单位接收</h3>
+                          <p><cite id="dwjs"></cite></p>
+                        </a>
+                      </li>
+                        <li class="layui-col-xs6 AUX_ZLGL_DCLJYSB">
+                            <a lay-href="auxiliary/dcljyglList.html?v=1.60" class="layadmin-backlog-body">
+                                <h3>减员待处理</h3>
+                                <p><cite id="jydcl"></cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-xs6 AUX_GZGL_GZGLSP">
+                            <a lay-href="auxiliary/gzmxSpList.html?v=1.60" class="layadmin-backlog-body">
+                                <h3>工资审核</h3>
+                                <p><cite id="gzsh"></cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-xs6 AUX_GSGL_GSSH">
+                            <a lay-href="auxiliary/gsshList.html?v=1.60" class="layadmin-backlog-body">
+                                <h3>工伤审核</h3>
+                                <p><cite id="gssh"></cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-xs6 AUX_GZGL_RYTJ">
+                            <a lay-href="auxiliary/rytjList.html?v=1.60" class="layadmin-backlog-body">
+                                <h3>人员统计</h3>
+                                <p><cite id="RYTJ"></cite></p>
+                            </a>
+                        </li>
+                    </ul>
+                  </div>
+                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+			  <div class="layui-card">
+				<div class="layui-card-header">个人信息</div>
+				<div class="layui-card-body layui-text">
+				  <table class="layui-table" style="margin-bottom: 22px;">
+					<colgroup><col width="100"><col></colgroup>
+					<tbody>
+					  <tr>
+						<td>登录名</td>
+						<td><script>document.write(adminInfo.loginName);</script></td>
+					  </tr>
+					  <tr>
+						<td>姓名</td>
+						<td><script>document.write(adminInfo.name);</script></td>
+					  </tr>
+					  <tr>
+						<td>单位</td>
+						<td><script>document.write(adminInfo.unitName);</script></td>
+					  </tr>
+					  <tr>
+						<td>性别</td>
+						<td><script>document.write(getDictDataLabel("SEX",adminInfo.sex));</script></td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>
+			  </div>
+		  </div>
+		  
+        </div>
+    </div>
+  </div>
+  <div class="layui-fluid" id="noticeViewPage" style="display:none;">
+      <form class="layui-form layui-form-pane" action="" lay-filter="noticeViewForm" id="noticeViewForm">
+          <input type="hidden" name="noticeId"/>
+          <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 19%;">通知标题</label>
+              <div class="layui-input-inline" style="width: 78%;">
+                  <input type="text" name="noticeTitle" class="layui-input" readonly="readonly">
+              </div>
+          </div>
+          <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">通知内容</label>
+              <div class="layui-input-block">
+                  <textarea name="noticeText" class="layui-textarea" readonly="readonly"></textarea>
+              </div>
+          </div>
+          <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">备注</label>
+              <div class="layui-input-block">
+                  <textarea name="remark" class="layui-textarea" readonly="readonly"></textarea>
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <div class="layui-upload">
+                  <div class="layui-upload-list">
+                      <table class="layui-table">
+                          <thead>
+                          <tr>
+                              <th>文件名</th>
+                              <th>大小</th>
+                              <th>状态</th>
+                              <th>操作</th>
+                          </tr>
+                          </thead>
+                          <tbody id="view_uploadList"></tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+
+</body></html>

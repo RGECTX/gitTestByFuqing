@@ -1,0 +1,15 @@
+
+package com.greathack.homlin.serviceinterface.auxiliary;
+
+import com.greathack.homlin.pojo.auxiliary.AuxFjbzfp;
+import com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria;
+import com.greathack.homlin.serviceinterface.system.IBaseService;
+
+import java.util.List;
+
+
+public interface IAuxFjbzfpService extends IBaseService<AuxFjbzfp,Long> {
+    List<AuxFjbzfp> search(AuxFjbzfpSearchCriteria auxFjbzfpSearchCriteria);
+    long getSearchResultCount(AuxFjbzfpSearchCriteria auxFjbzfpSearchCriteria);
+
+}

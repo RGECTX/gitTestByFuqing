@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.permission.IPowerItemDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.permission.PowerItem">
+    INSERT INTO PowerItem(powerItemId,itemType,appCode,itemName,powerCode,referer,resource,parameter,remark,outKey1,outKey2,bak1,bak2)
+    VALUES(#{powerItemId},#{itemType},#{appCode},#{itemName},#{powerCode},#{referer},#{resource},#{parameter},#{remark},#{outKey1},#{outKey2},#{bak1},#{bak2});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM PowerInRole WHERE concat(appCode,powerCode) in (select concat(appCode,powerCode) from PowerItem WHERE powerItemId=#{value});
+    DELETE FROM PowerInUser WHERE concat(appCode,powerCode) in (select concat(appCode,powerCode) from PowerItem WHERE powerItemId=#{value});
+    DELETE FROM PowerItem WHERE powerItemId=#{value};
+  	</delete>
+  	
+  	<select id="findAll"  parameterType="java.lang.String">
+    DELETE FROM PowerItem WHERE appCode=#{value};
+    </select>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.permission.PowerItem">
+    UPDATE PowerItem
+    SET itemName=#{itemName},
+    itemType=#{itemType},
+    powerCode=#{powerCode},
+    referer=#{referer},
+    resource=#{resource},
+    parameter=#{parameter},
+    remark=#{remark},
+    outKey1=#{outKey1},
+    outKey2=#{outKey2},
+    bak1=#{bak1},
+    bak2=#{bak2}
+    WHERE powerItemId=#{powerItemId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.permission.PowerItem" >
+	select * from PowerItem where powerItemId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.permission.PowerItem"  resultType="com.greathack.homlin.pojo.permission.PowerItem" >	
+	select * from PowerItem where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+    <if test="itemType != null"> and itemType=#{itemType}</if>
+	<if test="itemName != null"> and itemName=#{itemName}</if>
+    <if test="powerCode != null"> and powerCode=#{powerCode}</if>
+    <if test="referer != null"> and referer=#{referer}</if>
+	<if test="resource != null"> and resource=#{resource}</if>
+    <if test="parameter != null"> and parameter=#{parameter}</if>
+    <if test="remark != null"> and remark=#{remark}</if>
+    <if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+    <if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+    <if test="bak1 != null"> and bak1=#{bak1}</if>
+    <if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+    
+    <!--    search  --> 
+    <select id="search" parameterType="com.greathack.homlin.pojo.permission.PowerItemSearchCriteria" resultType="com.greathack.homlin.pojo.permission.PowerItem" >  
+        select * from PowerItem where 1=1  
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+             and 
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+            ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="powerCode != null"> and powerCode=#{powerCode}</if>
+        <if test="itemType != null"> and itemType=#{itemType}</if>
+        <if test="referer != null"> and referer=#{referer}</if>
+        <if test="resource != null"> and resource=#{resource}</if>
+        <if test="itemName != null"> and itemName=#{itemName}</if>
+        <if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+        <if test="sortField == 1"> ORDER BY itemName ASC </if>
+        <if test="sortField == 2"> ORDER BY itemName DESC</if>
+        LIMIT #{startLine},#{pageSize}      
+    </select>
+    
+    <!--    getSearchResultCount  -->   
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.permission.PowerItemSearchCriteria" resultType="long" >    
+        select count(*) from PowerItem where 1=1 
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+             and 
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+            ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="powerCode != null"> and powerCode=#{powerCode}</if>
+        <if test="itemType != null"> and itemType=#{itemType}</if>
+        <if test="referer != null"> and referer=#{referer}</if>
+        <if test="resource != null"> and resource=#{resource}</if>
+        <if test="itemName != null"> and itemName=#{itemName}</if>
+        <if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+    </select>
+	
+</mapper>

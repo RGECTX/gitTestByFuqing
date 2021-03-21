@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.am.IAmQuotasDAO">
+	<resultMap id="resultAmQuotas" type="com.greathack.homlin.pojo.am.AmQuotas">
+		<result column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="quotas_num" property="quotasNum" />
+		<result column="allocate_num" property="allocateNum" />
+		<result column="jd_num" property="jdNum" />
+		<result column="sx_num" property="sxNum" />
+		<result column="doc_no" property="docNo" />
+		<result column="pzrq" property="pzrq" />
+		<result column="outkey1" property="outkey1" />
+		<result column="outkey2" property="outkey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.greathack.homlin.pojo.am.AmQuotas">
+    INSERT INTO am_quotas(id,org_id,quotas_num,allocate_num,jd_num,sx_num,doc_no,pzrq,outkey1,outkey2,bak1,bak2,create_by,create_time,remark)
+    	VALUES(#{id},#{orgId},#{quotasNum},#{allocateNum},#{jdNum},#{sxNum},#{docNo},#{pzrq},#{outkey1},#{outkey2},#{bak1},#{bak2},#{createBy},#{createTime},#{remark})
+ 	</insert>
+
+ 	<delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM am_quotas WHERE id=${value}
+  	</delete>
+
+	<update id="update" parameterType="com.greathack.homlin.pojo.am.AmQuotas">
+		update am_quotas
+		set
+		org_id=#{orgId},
+		quotas_num=#{quotasNum},
+		allocate_num=#{allocateNum},
+		jd_num=#{jdNum},
+		sx_num=#{sxNum},
+		doc_no=#{docNo},
+		pzrq=#{pzrq},
+		outkey1=#{outkey1},
+		outkey2=#{outkey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		remark=#{remark}
+		where id=#{id}
+  	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultAmQuotas" >
+		select * from am_quotas where id = ${value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.am.AmQuotas"  resultMap="resultAmQuotas" >
+		select * from am_quotas where 1=1
+		<if test="orgId != null"> and org_id=#{orgId}</if>
+		<if test="quotasNum != null"> and quotas_num=#{quotasNum}</if>
+		<if test="allocateNum != null"> and allocate_num=#{allocateNum}</if>
+		<if test="jdNum != null"> and jd_num=#{jdNum}</if>
+		<if test="sxNum != null"> and sx_num=#{sxNum}</if>
+		<if test="docNo != null"> and doc_no=#{docNo}</if>
+		<if test="pzrq != null"> and pzrq=#{pzrq}</if>
+		<if test="outkey1 != null"> and outkey1=#{outkey1}</if>
+		<if test="outkey2 != null"> and outkey2=#{outkey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+		order by create_time desc
+	</select>
+
+	<select id="findAll" resultMap="resultAmQuotas" >
+		select * from am_quotas
+	</select>
+
+	<select id="search" parameterType="com.greathack.homlin.pojo.am.AmQuotasSearchCriteria" resultType="com.greathack.homlin.pojo.am.AmQuotas" >
+		SELECT
+		b.id as id,
+		b.org_id as orgId,
+		b.quotas_num as quotasNum,
+		b.allocate_num as allocateNum,
+		b.jd_num as jdNum,
+		b.sx_num as sxNum,
+		b.doc_no as docNo,
+		b.pzrq as pzrq,
+		b.remark as remark,
+		b.create_by as createBy,
+		b.create_time as createTime,
+		org.orgCode as orgCode,
+		org.shortName as orgName,
+		org.orgType as orgType,
+		org.outKey1 as orgGroup,
+		org.orgRank as orgRank
+
+		FROM am_quotas b
+		left join organization org on org.orgId=b.org_id
+
+		WHERE 1 = 1 and org.orgState=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="orgLeaveList!=null and orgLeaveList.size>0">
+			and orgLevel in
+			<foreach collection="orgLeaveList" item="orgLeave" separator=" , " open="(" close=")">
+				#{orgLeave}
+			</foreach>
+		</if>
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="orgName != null  and orgName !='' "> and org.shortName LIKE concat('%',#{orgName},'%')</if>
+		<if test="orgCode != null  and orgCode !='' "> and org.orgCode LIKE concat('%',#{orgCode},'%') </if>
+		<if test="orgType != null  and orgType !='' "> and org.orgType = #{orgType}</if>
+		<if test="orgGroup != null  and orgGroup !='' "> and org.outKey1 = #{orgGroup}</if> /*单位组别用备用字段*/
+		<if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+
+		order by b.create_time desc
+		LIMIT #{startLine},#{pageSize}
+	</select>
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.am.AmQuotasSearchCriteria" resultType="long" >
+		SELECT count(b.id) FROM am_quotas b
+		left join organization org on org.orgId=b.org_id
+		WHERE 1 = 1 and org.orgState=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="orgLeaveList!=null and orgLeaveList.size>0">
+			and orgLevel in
+			<foreach collection="orgLeaveList" item="orgLeave" separator=" , " open="(" close=")">
+				#{orgLeave}
+			</foreach>
+		</if>
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="orgName != null  and orgName !='' "> and org.shortName LIKE concat('%',#{orgName},'%')</if>
+		<if test="orgCode != null  and orgCode !='' "> and org.orgCode LIKE concat('%',#{orgCode},'%') </if>
+		<if test="orgType != null  and orgType !='' "> and org.orgType = #{orgType}</if>
+		<if test="orgGroup != null  and orgGroup !='' "> and org.outKey1 = #{orgGroup}</if> /*单位组别用备用字段*/
+		<if test="parents != null  and parents !='' "> and org.parents LIKE concat(#{parents},'%')</if>
+		<if test="orgId != null  and orgId !='' "> and  ( org.orgId=#{orgId} or concat(',',org.parents,',')  like concat('%,',#{orgId},',%')  ) </if>
+	</select>
+
+	<!--统计二级辅警编制数量-->
+	<select id="countSecondFjbz" parameterType="com.greathack.homlin.pojo.am.AmQuotas" resultType="com.greathack.homlin.pojo.am.AmQuotas" >
+        select
+
+        COALESCE(SUM(quotas.quotas_num),0)  as quotasNum,
+        COALESCE(SUM(
+				0<if test="stateList.contains(1)==true">+quotas.allocate_num</if>
+				<if test="stateList.contains(2)==true">+quotas.sx_num</if>
+				<if test="stateList.contains(8)==true">+quotas.jd_num</if>
+        /*quotas.allocate_num+quotas.jd_num+quotas.sx_num*/),0)  as allocateNum
+
+        from am_quotas quotas
+        left join organization org on org.orgId=quotas.org_id
+        where org.orgId=#{orgId}
+
+	</select>
+    <!--统计三级辅警编制数量-->
+    <select id="countThirdFjbz" parameterType="com.greathack.homlin.pojo.am.AmQuotas" resultType="com.greathack.homlin.pojo.am.AmQuotas" >
+        select
+        org.orgName as orgName,
+
+        (select COALESCE(sum(quotas1.quotas_num),0) as quotasNum from am_quotas quotas1
+        left join organization org1  on org1.orgId=quotas1.org_id
+        where 1=1
+        <if test="orgType =='16' "> and org1.orgType = '16' </if> /*警务站*/
+        <if test='orgType =="8" '> and org1.orgType = '8' </if>  /*警务室*/
+        <if test="orgType =='99' "> and org1.orgType not in('16','8') </if>  /*其他*/
+        and concat(',',org1.parents,',')  like concat('%,',#{orgId},',%')
+        ) as quotasNum,
+
+        (select COALESCE(sum(
+		0<if test="stateList.contains(1)==true">+quotas1.allocate_num</if>
+		<if test="stateList.contains(2)==true">+quotas1.sx_num</if>
+		<if test="stateList.contains(8)==true">+quotas1.jd_num</if>
+		/*quotas1.allocate_num+quotas1.jd_num+quotas1.sx_num*/),0) as allocateNum
+        from am_quotas quotas1
+        left join organization org1  on org1.orgId=quotas1.org_id
+        where 1=1
+        <if test="orgType =='16' "> and org1.orgType = '16' </if> /*警务站*/
+        <if test='orgType =="8" '> and org1.orgType = '8' </if>  /*警务室*/
+        <if test="orgType =='99' "> and org1.orgType not in('16','8') </if>  /*其他*/
+        and concat(',',org1.parents,',')  like concat('%,',#{orgId},',%')
+        ) as allocateNum
+
+        from am_quotas quotas
+        left join organization org on org.orgId=quotas.org_id
+        where quotas.org_id=#{orgId}
+
+    </select>
+
+</mapper>

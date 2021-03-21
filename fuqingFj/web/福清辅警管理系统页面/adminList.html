@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>用户管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+	<style>
+		#setRolePower{
+			height:370px
+		}
+    </style>
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+  <script src="js/adminList.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>  
+<div class="layui-fluid">
+<div class="layui-row layui-col-space10">
+      <div class="layui-col-sm2 layui-col-md2 layui-col-lg2">
+        <div class="layui-card" style="overflow:auto">
+          <div id="amUnitTree" class="demo-tree demo-tree-box"></div>
+        </div>
+      </div>
+      <div class="layui-col-sm10 layui-col-md10 layui-col-lg10">
+        <div class="layui-card col2">
+          <div class="layui-fluid" style="padding: 15px 0px;">
+                <div class="layui-row layui-col-space15">
+                  <div class="layui-col-md12">
+                    <div class="layui-card">        
+                      <div class="layui-card-header">    
+                      <form class="layui-form" action=""  lay-filter="searchForm">          
+                          <div class="layui-form-item">
+                            <div class="layui-inline">
+                              <label class="layui-form-label">关键词</label>
+                              <div class="layui-input-inline">
+                                <input type="text" name="keyword" autocomplete="off" class="layui-input">
+                              </div>
+                            </div>
+                            <div class="layui-inline">
+                              <label class="layui-form-label">用户状态</label>
+                              <div class="layui-input-inline">
+                                 <select name="state" lay-filter="aihao">
+                                    <option value=""></option>
+                                    <option value="1" selected>正常</option>
+                                    <option value="2">禁用</option>
+                                  </select>
+                              </div>
+                            </div>
+                            
+                            <div class="layui-inline">
+                              <button type="button" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                            </div>
+                          </div>
+                      </form>
+                      </div>
+                      <div class="layui-card-body">
+                        <table class="layui-hide" id="adminList" lay-filter="adminList"></table> 
+                        <script type="text/html" id="toolbarDemo">
+                          <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm SYS_USER_ADD" lay-event="addUser">添加用户</button>
+                            <button class="layui-btn layui-btn-sm SYS_USER_RESET_PWD" lay-event="resetPwd">重置密码</button>
+                          </div>
+                        </script>
+                         
+                        <script type="text/html" id="barDemo">
+                          <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-blue SYS_USER_ASSIGN_ROLES" lay-event="addRolesToUser">分配角色</a>
+                          <a class="layui-btn layui-btn-xs SYS_USER_UPDATE" lay-event="edit">编辑</a>
+                          <a class="layui-btn layui-btn-danger layui-btn-xs SYS_USER_DELETE" lay-event="del">删除</a>
+                        </script>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+</div>
+</div>  
+  
+<div class="layui-fluid" id="addUserPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="addAdmin" id="addAdmin">
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>登录名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="loginName" lay-verify="required|loginName" placeholder="请输入登录名" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>所属单位</label>
+        <div class="layui-input-inline">
+          <select name="amUnitId" id="add_amUnitId" lay-verify="required" lay-filter="aihao" lay-search="">
+             <option value="" selected="">请选择</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="password" id="password" lay-verify="required|password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>确认密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="repassword" id="repassword" lay-verify="required|password|repassword" placeholder="请输入一次密码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="name" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">性别</label>
+          <div class="layui-input-inline">
+             <select name="sex" class="sex">
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+        <div class="layui-input-inline">
+          <input type="text" name="idcard" placeholder="请输入身份证号" autocomplete="off" class="layui-input" maxlength="30">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+          <input type="text" name="mobile" placeholder="请输入手机号" autocomplete="off" class="layui-input" maxlength="255">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">用户状态</label>
+          <div class="layui-input-inline">
+             <select name="state">
+                <option value="1" selected>正常</option>
+                <option value="2">禁用</option>
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="addAdminSubmit"  lay-filter="addAdmin" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+<div class="layui-fluid" id="editUserPage" style="display:none;">
+  <form class="layui-form layui-form-pane" action="" lay-filter="editAdmin" id="editAdmin">
+	  <input type="hidden" name="userId" />
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>登录名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="loginName" lay-verify="required|loginName" disabled="" placeholder="请输入登录名" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>所属单位</label>
+        <div class="layui-input-inline">
+          <select name="amUnitId" id="edit_amUnitId" lay-verify="required" lay-filter="aihao" lay-search="">
+             <option value="" selected="">请选择</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="password" id="edit_password" lay-verify="editPassword" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="repassword" id="edit_repassword" lay-verify="editPassword|editRepassword" placeholder="请输入一次密码" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="name" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">性别</label>
+          <div class="layui-input-inline">
+             <select name="sex" class="sex">
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+        <div class="layui-input-inline">
+          <input type="text" name="idcard" placeholder="请输入身份证号" autocomplete="off" class="layui-input" maxlength="30">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+          <input type="text" name="mobile" placeholder="请输入手机号" autocomplete="off" class="layui-input" maxlength="255">
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">用户状态</label>
+          <div class="layui-input-inline">
+             <select name="state">
+                <option value="1" selected>正常</option>
+                <option value="2">禁用</option>
+              </select>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <button type="button" id="editAdminSubmit"  lay-filter="editAdmin" style="display:none" lay-submit></button>
+      </div>
+  </form>
+</div>
+<div class="layui-fluid" id="setUserRole" style="display:none;">
+	<form class="layui-form layui-form-pane" action="" lay-filter="adminRoles" id="adminRoles">
+    <div class="layui-tab">
+      <ul class="layui-tab-title">
+        <li class="layui-this">管理角色</li>
+        <li>审批角色</li>
+      </ul>
+      <div class="layui-tab-content layui-fluid">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item" pane="" id="glRole">
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-form-item" pane="" id="spRole">
+            </div>
+        </div>
+      </div>
+    </div>
+	</form>
+</div>
+</body>
+</html>

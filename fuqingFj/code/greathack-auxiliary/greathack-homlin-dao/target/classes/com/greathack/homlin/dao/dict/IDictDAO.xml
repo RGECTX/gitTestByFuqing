@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.dict.IDictDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.dict.Dict">
+    INSERT INTO Dict(dictId,appCode,dictName,dictCode,remark,createTime,outKey1,outKey2,bak1,bak2)
+    VALUES(#{dictId},#{appCode},#{dictName},#{dictCode},#{remark},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM Dict WHERE dictId=${value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.dict.Dict">
+    UPDATE Dict
+    SET 
+    dictName=#{dictName},
+    dictCode=#{dictCode},
+    remark=#{remark},
+    outKey1=#{outKey1},
+    outKey2=#{outKey2},
+    bak1=#{bak1},
+    bak2=#{bak2}
+    WHERE dictId=${dictId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.dict.Dict" >
+	select * from Dict where dictId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.dict.Dict"  resultType="com.greathack.homlin.pojo.dict.Dict" >	
+	select * from Dict where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="dictName != null"> and dictName=#{dictName}</if>
+	<if test="dictCode != null"> and dictCode=#{dictCode}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>	
+    
+    
+    <select id="search" parameterType="com.greathack.homlin.pojo.dict.DictSearchCriteria" resultType="com.greathack.homlin.pojo.dict.Dict" >
+        SELECT * FROM Dict WHERE 1 = 1
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+             and 
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+            ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="dictCode != null"> and dictCode=#{dictCode}</if>
+        <if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+        <if test="sortField == null"> ORDER BY createTime DESC </if>
+        <if test="sortField == 1"> ORDER BY createTime DESC </if>
+        <if test="sortField == 2"> ORDER BY createTime ASC</if>
+        LIMIT #{startLine},#{pageSize}
+    </select>
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.dict.DictSearchCriteria" resultType="long" >
+        SELECT count(dictId) FROM Dict WHERE 1 = 1
+        <if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+             and 
+            <foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+            ${kwField} LIKE concat('%',#{keyword},'%')
+            </foreach>
+        </if>
+        <if test="appCode != null"> and appCode=#{appCode}</if>
+        <if test="dictCode != null"> and dictCode=#{dictCode}</if>
+        <if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+        <if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+    </select>
+</mapper>

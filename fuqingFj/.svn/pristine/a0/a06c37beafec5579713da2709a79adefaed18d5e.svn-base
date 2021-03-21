@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.org.IOrganizationDAO">	
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.org.Organization">
+    insert into Organization (orgId,appCode,parentId,parentName,parents,orgType,orgRank,userId,orgCode,orgName,shortName,areaId,
+    address,tel,sortNum,remark,orgState,orgLevel,createBy,createTime,outKey1,outKey2,bak1,bak2) 
+    VALUES (#{orgId},#{appCode},#{parentId},#{parentName},#{parents},#{orgType},#{orgRank},#{userId},#{orgCode},#{orgName},#{shortName},#{areaId},
+    #{address},#{tel},#{sortNum},#{remark},#{orgState},#{orgLevel},#{createBy},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2})
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+   DELETE FROM Organization WHERE orgId=${value}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.org.Organization">
+    	UPDATE Organization
+		SET
+		parentId=#{parentId}
+		,parentName=#{parentName}
+		,parents=#{parents}
+		,orgType=#{orgType}
+		,orgRank=#{orgRank}
+		,userId=#{userId}
+		,orgCode=#{orgCode}
+		,orgName=#{orgName}
+		,shortName=#{shortName}
+		,areaId=#{areaId}
+		,address=#{address}
+		,tel=#{tel}
+		,sortNum=#{sortNum}
+		,remark=#{remark}
+		,orgState=#{orgState}
+		,orgLevel=#{orgLevel}
+		,outKey1=#{outKey1}
+		,outKey2=#{outKey2}
+		,bak1=#{bak1}
+		,bak2=#{bak2}
+		WHERE orgId=#{orgId};
+		<if test="subOrgList!=null and subOrgList.size>0">
+			<foreach collection="subOrgList" item="org">
+			UPDATE Organization set
+			parentId=#{org.parentId},parentName=#{org.parentName},parents=#{org.parents},orgType=#{org.orgType},orgRank=#{org.orgRank},userId=#{org.userId},orgCode=#{org.orgCode},orgName=#{org.orgName},shortName=#{org.shortName},
+			areaId=#{org.areaId},address=#{org.address},tel=#{org.tel},sortNum=#{org.sortNum},remark=#{org.remark},orgState=#{org.orgState},orgLevel=#{org.orgLevel},
+			outKey1=#{org.outKey1},outKey2=#{org.outKey2},bak1=#{org.bak1},bak2=#{org.bak2}
+			WHERE orgId=#{org.orgId};
+			</foreach>
+		</if>
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.org.Organization" >
+	select * from Organization where orgId = #{id}
+	</select>
+
+	<select id="findByOrgCode" parameterType="java.lang.String" resultType="com.greathack.homlin.pojo.org.Organization" >
+	select * from Organization where orgCode = #{orgCode}
+	</select>
+
+
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.org.Organization"  resultType="com.greathack.homlin.pojo.org.Organization" >
+	select * from Organization where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="parentId != null"> and parentId=#{parentId}</if>
+	<if test="parentName != null"> and parentName=#{parentName}</if>
+	<if test="orgType != null"> and orgType=#{orgType}</if>
+	<if test="orgRank != null"> and orgRank=#{orgRank}</if>
+	<if test="userId != null"> and userId=#{userId}</if>
+    <if test="orgCode != null"> and orgCode=#{orgCode}</if>
+	<if test="orgName != null"> and orgName=#{orgName}</if>
+	<if test="shortName != null"> and shortName=#{shortName}</if>
+	<if test="areaId != null"> and areaId=#{areaId}</if>
+	<if test="orgState != null"> and orgState=#{orgState}</if>
+	<if test="orgLevel != null"> and orgLevel=#{orgLevel}</if>
+	<if test="createBy != null"> and createBy=#{createBy}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	order by sortNum desc
+	</select>
+
+	<select id="searchByExample" parameterType="com.greathack.homlin.pojo.org.OrganizationSearchCriteria"  resultType="com.greathack.homlin.pojo.org.Organization" >
+		select * from Organization  org
+		where 1=1
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="orgType != null"> and org.orgType=#{orgType}</if>
+		<if test="orgRank != null"> and org.orgRank=#{orgRank}</if>
+		<if test="orgLevel != null"> and org.orgLevel=#{orgLevel}</if>
+		<if test="createBy != null"> and org.createBy=#{createBy}</if>
+		<if test="outKey1 != null"> and org.outKey1=#{outKey1}</if>
+		<if test="orgState != null"> and org.orgState= #{orgState}</if>
+		order by org.orgLevel asc ,org.sortNum desc
+	</select>
+
+	<!--获取部门名-->
+	<select id="findOrgName" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.org.Organization" >
+	select orgName from Organization where orgId = #{id}
+	</select>
+
+
+	<select id="findByParentId" parameterType="com.greathack.homlin.pojo.org.Organization"  resultType="com.greathack.homlin.pojo.org.Organization" >
+		select * from Organization where 1=1
+		<if test="parentId != null"> and ( orgid=#{parentId} or parentId=#{parentId} )</if>
+		order by sortNum desc
+	</select>
+	
+	<!--获取子孙类别列表 -->
+	<select id="getDescendants" parameterType="long" resultType="com.greathack.homlin.pojo.org.Organization" >
+		SELECT * FROM Organization WHERE  concat(',',parents,',') like concat('%,',#{value},',%') ORDER BY sortNum DESC
+	</select>
+	
+	<!-- WBC -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.org.OrganizationSearchCriteria" resultType="com.greathack.homlin.pojo.org.Organization" >
+		SELECT * FROM Organization WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="orgLeaveList!=null and orgLeaveList.size>0">
+			and orgLevel in
+			<foreach collection="orgLeaveList" item="orgLeave" separator=" , " open="(" close=")">
+				#{orgLeave}
+			</foreach>
+		</if>
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="nameLikeList != null and nameLikeList.size > 0 ">
+			AND
+			<foreach collection="nameLikeList" item="nameLike" open="(" close=")" separator=" or ">
+				orgName like concat('%',#{nameLike},'%')
+			</foreach>
+		</if>
+		<if test="nameNotLikeList != null and nameNotLikeList.size > 0">
+			AND
+			<foreach collection="nameNotLikeList" item="nameNotLike" open="(" close=")" separator=" and ">
+				orgName not like concat('%',#{nameNotLike},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="parents != null"> and orgId in (${parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="orgId != null"> and (orgId=#{orgId} or concat(',',parents,',') like concat('%,',#{orgId},',%')) </if>
+		<if test="orgType != null"> and orgType= #{orgType}</if>
+		<if test="orgRank != null"> and orgRank= #{orgRank}</if>
+		<if test="userId != null"> and userId= #{userId}</if>
+		<if test="createBy != null"> and createBy= #{createBy}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+
+		<if test="orderBy != null">order by #{orderBy}</if>
+		LIMIT #{startLine},#{pageSize}
+	</select>
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.org.OrganizationSearchCriteria" resultType="long" >
+		SELECT count(orgId) FROM Organization WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="orgLeaveList!=null and orgLeaveList.size>0">
+			and orgLevel in
+			<foreach collection="orgLeaveList" item="orgLeave" separator=" , " open="(" close=")">
+				#{orgLeave}
+			</foreach>
+		</if>
+		<if test="filterList!=null and filterList.size>0">
+			and
+			<foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+				${filter}
+			</foreach>
+		</if>
+		<if test="nameLikeList != null and nameLikeList.size > 0 ">
+			AND
+			<foreach collection="nameLikeList" item="nameLike" open="(" close=")" separator=" or ">
+				orgName like concat('%',#{nameLike},'%')
+			</foreach>
+		</if>
+		<if test="nameNotLikeList != null and nameNotLikeList.size > 0">
+			AND
+			<foreach collection="nameNotLikeList" item="nameNotLike" open="(" close=")" separator=" and ">
+				orgName not like concat('%',#{nameNotLike},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="parents != null"> and orgId in (${parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="orgId != null"> and (orgId=#{orgId} or concat(',',parents,',') like concat('%,',#{orgId},',%')) </if>
+		<if test="orgType != null"> and orgType= #{orgType}</if>
+		<if test="orgRank != null"> and orgRank= #{orgRank}</if>
+		<if test="userId != null"> and userId= #{userId}</if>
+		<if test="createBy != null"> and createBy= #{createBy}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+	</select>
+
+</mapper>

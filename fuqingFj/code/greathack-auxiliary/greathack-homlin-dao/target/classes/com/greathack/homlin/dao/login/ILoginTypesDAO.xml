@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.login.ILoginTypesDAO">
+	<insert id="add" parameterType="com.greathack.homlin.pojo.login.LoginType">
+    INSERT INTO logintypes(loginTypeUnique,loginInstanceUnique,appCode,instanceId,loginName,password)
+    VALUES(#{loginTypeUnique},#{loginInstanceUnique},#{appCode},#{instanceId},#{loginName},#{password})
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+	    DELETE FROM logintypes 
+	    WHERE loginTypeUnique=${value}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.login.LoginType">
+	    UPDATE logintypes
+	    SET 
+	    loginInstanceUnique=#{loginInstanceUnique},
+	    instanceId=#{instanceId},
+	    loginName=#{loginName},
+	    password=#{password}
+	    WHERE loginTypeUnique=#{loginTypeUnique}
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.login.LoginType" >
+		select * from logintypes where loginTypeUnique=${value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.login.LoginType"  resultType="com.greathack.homlin.pojo.login.LoginType" >
+		select * from logintypes where 1=1
+		<if test="loginInstanceUnique != null"> and loginInstanceUnique=#{loginInstanceUnique}</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="instanceId != null"> and instanceId=#{instanceId}</if>
+		<if test="loginName != null"> and loginName=#{loginName}</if>
+		<if test="password != null"> and password=#{password}</if>
+		order by loginTypeUnique desc
+	</select>
+	
+	<select id="findLoginTypeInfoByExample" parameterType="com.greathack.homlin.pojo.login.LoginTypeInfo"  resultType="com.greathack.homlin.pojo.login.LoginTypeInfo" >
+		select * from logintypes where 1=1
+		<if test="loginInstanceUnique != null"> and loginInstanceUnique=#{loginInstanceUnique}</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="instanceId != null"> and instanceId=#{instanceId}</if>
+		<if test="loginName != null"> and loginName=#{loginName}</if>
+		<if test="password != null"> and password=#{password}</if>
+		<if test="unifiedPassword != null"> and unifiedPassword=#{unifiedPassword}</if>
+		order by loginTypeUnique desc
+	</select>
+	
+</mapper>

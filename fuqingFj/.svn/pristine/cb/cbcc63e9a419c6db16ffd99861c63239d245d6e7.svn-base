@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>工资月报明细</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all">
+    <link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+    <style type="text/css">
+        .cos-sm-1 {
+            width: 20% !important;
+        }
+
+        .cos-sm-3 {
+            width: 28% !important;
+        }
+    </style>
+    <script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="../baseJs/function.js?v=1.60"></script>
+    <script src="../js/config.js?v=1.60"></script>
+    <script src="../js/global.js?v=1.60"></script>
+    <script src="../js/userLive.js?v=1.60"></script>
+    <script src="../js/auxiliary/gzmxXqList.js?v=1.60" charset="utf-8"></script>
+    <script src="../js/function.js?v=1.60"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <form class="layui-form" action="" lay-filter="searchForm">
+                        <div class="layui-form-item">
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">单位</label>
+                                <div class="layui-input-inline">
+                                    <select name="orgId" class="orgId" lay-filter="aihao" lay-search="">
+                                        <option value="" selected="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                    <script type="text/html" id="toolbarDemo">
+                        <div class="layui-btn-container">
+                         <!--   <button class="layui-btn layui-btn-sm AUX_KQGL_KQLR_ADD" lay-event="addData">工资录入</button>-->
+                            <button class="layui-btn layui-btn-sm layui-btn-danger  AUX_KQGL_KQLR_DELETE"
+                                    lay-event="del">
+                                批量删除
+                            </button>
+                        </div>
+                    </script>
+                    <script type="text/html" id="barDemo">
+                        <a class="layui-btn layui-btn-xs " lay-event="view">查看</a>
+                        <a class="layui-btn layui-btn-xs AUX_KQGL_KQLR_UPDATE" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-xs AUX_KQGL_KQLR_TJ" lay-event="gztj">工资调整</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="addPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="add" id="add">
+        <input type="hidden" name="orgId"/>
+        <input type="hidden" name="sbState" value="1"/>
+        <!--<input type="hidden" name="reportName"/>
+        <input type="hidden" name="reportId"/>
+        <input type="hidden" name="state" value="1"/>-->
+        <div class="layui-form-item ">
+            <label class="layui-form-label cos-sm-1" style="width: 120px">请选择档案人员</label>
+            <div class="layui-input-inline cos-sm-3">
+                <button type="button" class="layui-btn" id="addDary" style="width: 95%">选择</button>
+            </div>
+
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>应发工资</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="yfgz" autocomplete="off" class="layui-input" maxlength="10"  lay-verify="required|double">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>所在工作单位</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="orgName" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <!--<label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>-->
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>所在工作单位</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="orgName" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-normal" id="add_selectFileBtn">选择文件</button>
+                <div class="layui-upload-list">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="add_uploadList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="addSubmit" lay-filter="add" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+
+<div class="layui-fluid" id="editPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit" id="edit">
+        <input type="hidden" name="orgId"/>
+        <input type="hidden" name="gzglId"/>
+        <input type="hidden" name="idcard"/>
+        <div class="layui-form-item ">
+            <label class="layui-form-label cos-sm-1" style="width: 120px">请选择档案人员</label>
+            <div class="layui-input-inline cos-sm-3">
+                <button type="button" class="layui-btn" id="editDary" style="width: 95%">选择</button>
+            </div>
+
+            <label class="layui-form-label cos-sm-1">上报日期</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="sbDate" class="layui-input date" autocomplete="off" maxlength="11" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>所在工作单位</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="orgName" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <!--<label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>-->
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>调整前工资</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="yfgz" autocomplete="off" class="layui-input" maxlength="10"  lay-verify="required|double" disabled="disabled">
+            </div>
+
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>调整后工资</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="tzhgz" autocomplete="off" class="layui-input" maxlength="10"  lay-verify="required|double">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-normal" id="edit_selectFileBtn">选择文件</button>
+                <div class="layui-upload-list">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="edit_uploadList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="editSubmit" lay-filter="edit" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+
+<div class="layui-fluid" id="viewPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="view" id="view">
+        <input type="hidden" name="orgId"/>
+        <input type="hidden" name="gzglId"/>
+        <div class="layui-form-item ">
+            <label class="layui-form-label cos-sm-1" style="width: 120px">请选择档案人员</label>
+            <div class="layui-input-inline cos-sm-3">
+                <button type="button" class="layui-btn" id="viewDary" style="width: 95%">选择</button>
+            </div>
+
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>应发工资</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="yfgz" autocomplete="off" class="layui-input" maxlength="10"  lay-verify="required|double" readonly="readonly">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>所在工作单位</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="orgName" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>
+            <!--<label class="layui-form-label cos-sm-1" style="width: 120px"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" autocomplete="off" class="layui-input" maxlength="64" readonly="readonly" lay-verify="required">
+            </div>-->
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1">上报日期</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="sbDate" class="layui-input date" autocomplete="off" maxlength="11" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-normal" id="view_selectFileBtn">选择文件</button>
+                <div class="layui-upload-list">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>大小</th>
+                            <th>状态</th>
+                            <!--<th>操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody id="view_uploadList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

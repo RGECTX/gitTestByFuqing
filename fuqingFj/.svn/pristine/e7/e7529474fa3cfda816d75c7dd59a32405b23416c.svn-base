@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxNoticeDAO">
+
+	<insert id="add" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNotice">
+    INSERT INTO aux_notice(noticeId,appCode,noticeTitle,noticeText,state,remark,createBy,createTime,outKey1,
+    	outKey2,bak1,bak2)
+    VALUES(#{noticeId},#{appCode},#{noticeTitle},#{noticeText},#{state},#{remark},#{createBy},#{createTime},#{outKey1},
+    	#{outKey2},#{bak1},#{bak2})
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM aux_notice WHERE noticeId=${value}
+  	</delete>
+  	<update id="update" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNotice">
+    UPDATE aux_notice
+    SET
+    	appCode=#{appCode},
+    	noticeTitle=#{noticeTitle},
+    	noticeText=#{noticeText},
+    	state=#{state},
+    	remark=#{remark},
+    	createBy=#{createBy},
+    	createTime=#{createTime}
+    WHERE noticeId=${noticeId}
+  	</update>
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxNotice" >
+	select * from aux_notice where noticeId=#{value}
+	</select>
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNotice" resultType="com.greathack.homlin.pojo.auxiliary.AuxNotice" >
+	select * from aux_notice where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="noticeTitle != null"> and noticeTitle=#{noticeTitle}</if>
+	<if test="noticeText != null"> and noticeText=#{noticeText}</if>
+	<if test="state != null"> and state=#{state}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	<if test="createBy != null"> and createBy=#{createBy}</if>
+	<if test="createTime != null"> and createTime=#{createTime}</if>
+	</select>
+
+	<!-- 	search  -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNoticeSearchCriteria" resultType="com.greathack.homlin.pojo.auxiliary.AuxNotice" >
+		select * from aux_notice where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="state != null"> and state = #{state}</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+		<if test="sortField == 2"> ORDER BY createTime ASC</if>
+	    LIMIT #{startLine},#{pageSize}
+	</select>
+
+	<!--getSearchResultCount -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxNoticeSearchCriteria" resultType="long" >
+		select count(*) from aux_notice where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="state != null"> and state = #{state}</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxHmdDAO">
+    <parameterMap id="parameterAuxHmd" type="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+        <parameter property="hmdId"/>
+        <parameter property="xm"/>
+        <parameter property="idcard"/>
+        <parameter property="reason"/>
+        <parameter property="remark"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+    </parameterMap>
+
+    <insert id="add" parameterMap="parameterAuxHmd">
+    INSERT INTO aux_hmd(hmdId,xm,idcard,reason,remark,createBy,createTime,outKey1,outKey2,bak1,bak2)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_hmd WHERE hmdId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxHmd">
+		update aux_hmd
+		set
+		xm=#{xm},
+		idcard=#{idcard},
+		reason=#{reason},
+		remark=#{remark},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where hmdId=#{hmdId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+		select * from aux_hmd where hmdId = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxHmd" resultType="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+        select * from aux_hmd where 1=1
+        <if test="xm != null and xm !='' ">and xm=#{xm}</if>
+        <if test="idcard != null and idcard !='' ">and idcard=#{idcard}</if>
+        <if test="reason != null and reason !='' ">and reason=#{reason}</if>
+        <if test="remark != null and remark !='' ">and remark=#{remark}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+		select * from aux_hmd
+	</select>
+
+    <!--<select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxHmdSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+        select * from aux_hmd where 1=1
+        <if test="xm != null  and xm !='' ">and xm LIKE concat('%',#{xm},'%')</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>-->
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxHmdSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxHmd">
+        SELECT
+        b.*
+        FROM aux_hmd b
+        left join user u on u.userId=b.createBy
+        left join organization org on org.orgId=u.outKey1
+        WHERE 1 = 1
+        <if test="xm != null  and xm !='' ">and xm LIKE concat('%',#{xm},'%')</if>
+        <if test="createBy != null  and createBy !='' "> and b.createBy = #{userId}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxHmdSearchCriteria"
+            resultType="long">
+        SELECT
+        count( b.hmdId )
+        FROM
+        aux_hmd b
+        LEFT JOIN USER u ON u.userId = b.createBy
+        LEFT JOIN organization org ON org.orgId = u.outKey1
+        WHERE
+        1 = 1
+        <if test="xm != null  and xm !='' ">and xm LIKE concat('%',#{xm},'%')</if>
+        <if test="createBy != null  and createBy !='' "> and b.createBy = #{userId}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+    <!--<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxHmdSearchCriteria"
+            resultType="long">
+        select count(*) from aux_hmd where 1=1
+        <if test="xm != null  and xm !='' ">and xm LIKE concat('%',#{xm},'%')</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>-->
+
+</mapper>

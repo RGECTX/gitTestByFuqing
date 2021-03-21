@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.IAddressItemDAO">
+	<parameterMap type="com.greathack.homlin.pojo.user.AddressItem" id="BaseParameter">
+    	<parameter property="addressItemId" />
+    	<parameter property="appCode"/>
+    	<parameter property="userId"/>
+        <parameter property="name"/>
+        <parameter property="mobile"/>
+        <parameter property="tel"/>
+    	<parameter property="province"/>
+    	<parameter property="city"/>
+    	<parameter property="district"/>
+    	<parameter property="lat"/>
+    	<parameter property="lng"/>
+    	<parameter property="linkAddress"/>
+    	<parameter property="isDefault"/>
+    	<parameter property="remark"/>
+    	<parameter property="createTime"/>
+    	<parameter property="outKey1"/>
+    	<parameter property="outKey2"/>
+    	<parameter property="bak1"/>
+    	<parameter property="bak2"/>
+  	</parameterMap>
+  	
+	<resultMap id="BaseResultMap" type="com.greathack.homlin.pojo.user.AddressItem">
+		<result column="addressItemId" property="addressItemId" />
+		<result column="appCode" property="appCode" />
+		<result column="userId" property="userId" />
+		<result column="name" property="name" />
+        <result column="mobile" property="mobile" />
+        <result column="tel" property="tel" />
+        <result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="lat" property="lat" />
+		<result column="lng" property="lng" />
+		<result column="linkAddress" property="linkAddress" />
+		<result column="isDefault" property="isDefault" />
+		<result column="remark" property="remark" />
+		<result column="createTime" property="createTime" />
+		<result column="outKey1" property="outKey1" />
+		<result column="outKey2" property="outKey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		
+	</resultMap>
+	<insert id="add" parameterMap="BaseParameter">
+	    INSERT INTO addressitem(addressItemId,appCode,userId,name,mobile,tel,province,city,district,lat,lng,linkAddress,isDefault,remark,createTime,outKey1,outKey2,bak1,bak2)
+	    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+ 	
+ 	<!-- 删除 -->
+ 	<delete id="delete" parameterType="java.lang.Long">
+	    DELETE FROM addressitem 
+	    WHERE addressItemId=${value}
+  	</delete>
+  	
+  	 	<!-- 删除 -->
+ 	<delete id="deleteByUserId" parameterType="java.lang.Long">
+	    DELETE FROM addressitem 
+	    WHERE userId=${value}
+  	</delete>
+  	
+  	<update id="update" parameterMap="BaseParameter">
+	    UPDATE addressitem
+	     <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''"> name=#{name}, </if>
+            <if test="mobile != null and mobile != ''"> mobile=#{mobile}, </if>
+            <if test="tel != null and tel != ''"> tel=#{tel}, </if>
+	        <if test="province != null and province != ''"> province=#{province}, </if>
+		    <if test="city != null and city != ''"> city=#{city}, </if>
+		    <if test="district != null and district != ''">  district=#{district}, </if>
+		    <if test="lat != null and lat != ''"> lat=#{lat}, </if>
+		    <if test="lng != null and lng != ''"> lng=#{lng}, </if>
+		    <if test="linkAddress != null and linkAddress != ''"> linkAddress=#{linkAddress}, </if>
+		    <if test="isDefault != null"> isDefault=#{isDefault}, </if>
+		    <if test="remark != null and remark != ''"> remark=#{remark}, </if>
+		    <if test="createTime != null and createTime != ''"> createTime=#{createTime}, </if>
+		    <if test="outKey1 != null and outKey1 != ''"> outKey1=#{outKey1}, </if>
+		    <if test="outKey2 != null and outKey2 != ''"> outKey2=#{outKey2}, </if>
+		    <if test="bak1 != null and bak1 != ''"> bak1=#{bak1}, </if>
+		    <if test="bak2 != null and bak2 != ''"> bak2=#{bak2}, </if>
+		    appCode=#{appCode},
+	    </trim>
+	    	WHERE addressItemId=${addressItemId}
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select * from addressitem where addressItemId=${value}
+	</select>
+	
+	
+	<select id="findByExample" parameterMap="BaseParameter" resultMap="BaseResultMap" >	
+	select * from user where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="userId != null"> and userId=#{userId}</if>
+    <if test="name != null"> and name=#{name}</if>
+    <if test="mobile != null"> and mobile=#{mobile}</if>
+    <if test="tel != null"> and tel=#{tel}</if>
+	<if test="province != null"> and province=#{province}</if>
+	<if test="city != null"> and city=#{city}</if>
+	<if test="district != null"> and district=#{district}</if>
+	<if test="lat != null"> and lat=#{lat}</if>
+	<if test="lng != null"> and lng=#{lng}</if>
+	<if test="linkAddress != null"> and linkAddress=#{linkAddress}</if>
+	<if test="isDefault != null"> and isDefault=#{isDefault}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	<if test="createTime != null"> and createTime=#{createTime}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+		
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.user.AddressItemSearchCriteria"  resultMap="BaseResultMap">	
+		SELECT * FROM addressitem where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>	
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>	    
+	</select>
+		
+	<select id="search" parameterType="com.greathack.homlin.pojo.user.AddressItemSearchCriteria"  resultMap="BaseResultMap">	
+		SELECT * FROM addressitem where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>	
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+	    <if test="sortField == 2"> ORDER BY createTime ASC</if>
+	    LIMIT #{startLine},#{pageSize}
+	    
+	</select>
+	
+	<update id="setDefault" parameterType="java.lang.Long">
+		update addressitem
+		set isDefault = 1
+		where addressItemId = ${value}
+	</update>
+	
+	<update id="setNotDefault" parameterType="java.lang.Long">
+		update addressitem
+		set isDefault = 0
+		where userId != ${value}
+	</update>
+	
+	
+</mapper>

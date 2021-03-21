@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.IIdcardDAO">
+	<parameterMap type="com.greathack.homlin.pojo.user.Idcard" id="parameterIdcard">
+		<parameter property="idcardId" />
+		<parameter property="userId" />
+		<parameter property="idcardNo" />
+		<parameter property="pics" />
+        <parameter property="beginValidityDate" />
+        <parameter property="endValidityDate" />
+		<parameter property="isDefault" />
+		<parameter property="createTime" />
+		<parameter property="idcardName" />
+		<parameter property="appCode" />
+	</parameterMap>
+
+	<resultMap id="resultIdcard" type="com.greathack.homlin.pojo.user.Idcard">
+		<result column="idcardId" property="idcardId" />
+		<result column="userId" property="userId" />
+		<result column="idcardName" property="idcardName" />
+		<result column="idcardNo" property="idcardNo" />
+		<result column="pics" property="pics" />
+        <result column="beginValidityDate" property="beginValidityDate" />
+        <result column="endValidityDate" property="endValidityDate" />
+		<result column="isDefault" property="isDefault" />
+		<result column="createTime" property="createTime" />
+		<result column="appCode" property="appCode" />
+	</resultMap>
+	<insert id="add" parameterMap="parameterIdcard">
+		INSERT INTO
+		idcard(idcardId,userId,idcardNo,pics,beginValidityDate,endValidityDate,isDefault,createTime,idcardName,appCode)
+		VALUES(?,?,?,?,?,?,?,?,?,?)
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM idcard
+		WHERE idcardId=${value}
+	</delete>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultIdcard">
+		SELECT * FROM idcard
+		WHERE idcardId=${value}
+	</select>
+
+	<update id="update" parameterMap="parameterIdcard">
+		UPDATE idcard
+		SET
+		idcardNo=#{idcardNo},pics=#{pics},
+        beginValidityDate=#{beginValidityDate},
+        endValidityDate=#{endValidityDate},idcardName=#{idcardName},isDefault=#{isDefault}
+		WHERE idcardId=#{idcardId}
+	</update>
+	
+	<select id="findByExample" parameterMap="parameterIdcard" resultMap="resultIdcard" >	
+	select * from idcard where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="userId != null"> and userId=#{userId}</if>
+	<if test="idcardName != null"> and idcardName=#{idcardName}</if>
+	<if test="idcardNo != null"> and idcardNo=#{idcardNo}</if>
+	<if test="isDefault != null"> and isDefault=#{isDefault}</if>
+	</select>
+
+	<select id="search" parameterType="com.greathack.homlin.pojo.user.IdcardSearchCriteria" resultMap="resultIdcard">
+		select * from idcard where  1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>	
+		
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+	    <if test="sortField == 2"> ORDER BY createTime ASC</if>
+		 LIMIT #{startLine},#{pageSize}	
+	</select>
+
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.user.IdcardSearchCriteria" resultMap="resultIdcard">
+		select * from idcard where  1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>
+	</select>
+
+	<select id="findByUserId" parameterType="java.lang.Long" resultMap="resultIdcard">
+		select * from idcard where userId=${value}
+	</select>
+	
+	<delete id="delUserIdcard" parameterType="java.lang.Long" >
+		DELETE FROM idcard WHERE userId=${value}
+	</delete>
+</mapper>

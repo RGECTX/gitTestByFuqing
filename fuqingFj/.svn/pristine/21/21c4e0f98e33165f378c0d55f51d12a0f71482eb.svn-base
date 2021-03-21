@@ -1,0 +1,87 @@
+html{
+	height: 100%;
+	width: 100%;
+}
+body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+a{
+	text-decoration: none;
+}
+
+
+
+.title{
+	position: absolute;
+	right: 0;
+	left: 0;
+	margin: 0 auto;
+	width: 50%;
+	top: 15%;
+	transform: translateY(-50%);
+}
+.loginBox{
+	width: 440px;
+	height: 330px;
+	background: #fff;
+	border-radius: 6px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.loginBox span{
+	font-size: 28px;
+	display: block;
+	text-align: center;
+	line-height: 90px;
+}
+.login{
+	width: 360px;
+	height: 100px;
+	margin: auto;
+	border-radius: 3px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+}
+.login div{
+	height: 50px;
+	padding-left: 50px;
+}
+.login .uname{
+	border-bottom: 1px solid #CCCCCC;
+	background: url(../image/pwd.png) no-repeat;
+	background-position: 10px center;
+}
+.login .pwd{
+	background: url(../image/user.png) no-repeat;
+	background-position: 10px center;
+}
+.login input{
+	border: none;
+	height: 48px;
+	outline: none;
+	width: 300px;
+}
+.remPwd{
+	width: 360px;
+	margin: 10px auto 30px auto;
+	font-size: 14px;
+}
+.loginBtn{
+	width: 360px;
+	margin: auto;
+	height: 44px;
+	background: #009688;
+	color: #FFFFFF;
+	border: none;
+	display: block;
+}
+
+

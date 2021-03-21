@@ -1,0 +1,111 @@
+package com.greathack.homlin.pojo.auxiliary;
+
+import com.greathack.homlin.pojo.system.SearchCriteria;
+
+import java.io.Serializable;
+
+public class AuxDaglSearchCriteria extends SearchCriteria implements Serializable {
+
+    private static final long serialVersionUID = 5504740432573402549L;
+    /**
+     * 工作单位ID
+     */
+    private Long orgId;
+
+    /**
+     * 工作单位名称
+     */
+    private String orgName;
+
+    /**
+     * 辅警类别
+     */
+    private String fjType;
+
+    /**
+     * 状态
+     */
+    private String state;
+
+    /**
+     * 姓名
+     */
+    private String xm;
+
+    /**
+     * 姓名
+     */
+    private String xb;
+
+    /**
+     * 身份证号
+     */
+    private String idcard;
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getXm() {
+        return xm;
+    }
+
+    public void setXm(String xm) {
+        this.xm = xm;
+    }
+
+    public AuxDaglSearchCriteria() {
+        super();
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getFjType() {
+        return fjType;
+    }
+
+    public void setFjType(String fjType) {
+        this.fjType = fjType;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getXb() {
+        return xb;
+    }
+
+    public void setXb(String xb) {
+        this.xb = xb;
+    }
+
+    protected String getKwFieldName(int field) {
+        switch (field) {
+            default:
+                return "";
+        }
+    }
+}

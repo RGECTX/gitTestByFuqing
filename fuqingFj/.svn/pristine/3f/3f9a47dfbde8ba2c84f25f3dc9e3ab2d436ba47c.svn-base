@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.login.ILoginInstancesDAO">
+	<insert id="add" parameterType="com.greathack.homlin.pojo.login.LoginInstance">
+    INSERT INTO logininstances(loginInstanceUnique,appCode,instanceId,loginCode,password,loginTime,loginIp,loginRegion,loginState)
+    VALUES(#{loginInstanceUnique},#{appCode},#{instanceId},#{loginCode},#{password},#{loginTime},#{loginIp},#{loginRegion},#{loginState})
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+	    DELETE FROM logininstances 
+	    WHERE loginInstanceUnique=${value}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.login.LoginInstance">
+	    UPDATE logininstances
+	    SET 
+	    instanceId=#{instanceId},
+	    loginCode=#{loginCode},
+	    password=#{password},
+	    loginTime=#{loginTime},
+	    loginIp=#{loginIp},
+	    loginRegion=#{loginRegion},
+	    loginState=#{loginState}
+	    WHERE loginInstanceUnique=#{loginInstanceUnique}
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.login.LoginInstance" >
+		select * from logininstances where loginInstanceUnique=${value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.login.LoginInstance"  resultType="com.greathack.homlin.pojo.login.LoginInstance" >
+		select * from logininstances where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="instanceId != null"> and instanceId=#{instanceId}</if>
+		<if test="loginCode != null"> and loginCode=#{loginCode}</if>
+		<if test="password != null"> and password=#{password}</if>
+		<if test="loginTime != null"> and loginTime=#{loginTime}</if>
+		<if test="loginIp != null"> and loginIp=#{loginIp}</if>
+		<if test="loginState != null"> and loginState=#{loginState}</if>
+		order by loginInstanceUnique desc
+	</select>
+  	
+	<select id="findByLoginCodeOnly" parameterType="java.lang.String" resultType="com.greathack.homlin.pojo.login.LoginInstance" >
+		select * from logininstances where loginCode=#{value} limit 0,1
+	</select>
+	
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.IRoleDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.Role">
+    INSERT INTO homlin_Role(roleId,roleType,roleName,roleDescription,roleState,isSys)
+    VALUES(#{roleId},#{roleType},#{roleName},#{roleDescription},#{roleState},#{isSys});
+ 	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM homlin_Role WHERE RoleId=${value};
+  	</delete>
+	<!-- 	<delete id="empty" parameterType="java.lang.String">
+       DELETE FROM homlin WHERE RoleId=${value};
+         </delete> -->
+
+	<update id="update" parameterType="com.greathack.homlin.pojo.Role">
+  	update homlin_role
+  	set
+  	roleType=#{roleType},
+  	roleName=#{roleName},
+  	roleDescription=#{roleDescription},
+  	roleState=#{roleState},
+  	isSys=#{isSys}
+  	where roleId=#{roleId};
+  	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.Role" >
+	select * from homlin_Role where RoleId=#{value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.Role"  resultType="com.greathack.homlin.pojo.Role" >
+		select * from homlin_Role where 1=1
+		<if test="roleType != null"> and roleType=#{roleType}</if>
+		<if test="roleName != null"> and roleName=#{roleName}</if>
+		<if test="roleDescription != null"> and roleDescription=#{roleDescription}</if>
+		<if test="roleState != null"> and roleState=#{roleState}</if>
+		<if test="isSys != null"> and isSys=#{isSys}</if>
+	</select>
+
+	<!-- 	search  -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.RoleSearchCriteria" resultType="com.greathack.homlin.pojo.Role" >
+		select * from homlin_Role where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="roleType != null"> and roleType=#{roleType}</if>
+		<if test="roleState != null"> and roleState=#{roleState}</if>
+		<if test="isSys != null"> and isSys=#{isSys}</if>
+		<if test="sortField == 1"> ORDER BY roleId DESC </if>
+		<if test="sortField == 2"> ORDER BY roleId ASC</if>
+		LIMIT #{startLine},#{pageSize}
+	</select>
+
+
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.RoleSearchCriteria" resultType="long" >
+		select count(*) from homlin_Role where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="roleType != null"> and roleType=#{roleType}</if>
+		<if test="roleState != null"> and roleState=#{roleState}</if>
+		<if test="isSys != null"> and isSys=#{isSys}</if>
+	</select>
+</mapper>

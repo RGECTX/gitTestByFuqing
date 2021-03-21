@@ -1,0 +1,1 @@
+ALTER TABLE aux_gzgl ADD daId bigint(20) COMMENT '档案id' ;

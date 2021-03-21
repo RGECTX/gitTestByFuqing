@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greathack.homlin.daointerface.scheduletask.IScheduleTaskDAO">
+
+    <resultMap id="BaseResultMap" type="com.greathack.homlin.pojo.scheduletask.ScheduleTask" >
+        <result column="id" property="id" />
+        <result column="task_name" property="taskName" />
+        <result column="task_code" property="taskCode" />
+        <result column="task_type" property="taskType" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="times" property="times" />
+        <result column="interval1" property="interval1" />
+        <result column="task_class" property="taskClass" />
+        <result column="state" property="state" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                task_name,
+                task_code,
+                task_type,
+                start_time,
+                end_time,
+                times,
+                interval1,
+                task_class,
+                state,
+                create_by,
+                create_time,
+                remark
+    </sql>
+
+    <insert id="add" parameterType="com.greathack.homlin.pojo.scheduletask.ScheduleTask">
+        INSERT INTO schedule_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != taskName'>
+                task_name,
+            </if>
+            <if test ='null != taskCode'>
+                task_code,
+            </if>
+            <if test ='null != taskType'>
+                task_type,
+            </if>
+            <if test ='null != startTime'>
+                start_time,
+            </if>
+            <if test ='null != endTime'>
+                end_time,
+            </if>
+            <if test ='null != times'>
+                times,
+            </if>
+            <if test ='null != interval1'>
+                interval1,
+            </if>
+            <if test ='null != taskClass'>
+                task_class,
+            </if>
+            <if test ='null != state'>
+                state,
+            </if>
+            <if test ='null != createBy'>
+                create_by,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != remark'>
+                remark
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != taskName'>
+                #{taskName},
+            </if>
+            <if test ='null != taskCode'>
+                #{taskCode},
+            </if>
+            <if test ='null != taskType'>
+                #{taskType},
+            </if>
+            <if test ='null != startTime'>
+                #{startTime},
+            </if>
+            <if test ='null != endTime'>
+                #{endTime},
+            </if>
+            <if test ='null != times'>
+                #{times},
+            </if>
+            <if test ='null != interval1'>
+                #{interval1},
+            </if>
+            <if test ='null != taskClass'>
+                #{taskClass},
+            </if>
+            <if test ='null != state'>
+                #{state},
+            </if>
+            <if test ='null != createBy'>
+                #{createBy},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != remark'>
+                #{remark}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM schedule_task
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.greathack.homlin.pojo.scheduletask.ScheduleTask">
+        UPDATE schedule_task
+        <set>
+            <if test ='null != taskName'>task_name = #{taskName},</if>
+            <if test ='null != taskCode'>task_code = #{taskCode},</if>
+            <if test ='null != taskType'>task_type = #{taskType},</if>
+            <if test ='null != startTime'>start_time = #{startTime},</if>
+            <if test ='null != endTime'>end_time = #{endTime},</if>
+            <if test ='null != times'>times = #{times},</if>
+            <if test ='null != interval1'>interval1 = #{interval1},</if>
+            <if test ='null != taskClass'>task_class = #{taskClass},</if>
+            <if test ='null != state'>state = #{state},</if>
+            <if test ='null != createBy'>create_by = #{createBy},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != remark'>remark = #{remark}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM schedule_task
+        WHERE id = #{id}
+    </select>
+
+    <select id="search" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM schedule_task
+        WHERE 1 = 1
+        <if test="taskName!=null and taskName !=null"> and task_name LIKE concat('%',#{taskName},'%')</if>
+        LIMIT #{startLine}, #{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM schedule_task
+        WHERE 1 = 1
+        <if test="taskName!=null and taskName !=null"> and task_name LIKE concat('%',#{taskName},'%')</if>
+    </select>
+
+    <update id="changeState" parameterType="com.greathack.homlin.pojo.scheduletask.ScheduleTask">
+        UPDATE schedule_task
+        SET state = #{state}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

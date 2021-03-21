@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layui</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+  <script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+   <script src="baseJs/function.js?v=1.60"></script>
+   <script src="js/config.js?v=1.60"></script>     
+   <script src="js/global.js?v=1.60"></script>
+   <script src="js/userLive.js?v=1.60"></script>
+  <script src="js/unitQuotas.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>  
+<div class="layui-fluid">
+<div class="layui-row layui-col-space10">
+      <div class="layui-col-sm2 layui-col-md2 layui-col-lg2">
+        <div class="layui-card" style="overflow:auto">
+          <div id="amUnitTree" class="demo-tree demo-tree-box"></div>
+        </div>
+      </div>
+      <div class="layui-col-sm10 layui-col-md10 layui-col-lg10">
+        <div class="layui-card col2">
+          <div class="layui-fluid" style="padding: 15px 0px;">
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-md12">
+                <div class="layui-card">        
+                  <div class="layui-card-header">    
+                  <form class="layui-form" action="" lay-filter="searchForm">          
+                      <div class="layui-form-item layui-row">
+						<div class="layui-inline">
+						  <label class="layui-form-label">关键词</label>
+						  <div class="layui-input-inline">
+							<input type="text" name="keyword" placeholder="搜索单位名称/编码" autocomplete="off" class="layui-input">
+						  </div>
+						</div>
+                        <div class="layui-inline">
+                          <label class="layui-form-label">单位类别</label>
+                          <div class="layui-input-inline">
+                            <select name="orgType" class="orgType" lay-filter="aihao">
+                            	<option value="" selected></option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="layui-inline">
+                          <label class="layui-form-label">单位组别</label>
+                          <div class="layui-input-inline">
+                             <select name="orgGroup" class="orgGroup" lay-filter="aihao">
+                             	<option value="" selected></option>
+                             </select>
+                          </div>
+                        </div>
+						<div class="layui-inline">
+						  <label class="layui-form-label">单位层级</label>
+						  <div class="layui-input-inline">
+							 <select name="orgLevel" class="orgLevel" lay-filter="aihao">
+								<option value="">全局</option>
+								<option value="1">市局</option>
+								<option value="2">科所队</option>
+							  </select>
+						  </div>
+						</div>
+                        <div class="layui-inline">
+                           <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                        </div>
+                      </div>
+                  </form>
+                  </div>
+                  <div class="layui-card-body">
+                    <table class="layui-hide" id="unitQuotasList" lay-filter="unitQuotasList"></table>
+					<script type="text/html" id="toolbarDemo">
+					  <div class="layui-btn-container">
+						<button class="layui-btn layui-btn-sm AM_QUOTAS_SET_ALLOCATE_NUM" lay-event="batchSetQuotasAllocateNum">立即计算实配数</button>                
+					  </div>
+					</script>
+					<script type="text/html" id="barDemo">
+                      <a class="layui-btn layui-btn-xs AM_QUOTAS_UPDATE" lay-event="edit">编辑</a>
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</div>  
+
+<div class="layui-fluid" id="editPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit" id="edit">
+  	  <input type="hidden" name="id" />
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">单位名称</label>
+	    <div class="layui-input-inline">
+			 <input type="text" name="orgName" lay-verify="required" disabled="disabled"  diautocomplete="off" class="layui-input" >
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">编制数</label>
+	    <div class="layui-input-inline">
+	      <input type="text" name="quotasNum" lay-verify="number" placeholder="请输入编制数" autocomplete="off" class="layui-input" >
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">实配数</label>
+	    <div class="layui-input-inline">
+	      <input type="text" name="allocateNum" lay-verify="number" placeholder="请输入实配数" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	      <button type="button" id="editSubmit"  lay-filter="edit" style="display:none" lay-submit></button>
+	  </div>
+    </form>
+</div>
+
+</body>
+</html>

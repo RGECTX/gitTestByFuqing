@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/fuqingFj.iml" filepath="$PROJECT_DIR$/.idea/fuqingFj.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-api Maven Webapp/greathack-homlin-api.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-api Maven Webapp/greathack-homlin-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-common/greathack-homlin-common.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-common/greathack-homlin-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-dao/greathack-homlin-dao.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-dao/greathack-homlin-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-daointerface/greathack-homlin-daointerface.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-daointerface/greathack-homlin-daointerface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-pojo/greathack-homlin-pojo.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-pojo/greathack-homlin-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-service/greathack-homlin-service.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-service/greathack-homlin-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-serviceinterface/greathack-homlin-serviceinterface.iml" filepath="$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-serviceinterface/greathack-homlin-serviceinterface.iml" />
+    </modules>
+  </component>
+</project>

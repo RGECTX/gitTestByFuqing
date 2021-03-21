@@ -1,0 +1,1276 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>昌吉市辅警招录信息平台</title>
+		<script src="../../layui/layui.js?v=1.60" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/comon0.css?v=1.60">
+		<script src="../../baseJs/function.js?v=1.60"></script>
+		<script src="../../js/config.js?v=1.60"></script>
+		<script src="../../js/global.js?v=1.60"></script>
+		<script src="../../js/userLive.js?v=1.60"></script>
+		<script type="text/javascript" src="js/jquery.js?v=1.60"></script>
+		<script type="text/javascript" src="js/kshPt.js?v=1.60"></script>
+	</head>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			moveJrxzfjlb();
+			function moveJrxzfjlb(){
+				var stop=false;
+				setInterval(function(){
+				   if(stop==true || document.getElementById('jrxzfjlb').getElementsByTagName('li').length<4){
+						return;
+					}
+				   doscroll()
+				}, 3000);
+			   function doscroll(){
+					var $parent = $('#jrxzfjlb');
+					var $first = $parent.find('li:first');
+					var height = $first.height();
+					$first.animate({
+						height: 0
+						}, 500, function() {
+						$first.css('height', height).appendTo($parent);
+					});    
+			   };
+				//鼠标放到快递信息(ul)上时
+				$('#jrxzfjlb').hover(function(){
+					$(this).css("cursor","pointer");
+					stop=true;//停止动画
+				},function(){
+					stop=false;//开始动画
+				});
+			}
+			moveJyjl();
+			function moveJyjl(){
+				var stop=false;
+				setInterval(function(){
+				   if(stop==true || document.getElementById('jyjl').getElementsByTagName('li').length<6){
+						return;
+					}
+				   doscroll()
+				}, 3000);
+			   function doscroll(){
+					var $parent = $('#jyjl');
+					var $first = $parent.find('li:first');
+					var height = $first.height();
+					$first.animate({
+						height: 0
+						}, 500, function() {
+						$first.css('height', height).appendTo($parent);
+					});    
+			   };
+				//鼠标放到快递信息(ul)上时
+				$('#jyjl').hover(function(){
+					$(this).css("cursor","pointer");
+					stop=true;//停止动画
+				},function(){
+					stop=false;//开始动画
+				});
+			}
+		})
+	</script>
+	<body >
+		<div class="loading">
+			<div class="loadbox"> <img src="picture/loading.gif"> 页面加载中... </div>
+		</div>
+		<div class="head">
+			<h1>昌吉市辅警招录信息平台</h1>
+		</div>
+		<div class="mainbox">
+			<ul class="clearfix">
+				<li>
+					<div class="boxall" style="height: 2.7rem">
+						<div class="alltitle">辅警结构分析</div>
+						<div class="sycm">
+							<ul class="clearfix">
+								<li>
+									<h2 id="peopleWithin"></h2><span>疆内</span>
+								</li>
+								<li>
+									<h2 id="peopleOuter"></h2><span>疆外</span>
+								</li>
+								<li>
+									<h2 id="withinOuter"></h2><span>环比增长</span>
+								</li>
+							</ul>
+							<div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+							<ul class="clearfix">
+								<li>
+									<h2 id="peopleMan"></h2><span>男</span>
+								</li>
+								<li>
+									<h2 id="peopleWoman"></h2><span>女</span>
+								</li>
+								<li>
+									<h2 id="manWoman"></h2><span>环比增长</span>
+								</li>
+							</ul>
+						</div>
+						<div class="boxfoot"></div>
+					</div>
+					<div class="boxall" style="height: 2.65rem">
+						<div class="alltitle">招录占比</div>
+						<div class="sy" id="echarts1"></div>
+						<div class="sy" id="echarts2"></div>
+						<div class="sy" id="echarts3"></div>
+						<div class="boxfoot"></div>
+					</div>
+					<div class="boxall" style="height: 2.95rem">
+						<div class="alltitle">籍贯区分比例</div>
+						<div id="echarts4" style="height: 2.2rem; width: 100%;"></div>
+						<div class="boxfoot"></div>
+					</div>
+				</li>
+				<li>
+					<div class="bar">
+						<div class="barbox">
+							<ul class="clearfix">
+								<li class="pulll_left counter" id="people"></li>
+								<li class="pulll_left counter" id="reducePeople"></li>
+							</ul>
+						</div>
+						<div class="barbox2">
+							<ul class="clearfix">
+								<li class="pulll_left">辅警总人数</li>
+								<li class="pulll_left">辅警减员总人数</li>
+							</ul>
+						</div>
+					</div>
+					<div class="map">
+						<div class="map1"><img src="picture/lbx.png"></div>
+						<div class="map2"><img src="picture/jt.png"></div>
+						<div class="map3"><img src="picture/map.png"></div>
+						<div class="map4" id="map_1"></div>
+					</div>
+				</li>
+				<li>
+					<div class="boxall" style="height:5.2rem">
+						<div class="alltitle">新增辅警信息</div>
+						<div class="tabs">
+							<ul class="clearfix">
+								<li onclick="activeSeven()"><a class="active" href="#" id="seven">7天</a></li>
+								<li onclick="activeFifteen()"><a href="#" id="fifteen" class="">15天</a></li>
+								<li onclick="activeSevenThirtyDays()"><a href="#" class="" id="thirtyDays">30天</a></li>
+							</ul>
+						</div>
+						<div class="clearfix" id="sevenShow">
+							<div class="sy" id="echarts6"></div>
+							<div class="sy" id="echarts7"></div>
+							<div class="sy" id="echarts8"></div>
+						</div>
+						<div class="clearfix" id="fifteenShow">
+							<div class="sy" id="echarts9"></div>
+							<div class="sy" id="echarts10"></div>
+							<div class="sy" id="echarts11"></div>
+						</div>
+						<div class="clearfix" id="thirtyDaysShow">
+							<div class="sy" id="echarts12"></div>
+							<div class="sy" id="echarts13"></div>
+							<div class="sy" id="echarts14"></div>
+						</div>
+						<div class="addnew">
+							<div class="tit02"><span>实时新增辅警列表</span></div>
+							<div class="adduser slide-container">
+								<ul class="clearfix slide-list js-slide-list" id='jrxzfjlb'>
+								</ul>
+							</div>
+						</div>
+						<div class="boxfoot"></div>
+					</div>
+					<div class="boxall" style="height: 3.4rem">
+						<div class="alltitle">实时减员记录</div>
+						<div class="wrap">
+							<!-- 显示姓名、减员原因（包含黑名单）、日期、单位简称 -->
+							<ul class="slide-list js-slide-list" id="jyjl">
+							</ul>
+						</div>
+						<div class="boxfoot"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="back"></div>
+		<script language="JavaScript" src="js/js.js?v=1.60"></script>
+		<script type="text/javascript" src="js/echarts.min.js?v=1.60"></script>
+		<script type="text/javascript" src="js/china.js?v=1.60"></script>
+		<script type="text/javascript" src="js/area_echarts.js?v=1.60"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				myChart1.resize();
+				myChart2.resize();
+				myChart3.resize();
+				myChart6.resize();
+				myChart7.resize();
+				myChart8.resize();
+				myChart9.resize();
+				myChart10.resize();
+				myChart11.resize();
+				myChart12.resize();
+				myChart13.resize();
+				myChart14.resize();
+				$("#fifteenShow").hide();
+				$("#thirtyDaysShow").hide();
+			})
+			window.addEventListener("resize", function() {
+				myChart1.resize();
+				myChart2.resize();
+				myChart3.resize();
+				myChart6.resize();
+				myChart7.resize();
+				myChart8.resize();
+				myChart9.resize();
+				myChart10.resize();
+				myChart11.resize();
+				myChart12.resize();
+				myChart13.resize();
+				myChart14.resize();
+			});
+		</script>
+		<script type="text/javascript">
+			//新增辅警占比七天
+			var auxiliaryAll;
+			var auxiliaryNew;
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/auxiliaryRecruit?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					auxiliaryAll = data.auxiliaryAll;
+					auxiliaryNew = data.auxiliaryNew;
+				}
+			})
+
+			//新增减员占比七天
+			var depletionAll; //总减员
+			var depletionNew; //新增减员
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/depletionAll?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					depletionAll = data.depletionAll;
+					depletionNew = data.depletionNew;
+				}
+			})
+			var v0 = auxiliaryAll //总辅警
+			var v6 = auxiliaryNew //新增辅警
+			var vv1 = v0 - v6;
+			var v5 = depletionNew //减员
+			var v4 = depletionAll //总减员
+			var v0v0;
+			var v0v6;
+			if(v0==0){
+				v0v0=1;
+				v0v6=0;
+			}else{
+				v0v0=v0;
+				v0v6=v6;
+			}
+			
+			var r1;
+			if(v6==0&&vv1==0){
+				r1=1;
+			}else{
+				r1=vv1;
+			}
+			var myChart6 = echarts.init(document.getElementById('echarts6'));
+			option6 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#0088cc',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v6,
+							name: '新增辅警',
+							label: {
+								normal: {
+									formatter: v6 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r1,
+							name: '其他辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v0v6 / v0v0 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+
+			};
+
+			var vv4 = v4 - v5;
+			var v4v4;
+			var v4v5;
+			if(v4==0){
+				v4v4=1;
+				v4v5=0;
+			}else{
+				v4v4=v4;
+				v4v5=v5;
+			}
+			
+			var r2;
+			if(v5==0&&vv4==0){
+				r2=1;
+			}else{
+				r2=vv4;
+			}
+			var myChart7 = echarts.init(document.getElementById('echarts7'));
+			option7 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#fccb00',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v5,
+							name: '减员辅警',
+							label: {
+								normal: {
+									formatter: v5 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r2,
+							name: '总减员辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v4v5 / v4v4 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+			};
+
+			var vv7 = v0 - v5;
+			var v0v01;
+			var v0v5;
+			if(v0v01==0){
+				v0v01=1;
+				v0v5=0;
+			}else{
+				v0v01=v0;
+				v0v5=v5;
+			}
+			
+			var r3;
+			if(v5==0&&vv7==0){
+				r3=1;
+			}else{
+				r3=vv7;
+			}
+			
+			var myChart8 = echarts.init(document.getElementById('echarts8'));
+
+			option8 = {
+				series: [{
+
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#62b62f',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v5,
+						name: '总辅警数',
+						label: {
+							normal: {
+								formatter: v5 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, {
+						value: r3,
+						name: '减员',
+						label: {
+							normal: {
+								formatter: function(params) {
+									return '占比' + Math.round(v0v5 / v0v01 * 100) + '%'
+								},
+								textStyle: {
+									color: '#aaa',
+									fontSize: 12
+								}
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,255,255,.2)'
+							},
+							emphasis: {
+								color: '#fff'
+							}
+						},
+					}]
+				}]
+			};
+			//==================15天======================//
+			//新增辅警占比十五天
+			var auxiliaryAllFifteen;
+			var auxiliaryNewFifteen;
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/auxiliaryRecruitFifteen?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					auxiliaryAllFifteen = data.auxiliaryAll;
+					auxiliaryNewFifteen = data.auxiliaryNew;
+				}
+			})
+
+
+			//新增减员占比十五天
+			var depletionAllFifteen; //总减员十五天
+			var depletionNewFifteen; //新增减员十五天
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/depletionAllFifteen?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					depletionAllFifteen = data.depletionAll;
+					depletionNewFifteen = data.depletionNew;
+				}
+			})
+
+			var v7 = auxiliaryNewFifteen //总辅警15天
+			var v8 = auxiliaryNewFifteen //新增辅警15天
+			var vv2 = v7 - v8;
+			var v9 = depletionNewFifteen //减员15天
+			var v10 = depletionAllFifteen //总减员15天
+			
+			var v7v7;
+			var v7v8;
+			if(v7v7==0){
+				v7v7=1;
+				v7v8=0;
+			}else{
+				v7v7=v7;
+				v7v8=v8;
+			}
+			
+			var r4;
+			if(v8==0&&vv2==0){
+				r4=1;
+			}else{
+				r4=vv2;
+			}
+			
+			var myChart9 = echarts.init(document.getElementById('echarts9'));
+			option9 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#0088cc',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v8,
+							name: '新增辅警',
+							label: {
+								normal: {
+									formatter: v8 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r4,
+							name: '老辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v7v8 / v7v7 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+
+			};
+			var vv5 = v10 - v9;
+			var v10v10;
+			var v10v9;
+			if(v10v10==0){
+				v10v10=1;
+				v10v9=0;
+			}else{
+				v10v10=v7;
+				v10v9=v8;
+			}
+			
+			var r5;
+			if(v9==0&&vv5==0){
+				r5=1;
+			}else{
+				r5=vv5;
+			}
+			var myChart10 = echarts.init(document.getElementById('echarts10'));
+			option10 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#fccb00',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v9,
+							name: '减员辅警',
+							label: {
+								normal: {
+									formatter: v9 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r5,
+							name: '总减员辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v10v9 / v10v10 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+			};
+
+			var vv8 = v7 - v9;
+			var v7v71;
+			var v7v9;
+			if(v7v71==0){
+				v7v71=1;
+				v7v9=0;
+			}else{
+				v7v71=v7;
+				v7v9=v9;
+			}
+			
+			var r6;
+			if(v9==0&&vv8==0){
+				r6=1;
+			}else{
+				r6=vv8;
+			}
+			var myChart11 = echarts.init(document.getElementById('echarts11'));
+
+			option11 = {
+				series: [{
+
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#62b62f',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v9,
+						name: '总辅警数',
+						label: {
+							normal: {
+								formatter: v9 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, {
+						value: r6,
+						name: '减员',
+						label: {
+							normal: {
+								formatter: function(params) {
+									return '占比' + Math.round(v7v9 / v7v71 * 100) + '%'
+								},
+								textStyle: {
+									color: '#aaa',
+									fontSize: 12
+								}
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,255,255,.2)'
+							},
+							emphasis: {
+								color: '#fff'
+							}
+						},
+					}]
+				}]
+			};
+			//==================30天======================//
+			//新增辅警占比30天
+
+			//新增减员占比30天
+
+			var auxiliaryAllThirtyDays;
+			var auxiliaryNewThirtyDays;
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/auxiliaryRecruitThirtyDays?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					auxiliaryAllThirtyDays = data.auxiliaryAll;
+					auxiliaryNewThirtyDays = data.auxiliaryNew;
+				}
+			})
+
+			//新增减员占比30天
+			var depletionAllThirtyDays; //总减员
+			var depletionNewThirtyDays; //新增减员
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/depletionAllThirtyDays?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					depletionAllThirtyDays = data.depletionAll;
+					depletionNewThirtyDays = data.depletionNew;
+				}
+			})
+
+
+			var v11 = auxiliaryAllThirtyDays //总辅警
+			var v12 = auxiliaryNewThirtyDays //新增辅警
+			var vv3 = v11 - v12;
+			var v13 = depletionNewThirtyDays //减员
+			var v14 = depletionAllThirtyDays //总减员
+			
+			var v11v11;
+			var v11v12;
+			if(v11v11==0){
+				v11v11=1;
+				v11v12=0;
+			}else{
+				v11v11=v11;
+				v11v12=v12;
+			}
+			
+			var r7;
+			if(v12==0&&vv3==0){
+				r7=1;
+			}else{
+				r7=vv3;
+			}
+			
+			var myChart12 = echarts.init(document.getElementById('echarts12'));
+			option12 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#0088cc',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v12,
+							name: '新增辅警',
+							label: {
+								normal: {
+									formatter: v12 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r7,
+							name: '其他辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v11v12 / v11v11 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+
+			};
+			var vv6 = v14 - v13;
+			var v14v14;
+			var v14v13;
+			if(v14v14==0){
+				v14v14=1;
+				v14v13=0;
+			}else{
+				v14v14=v14;
+				v14v13=v13;
+			}
+			
+			
+			var r8;
+			if(v13==0&&vv6==0){
+				r8=1;
+			}else{
+				r8=vv6;
+			}
+			
+			var myChart13 = echarts.init(document.getElementById('echarts13'));
+			option13 = {
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#fccb00',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+							value: v13,
+							name: '减员辅警',
+							label: {
+								normal: {
+									formatter: v13 + '',
+									textStyle: {
+										fontSize: 20,
+										color: '#fff',
+									}
+								}
+							}
+						},
+						{
+							value: r8,
+							name: '总减员辅警',
+							label: {
+								normal: {
+									formatter: function(params) {
+										return '占比' + Math.round(v14v13 / v14v14 * 100) + '%'
+									},
+									textStyle: {
+										color: '#aaa',
+										fontSize: 12
+									}
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(255,255,255,.2)'
+								},
+								emphasis: {
+									color: '#fff'
+								}
+							},
+						}
+					]
+				}]
+			};
+
+			var vv9 = v11 - v13;
+			var v11v111;
+			var v11v13;
+			if(v11v111==0){
+				v11v111=1;
+				v11v13=0;
+			}else{
+				v11v111=v11;
+				v11v13=v13;
+			}
+			
+			var r9;
+			if(v13==0&&vv9==0){
+				r9=1;
+			}else{
+				r9=vv9;
+			}
+			var myChart14 = echarts.init(document.getElementById('echarts14'));
+			option14 = {
+				series: [{
+
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#62b62f',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v13,
+						name: '总辅警数',
+						label: {
+							normal: {
+								formatter: v13 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, {
+						value: r9,
+						name: '减员',
+						label: {
+							normal: {
+								formatter: function(params) {
+									return '占比' + Math.round(v11v13 / v11v111 * 100) + '%'
+								},
+								textStyle: {
+									color: '#aaa',
+									fontSize: 12
+								}
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,255,255,.2)'
+							},
+							emphasis: {
+								color: '#fff'
+							}
+						},
+					}]
+				}]
+			};
+
+
+
+			setTimeout(function() {
+				myChart6.setOption(option6);
+				myChart7.setOption(option7);
+				myChart8.setOption(option8);
+				myChart9.setOption(option9);
+				myChart10.setOption(option10);
+				myChart11.setOption(option11);
+				myChart12.setOption(option12);
+				myChart13.setOption(option13);
+				myChart14.setOption(option14);
+			}, 500);
+		</script>
+		<script type="text/javascript">
+			var myChart1 = echarts.init(document.getElementById('echarts1'));
+			//    招录占比
+			var man;
+			var woman;
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/recruit?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				success: function(data) {
+					man = data.man;
+					woman = data.woman;
+				}
+			})
+			var v1 = man //男消费
+			var v2 = woman //女消费
+			var v3 = v1 + v2 //总消费 
+			option1 = {
+
+				//animation: false,
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#0088cc',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v1,
+						name: '总人数',
+						label: {
+							normal: {
+								formatter: v3 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, ]
+				}]
+			};
+
+
+			var myChart3 = echarts.init(document.getElementById('echarts3'));
+			var v1 = man //男消费
+			var v2 = woman //女消费
+			var v3 = v1 + v2 //总消费 
+			option2 = {
+
+				//animation: false,
+				series: [{
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#fccb00',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v1,
+						name: '男',
+						label: {
+							normal: {
+								formatter: v1 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, {
+						value: v2,
+						name: '女',
+						label: {
+							normal: {
+								formatter: function(params) {
+									return '占比' + Math.round(v1 / v3 * 100) + '%'
+								},
+								textStyle: {
+									color: '#aaa',
+									fontSize: 12
+								}
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,255,255,.2)'
+							},
+							emphasis: {
+								color: '#fff'
+							}
+						},
+					}]
+				}]
+			};
+
+
+			var myChart2 = echarts.init(document.getElementById('echarts2'));
+			option3 = {
+
+
+				series: [{
+
+					type: 'pie',
+					radius: ['70%', '80%'],
+					color: '#62b62f',
+					label: {
+						normal: {
+							position: 'center'
+						}
+					},
+					data: [{
+						value: v2,
+						name: '女',
+						label: {
+							normal: {
+								formatter: v2 + '',
+								textStyle: {
+									fontSize: 20,
+									color: '#fff',
+								}
+							}
+						}
+					}, {
+						value: v1,
+						name: '男',
+						label: {
+							normal: {
+								formatter: function(params) {
+									return '占比' + Math.round(v2 / v3 * 100) + '%'
+								},
+								textStyle: {
+									color: '#aaa',
+									fontSize: 12
+								}
+							}
+						},
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,255,255,.2)'
+							},
+							emphasis: {
+								color: '#fff'
+							}
+						},
+					}]
+				}]
+			};
+			setTimeout(function() {
+				myChart1.setOption(option1);
+				myChart2.setOption(option2);
+				myChart3.setOption(option3);
+			}, 500);
+		</script>
+		<script type="text/javascript">
+			//    籍贯分布
+			
+			var myChart = echarts.init(document.getElementById('echarts4'));
+			$.ajax({
+				type: "POST",
+				url: servicePath + "/amKshPt/nativePlace?charset=utf-8&loginCode=" + adminInfo.loginCode,
+				contentType: "application/json; charset=utf-8",
+				success: function(data) {
+					con(data)
+				}
+			})
+
+function con(data){
+	var plantCap = [{
+	    name: '新疆',
+	    value: data.xinJiang
+	}, {
+	    name: '甘肃',
+	    value: data.ganSu
+	}, {
+	    name: '内蒙古',
+	    value: data.neiMengGu
+	}, {
+	    name: '四川',
+	    value: data.siChuan
+	}, {
+	    name: '湖北',
+	    value: data.huBei
+	},{
+	    name: '云南',
+	    value: data.yunNan
+	}];
+	var datalist = [{
+	    offset: [56, 48],
+	    symbolSize: 110,
+	   // opacity: .95,
+	    color: 'rgba(73,188,247,.14)',
+		
+	}, {
+	
+	    offset: [30, 70],
+	    symbolSize: 70,
+	     color: 'rgba(73,188,247,.14)'
+	}, {
+	    offset: [0, 43],
+	    symbolSize: 60,
+	    color: 'rgba(73,188,247,.14)'
+	
+	}, {
+	    offset: [93, 30],
+	    symbolSize: 70,
+	     color: 'rgba(73,188,247,.14)'
+	}, {
+	    offset: [26, 19],
+	    symbolSize: 65,
+	    color: 'rgba(73,188,247,.14)'
+	}, {
+	    offset: [75, 75],
+	    symbolSize: 60,
+	     color: 'rgba(73,188,247,.14)'
+	
+	}];
+	
+	var datas = [];
+	for (var i = 0; i < plantCap.length; i++) {
+	    var item = plantCap[i];
+	    var itemToStyle = datalist[i];
+	    datas.push({
+	        name: item.value + '\n' + item.name,
+	        value: itemToStyle.offset,
+	        symbolSize: itemToStyle.symbolSize,
+	        label: {
+	            normal: {
+	                textStyle: {
+	                    fontSize: 14
+	                }
+	            }
+	        },
+	
+	        itemStyle: {
+	            normal: {
+	               color: itemToStyle.color,
+	                opacity: itemToStyle.opacity
+	           }
+	        },
+	    })
+	}
+	option = {
+	    grid: {
+	        show: false,
+	        top: 10,
+	        bottom: 10
+	    },
+	
+	    xAxis: [{
+	        gridIndex: 0,
+	        type: 'value',
+	        show: false,
+	        min: 0,
+	        max: 100,
+	        nameLocation: 'middle',
+	        nameGap: 5
+	    }],
+	
+	    yAxis: [{
+	        gridIndex: 0,
+	        min: 0,
+	        show: false,
+	        max: 100,
+	        nameLocation: 'middle',
+	        nameGap: 30
+	    }],
+	    series: [{
+	        type: 'scatter',
+	        symbol: 'circle',
+	        symbolSize: 120,
+	        label: {
+	            normal: {
+	                show: true,
+	                formatter: '{b}',
+	                color: '#FFF',
+	                textStyle: {
+	                    fontSize: '30'
+	                }
+	            },
+	        },
+	        itemStyle: {
+	            normal: {
+	                color: '#F30'
+	            }
+	        },
+	        data: datas
+	    }]
+	
+	};
+	 myChart.setOption(option);
+		$(document).ready(function(){
+		　　myChart.resize();  
+		
+	})
+	window.addEventListener("resize", function () {
+	　　myChart.resize();  
+	});
+}
+      
+		</script>
+		<script type="text/javascript" src="js/jquery.waypoints.min.js?v=1.60"></script>
+		<script type="text/javascript" src="js/jquery.countup.min.js?v=1.60"></script>
+		<script type="text/javascript">
+			$('.counter').countUp();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.area.IAreaDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.area.Area">
+    INSERT INTO area(areaId,parentId,adcode,citycode,level,provinceName,cityName,districtName,areaName,initial,parentIds,fullPingyin)
+    VALUES(#{areaId},#{parentId},#{adcode},#{citycode},#{level},#{provinceName},#{cityName},#{districtName},#{areaName},#{initial},#{parentIds},#{fullPingyin})
+ 	</insert>
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM area 
+    WHERE areaId=${value}
+  	</delete>
+  	<update id="update" parameterType="com.greathack.homlin.pojo.area.Area">
+    UPDATE area
+    SET parentId=#{parentId},adcode=#{adcode},citycode=#{citycode},level=#{level},
+    provinceName=#{provinceName},cityName=#{cityName},
+    districtName=#{districtName},areaName=#{areaName},initial=#{initial},
+    parentIds=#{parentIds},fullPingyin=#{fullPingyin}
+    WHERE areaId=${areaId}
+  	</update>
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.area.Area" >
+	select * from area where areaId=#{value} 
+	</select>
+    <select id="findByAdcode" parameterType="java.lang.String" resultType="com.greathack.homlin.pojo.area.Area" >
+    select * from area where adcode=#{value} 
+    </select>
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.area.Area" resultType="com.greathack.homlin.pojo.area.Area" >	
+	select * from area where 1=1
+	<if test="parentId != null"> and parentId=#{parentId}</if>
+	<if test="adcode != null"> and adcode=#{adcode}</if>
+	<if test="citycode != null"> and citycode=#{citycode}</if>
+	<if test="level != null"> and level=#{level}</if>
+	<if test="provinceName != null"> and provinceName=#{provinceName}</if>
+	<if test="cityName != null"> and cityName=#{cityName}</if>
+	<if test="districtName != null"> and districtName=#{districtName}</if>
+	<if test="areaName != null"> and areaName=#{areaName}</if>
+	<if test="initial != null"> and initial=#{initial}</if>
+	<if test="parentIds != null"> and parentIds=#{parentIds}</if>
+	</select>
+  	
+	<!-- 	search  -->	
+	<select id="search" parameterType="com.greathack.homlin.pojo.area.AreaSearchCriteria" resultType="com.greathack.homlin.pojo.area.Area" >	
+		select * from area where 1=1 
+		<if test="levelList!=null and levelList.size>0">
+			 and level in
+			<foreach collection="levelList" item="level" separator=" , " open="(" close=")">
+			#{level}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="parentId != null"> and parentId=#{parentId}</if>
+		<if test="adcode != null"> and adcode=#{adcode}</if>
+		<if test="citycode != null"> and citycode=#{citycode}</if>
+		<if test="initial != null"> and initial=#{initial}</if>
+		order by areaId asc
+	    LIMIT #{startLine},#{pageSize}		
+	</select>
+  	
+	<!-- 	getSearchResultCount  -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.area.AreaSearchCriteria" resultType="long" >	
+		select count(areaId) from area where 1=1  
+		<if test="levelList!=null and levelList.size>0">
+			 and level in
+			<foreach collection="levelList" item="level" separator=" , " open="(" close=")">
+			#{level}
+			</foreach>
+		</if>
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null">
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="parentId != null"> and parentId=#{parentId}</if>
+		<if test="adcode != null"> and adcode=#{adcode}</if>
+		<if test="citycode != null"> and citycode=#{citycode}</if>
+		<if test="initial != null"> and initial=#{initial}</if>
+	</select>
+</mapper>

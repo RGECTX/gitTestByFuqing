@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="greathack-homlin-api:war">
+    <output-path>$PROJECT_DIR$/code/greathack-auxiliary/greathack-homlin-api Maven Webapp/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>greathack-homlin-api</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="homlin.war">
+      <element id="artifact" artifact-name="greathack-homlin-api:war exploded" />
+    </root>
+  </artifact>
+</component>

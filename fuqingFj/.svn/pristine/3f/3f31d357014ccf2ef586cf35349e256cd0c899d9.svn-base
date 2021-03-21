@@ -1,0 +1,776 @@
+package com.greathack.homlin.controller.auxiliary;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.greathack.homlin.common.Common;
+import com.greathack.homlin.config.Global;
+import com.greathack.homlin.core.domain.AjaxResult;
+import com.greathack.homlin.exception.BizException;
+import com.greathack.homlin.exception.ServiceException;
+import com.greathack.homlin.file.FileUtils;
+import com.greathack.homlin.pojo.Admin;
+import com.greathack.homlin.pojo.auxiliary.*;
+import com.greathack.homlin.pojo.dict.Dict;
+import com.greathack.homlin.pojo.dict.DictData;
+import com.greathack.homlin.pojo.org.Organization;
+import com.greathack.homlin.pojo.permission.PowerItem;
+import com.greathack.homlin.service.AdminLoginSessionService;
+import com.greathack.homlin.serviceinterface.am.IAmUnitService;
+import com.greathack.homlin.serviceinterface.attachment.IAttachmentService;
+import com.greathack.homlin.serviceinterface.auxiliary.*;
+import com.greathack.homlin.serviceinterface.dict.IDictDataService;
+import com.greathack.homlin.serviceinterface.dict.IDictService;
+import com.greathack.homlin.serviceinterface.org.IOrganizationService;
+import com.greathack.homlin.system.SystemConfig;
+import com.greathack.homlin.utils.poi.ExcelUtil;
+import com.greathack.homlin.utils.poi.StringUtils;
+import com.greathack.utils.tools.TypeOption;
+import com.greathack.utils.validate.JsonParamValidate;
+import com.greathack.utils.validate.ParamterValidate;
+import com.greathack.utils.validate.exception.ValidateException;
+import com.greathack.utils.validate.rule.IntegerBetween;
+import com.greathack.utils.validate.rule.IsInteger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.greathack.homlin.utils.poi.CommonUtils.getDictValue;
+
+/**
+ * 档案管理
+ *
+ * @author renTX
+ * @date 2020-09-07
+ */
+@Controller
+@RequestMapping(value = "/auxDagl")
+public class AuxDaglController {
+
+    private static Logger logger = LoggerFactory.getLogger(AuxDaglController.class);
+    private BizException exception = new BizException(200001, "INVALID_PARAMS");
+
+    @Autowired
+    private IAuxDaglService auxDaglService;
+
+    @Autowired
+    private IAuxHmdService auxHmdService;
+
+    @Autowired
+    private IOrganizationService organizationService;
+
+    @Autowired
+    private IAttachmentService iattachmentService;
+
+    @Autowired
+    private IJobResumeService jobResumeService;
+
+    @Autowired
+    private IEduResumeService eduResumeService;
+
+    @Autowired
+    private IAuxQsgxService auxQsgxService;
+
+    @Autowired
+    private IAmUnitService amUnitService;
+
+    @Autowired
+    private IDictService dictService;
+
+    @Autowired
+    private IDictDataService dictDataService;
+
+
+    @ResponseBody
+    @RequestMapping(value = "/add")
+    public Object add(@RequestParam(value = "charset", required = false) String charset,
+                      @RequestParam(value = "loginCode", required = true) String loginCode,
+                      @RequestBody String strJson, HttpServletRequest request) throws ValidateException {
+        Admin admin = AdminLoginSessionService.getLoginSession(loginCode).getAdmin();
+        //对传进来的参数进行转码
+        try {
+            //对strJson进行转码
+            strJson = URLDecoder.decode(strJson, charset);
+        } catch (UnsupportedEncodingException e1) {
+            logger.info("无效的charset");
+            throw new BizException(10013, "INVALID_CHARSET");
+        }
+        //对json里面的参数进行校验
+        JSONObject json = new JsonParamValidate(strJson, exception)
+                /*   .addStringRule("xm,orgName,receiveOrgId", true, true, 64, exception)
+                   .addStringRule("state", false, false, 64, exception)
+                   .addStringRule("idcard", true, true, 30, exception)
+                   .addLongRule("orgId", true, 0L, 20L, exception)
+                   .addStringRule("remark, outKey1, outKey2", false, false, 255, exception)*/
+                .validate();
+        //json转成javaBean
+        AuxDagl auxDagl = JSON.toJavaObject(json, AuxDagl.class);
+        auxDagl.setCreateBy(admin.getUserId());
+        auxDagl.setCreateTime(Common.getCurrentTime());
+        //通过Id查询部门名
+        List<Organization> organizationList = organizationService.findOrgName(auxDagl.getOrgId());
+        Organization org = organizationList.get(0);
+        auxDagl.setOrgName(org.getOrgName());
+        auxDagl.setState("1");
+
+        String patternMainLand = "/^\\d{6}(18|19|20)?\\d{2}(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}(\\d|[xX])$/";//大陆
+        String patternHongkong = "/^((\\s?[A-Za-z])|([A-Za-z]{2}))\\d{6}(\\([0−9aA]\\)|[0-9aA])$/";//香港
+        String patternTaiwan = "/^[a-zA-Z][0-9]{9}$/";//台湾
+        String patternMacao = "/^[1|5|7][0-9]{6}\\([0-9Aa]\\)/";//澳门
+
+
+        //判断档案管理是否在黑名单里
+        List<AuxHmd> auxHmdList = auxHmdService.findAll();
+
+        /*for(AuxHmd auxHmd : auxHmdList){
+            if(Pattern.matches(patternMainLand, auxHmd.getIdcard())){//判断是否符合格式校验（大陆）
+                if (auxHmd.getIdcard().substring(0, 17).equals(auxDagl.getIdcard().substring(0, 17))) {//大陆比对
+                    logger.info("黑名单禁止添加档案管理");
+                    throw new BizException(400030, "黑名单禁止添加档案管理");
+                }
+            }else if(Pattern.matches(patternHongkong, auxHmd.getIdcard())){//判断是否符合格式校验（香港）
+                if (auxHmd.getIdcard().substring(0, 6).equals(auxDagl.getIdcard().substring(0, 6))) {//香港比对
+                    logger.info("黑名单禁止添加档案管理");
+                    throw new BizException(400030, "黑名单禁止添加档案管理");
+                }
+            }else if(Pattern.matches(patternTaiwan, auxHmd.getIdcard())){//判断是否符合格式校验（台湾）
+                if (auxHmd.getIdcard().substring(0, 9).equals(auxDagl.getIdcard().substring(0, 9))) {//台湾比对
+                    logger.info("黑名单禁止添加档案管理");
+                    throw new BizException(400030, "黑名单禁止添加档案管理");
+                }
+            }else if(Pattern.matches(patternMacao, auxHmd.getIdcard())){//判断是否符合格式校验（澳门）
+                if (auxHmd.getIdcard().substring(0, 8).equals(auxDagl.getIdcard().substring(0, 8))) {//澳门比对
+                    logger.info("黑名单禁止添加档案管理");
+                    throw new BizException(400030, "黑名单禁止添加档案管理");
+                }
+            }
+        }*/
+
+        for (AuxHmd auxHmd : auxHmdList) {
+            if (!auxHmd.getIdcard().equals("")) {
+                if (auxHmd.getIdcard().length() == 18) {
+                    if (auxHmd.getIdcard().substring(0, 17).equals(auxDagl.getIdcard().substring(0, 17))) {
+                        logger.info("黑名单禁止添加档案管理");
+                        throw new BizException(400030, "黑名单禁止添加档案管理");
+                    }
+                }
+            }
+        }
+
+        List<AuxDagl> auxDaglList = auxDaglService.findAll();
+        for (AuxDagl dagl : auxDaglList) {
+            if (!dagl.getIdcard().equals("")) {
+                if (dagl.getIdcard().length() == 18) {
+                    String substring = dagl.getIdcard().substring(0, 17);
+                    boolean isTrue = substring.matches("[0-9]+");
+                    if (isTrue) {
+                        if (dagl.getIdcard().substring(0, 17).equals(auxDagl.getIdcard().substring(0, 17))) {
+                            logger.info("档案管理已有重复的身份证信息，请重新添加");
+                            throw new BizException(400030, "档案管理已有重复的身份证信息，请重新添加");
+                        }
+
+                    }
+                }
+            }
+        }
+
+        try {
+            auxDagl = auxDaglService.add(auxDagl);
+        } catch (ServiceException e) {
+            logger.info("添加档案管理异常");
+            e.printStackTrace();
+            throw new BizException(e.getErrCode(), e.getErrMsg());
+        }
+        String jsonString = JSON.toJSONString(auxDagl);
+        JSONObject auxDaglObj = JSON.parseObject(jsonString);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+        result.put("auxDaglObj", auxDaglObj);
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete")
+    public Object delete(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestParam(value = "ids", required = false) String id) throws ValidateException {
+        if (id == null) {
+            logger.info("id必填");
+            throw new BizException(200045, "RELATION_ID_IS_REQUIRE");
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        String[] idArray = id.split(",");
+        for (String elment : idArray) {
+            auxDaglService.delete(Long.parseLong(elment));
+
+            iattachmentService.deleteByinstanceId(Long.parseLong(elment));
+
+        }
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/update")
+    public Object update(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestBody String strJson) throws ValidateException {
+        //对传进来的参数进行转码
+        try {
+            //对对strJson进行转码
+            strJson = URLDecoder.decode(strJson, charset);
+        } catch (UnsupportedEncodingException e1) {
+            logger.info("无效的charset");
+            throw new BizException(10013, "INVALID_CHARSET");
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+        //3、对json里面的参数进行校验
+        JSONObject json = new JsonParamValidate(strJson, exception)
+                /*  .addStringRule("xm,orgName,receiveOrgId", true, true, 64, exception)
+                  .addStringRule("state", false, false, 64, exception)
+                  .addStringRule("idcard", true, true, 30, exception)
+                  .addLongRule("orgId", true, 0L, 20L, exception)
+                  .addStringRule("remark, outKey1, outKey2", false, false, 255, exception)*/
+                .validate();
+        Long id = json.getLong("daId");
+        AuxDagl oldAuxDagl = auxDaglService.get(id);
+        if (oldAuxDagl == null) {
+            logger.info("档案管理信息不存在");
+            throw new BizException(400030, "DAGL_NOT_EXIST");
+        }
+        AuxDagl auxDagl = JSON.toJavaObject(json, AuxDagl.class);
+        //通过Id查询部门名
+     /*   List<Organization> organizationList = organizationService.findOrgName(auxDagl.getOrgId());
+        Organization org = organizationList.get(0);
+        auxDagl.setOrgName(org.getOrgName());*/
+        try {
+            auxDaglService.update(auxDagl);
+        } catch (Exception e) {
+            logger.info("修改档案管理信息异常");
+            e.printStackTrace();
+        }
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/search")
+    public Object search(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestBody String strJson,
+            HttpServletRequest request)
+            throws ValidateException {
+        //3、对json里面的参数进行校验
+        JSONObject json = new JsonParamValidate(strJson, exception)
+                .addIntegerRule("sortField", false, 1, 2, exception)
+                .addIntegerRule("page", false, 1, 1000000, exception)
+                .addIntegerRule("pageSize", false, 1, 1000, exception)
+                .validate();
+
+        if (json.containsKey("kwFields") && json.containsKey("keyword")) {
+            new ParamterValidate()
+                    .addRule(new IsInteger(exception))
+                    .addRule(new IntegerBetween(1, 15, true, exception))
+                    .validate(json.getString("kwFields"));
+        }
+        AuxDaglSearchCriteria criteria = JSON.parseObject(strJson, AuxDaglSearchCriteria.class);
+        //数据权限读取
+        List<PowerItem> powerItemList = (List<PowerItem>) request.getAttribute("powerItemList");
+        for (PowerItem powerItem : powerItemList) {
+            criteria.addFilter(powerItem.getParameter());
+        }
+        int page = TypeOption.nullToValue(json.getString("page"), 1);
+        int pageSize = TypeOption.nullToValue(json.getString("pageSize"), 20);
+        criteria.setStartLine((page - 1) * pageSize);
+        criteria.setPageSize(pageSize);
+
+        List<AuxDagl> auxDaglList = auxDaglService.search(criteria);
+
+        Long recordCount = auxDaglService.getSearchResultCount(criteria);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+        result.put("recordCount", recordCount);
+        result.put("auxDaglList", auxDaglList);
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDagl")
+    public Object getJbxx(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "daId", required = false) Long id,
+            @RequestParam(value = "charset", required = false) String charset)
+            throws ValidateException {
+        if (id == null) {
+            logger.info("id必填");
+            throw new BizException(400030, "DAGL_DATAID_IS_REQUIRED");
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+        AuxDagl auxDagl = auxDaglService.get(id);
+
+        if (auxDagl == null) {
+            logger.info("档案信息不存在");
+            throw new BizException(400030, "DAGL_NOT_EXIST");
+        }
+
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+        result.put("auxDagl", auxDagl);
+        return result;
+    }
+
+    /**
+     * 通用下载请求
+     *
+     * @param fileName 文件名称
+     * @param delete   是否删除
+     */
+    @RequestMapping(value = "/download")
+    public void fileDownload(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestParam(value = "downloadType", required = false) String downloadType,
+            String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            AjaxResult ajaxResult = null;
+            if ("0".equals(downloadType)) {
+                ExcelUtil<AuxDaglImportVo> util = new ExcelUtil<AuxDaglImportVo>(AuxDaglImportVo.class);
+                ajaxResult = util.importTemplateExcel("辅警基本信息");
+            } else if ("1".equals(downloadType)) {
+                ExcelUtil<JobResumeImportVo> util = new ExcelUtil<JobResumeImportVo>(JobResumeImportVo.class);
+                ajaxResult = util.importTemplateExcel("工作简历");
+            } else if ("2".equals(downloadType)) {
+                ExcelUtil<EduResumeImportVo> util = new ExcelUtil<EduResumeImportVo>(EduResumeImportVo.class);
+                ajaxResult = util.importTemplateExcel("学历简历");
+            } else if ("3".equals(downloadType)) {
+                ExcelUtil<AuxQsgxImportVo> util = new ExcelUtil<AuxQsgxImportVo>(AuxQsgxImportVo.class);
+                ajaxResult = util.importTemplateExcel("亲属关系");
+            }/*else if("4".equals(downloadType)){
+                ExcelUtil<ContractImportVo> util = new ExcelUtil<ContractImportVo>(ContractImportVo.class);
+                ajaxResult=util.importTemplateExcel("合同信息");
+            }*/
+
+
+            fileName = ajaxResult.get("msg").toString();
+            delete = true;
+
+            if (!FileUtils.isValidFilename(fileName)) {
+                throw new Exception(StringUtils.format(" 文件名称({})非法，不允许下载。 ", fileName));
+            }
+            String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
+            String filePath = Global.getDownloadPath() + fileName;
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition",
+                    "attachment;fileName=" + setFileDownloadHeader(request, realFileName));
+            FileUtils.writeBytes(filePath, response.getOutputStream());
+            if (delete) {
+                FileUtils.deleteFile(filePath);
+            }
+        } catch (Exception e) {
+            //log.error("下载文件失败", e);
+        }
+    }
+
+    public String setFileDownloadHeader(HttpServletRequest request, String fileName) throws UnsupportedEncodingException {
+        final String agent = request.getHeader("USER-AGENT");
+        String filename = fileName;
+        if (agent.contains("MSIE")) {
+            // IE浏览器
+            filename = URLEncoder.encode(filename, "utf-8");
+            filename = filename.replace("+", " ");
+        } else if (agent.contains("Firefox")) {
+            // 火狐浏览器
+            filename = new String(fileName.getBytes(), "ISO8859-1");
+        } else if (agent.contains("Chrome")) {
+            // google浏览器
+            filename = URLEncoder.encode(filename, "utf-8");
+        } else {
+            // 其它浏览器
+            filename = URLEncoder.encode(filename, "utf-8");
+        }
+        return filename;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/export")
+    public Object export(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestParam(value = "exportType", required = false) String exportType,
+            @RequestBody String strJson,
+            HttpServletRequest request)
+            throws ValidateException {
+
+
+        //3、对json里面的参数进行校验
+        JSONObject json = new JsonParamValidate(strJson, exception)
+                .addIntegerRule("sortField", false, 1, 2, exception)
+                .validate();
+
+        if (json.containsKey("kwFields") && json.containsKey("keyword")) {
+            new ParamterValidate()
+                    .addRule(new IsInteger(exception))
+                    .addRule(new com.greathack.utils.validate.rule.IntegerBetween(1, 15, true, exception))
+                    .validate(json.getString("kwFields"));
+        }
+        AuxDaglSearchCriteria criteria = JSON.parseObject(strJson, AuxDaglSearchCriteria.class);
+
+        //数据权限读取
+        List<PowerItem> powerItemList = (List<PowerItem>) request.getAttribute("powerItemList");
+        for (PowerItem powerItem : powerItemList) {
+            criteria.addFilter(powerItem.getParameter());
+        }
+
+
+        //封装数据字典所有值
+        List<Dict> dictList = dictService.getList(SystemConfig.getConfigData("DICT_APP_CODE"));
+        Map<String, List<DictData>> dictMap = new HashMap<>();
+        for (Dict dict : dictList) {
+            List<DictData> dictDataList = dictDataService.getList(dict.getDictId());
+            dictMap.put(dict.getDictCode() + "", dictDataList);
+        }
+
+        if ("0".equals(exportType)) {//基本信息
+            List<AuxDaglImportVo> list = auxDaglService.searchExport(criteria);//查询所有档案管理基本信息
+            for (AuxDaglImportVo auxDaglImportVo : list) {
+                //基本信息
+                List<Organization> orgName = organizationService.findOrgName(auxDaglImportVo.getOrgId());//通过部门ID获得部门名
+                auxDaglImportVo.setOrgName(orgName.get(0).getOrgName());//获得部门名
+
+                auxDaglImportVo.setXm(auxDaglImportVo.getXm());//姓名
+                auxDaglImportVo.setXb(getDictValue(auxDaglImportVo.getXb(), "SEX", "", dictMap));//性别
+                auxDaglImportVo.setIdcard(auxDaglImportVo.getIdcard());//身份证号
+                auxDaglImportVo.setLxfs(auxDaglImportVo.getLxfs());//联系方式
+                if ("1".equals(auxDaglImportVo.getFby())) {
+                    auxDaglImportVo.setFby("是");//服兵役
+                } else if ("0".equals(auxDaglImportVo.getFby())) {
+                    auxDaglImportVo.setFby("否");//服兵役
+                }
+                auxDaglImportVo.setByrq(auxDaglImportVo.getByrq());//毕业日期
+                auxDaglImportVo.setHyzk(getDictValue(auxDaglImportVo.getHyzk(), "HYZK", "", dictMap));//婚姻状况
+                auxDaglImportVo.setZzmm(getDictValue(auxDaglImportVo.getZzmm(), "AM_ZZMM", "", dictMap));//政治面貌
+                auxDaglImportVo.setXl(getDictValue(auxDaglImportVo.getXl(), "AM_XL", "", dictMap));//学历
+
+                auxDaglImportVo.setFjbh(auxDaglImportVo.getFjbh());//辅警编号
+                auxDaglImportVo.setHjdz(auxDaglImportVo.getHjdz());//户籍地址
+                if ("1".equals(auxDaglImportVo.getIsdy())) {
+                    auxDaglImportVo.setIsdy("是");//是否退伍军人
+                } else if ("0".equals(auxDaglImportVo.getIsdy())) {
+                    auxDaglImportVo.setIsdy("否");//是否退伍军人
+
+                    auxDaglImportVo.setMz(getDictValue(auxDaglImportVo.getMz(), "MZ", "", dictMap));//民族
+                    auxDaglImportVo.setJz(getDictValue(auxDaglImportVo.getJz(), "DRIVER_CARD", "", dictMap));//驾照
+                }
+                auxDaglImportVo.setRzrq(auxDaglImportVo.getRzrq());//入职日期
+                auxDaglImportVo.setJtzz(auxDaglImportVo.getJtzz());//具体职责
+                if ("1".equals(auxDaglImportVo.getIsbx())) {
+                    auxDaglImportVo.setIsbx("是");//是否保险
+                } else if ("0".equals(auxDaglImportVo.getIsbx())) {
+                    auxDaglImportVo.setIsbx("否");//是否保险
+                }
+
+                /*auxDaglImportVo.setHjdlx(getDictValue(auxDaglImportVo.getHjdlx(), "AM_HJDLX", "", dictMap));//户籍地类型*/
+                auxDaglImportVo.setState(getDictValue(auxDaglImportVo.getState(), "AUX_DASTATE", "", dictMap));//辅警人员状态
+                auxDaglImportVo.setFjType(getDictValue(auxDaglImportVo.getFjType(), "AUX_FJLB", "", dictMap));//辅警类别
+
+            }
+            ExcelUtil<AuxDaglImportVo> util = new ExcelUtil<AuxDaglImportVo>(AuxDaglImportVo.class);
+            AjaxResult ajaxResult = util.exportExcel(list, "基本信息数据");
+            return ajaxResult;
+        } else if ("1".equals(exportType)) {//亲属关系
+            criteria.setAppCode(SystemConfig.getConfigData("AUXILIARY_APP_CODE"));
+            List<AuxQsgxImportVo> list = auxQsgxService.searchExport(criteria);
+
+            for (AuxQsgxImportVo auxQsgxImportVo : list) {
+                auxQsgxImportVo.setKinshipTerm(getDictValue(auxQsgxImportVo.getKinshipTerm(), "APPELLATION", "", dictMap));//称谓
+                auxQsgxImportVo.setNowStatus(getDictValue(auxQsgxImportVo.getNowStatus(), "AM_REALTION_NOW_STATUS", "", dictMap));//现状
+                auxQsgxImportVo.setHealthState(getDictValue(auxQsgxImportVo.getHealthState(), "AM_HEALTH_STATE", "", dictMap));//健康状况
+                auxQsgxImportVo.setEduLevel(getDictValue(auxQsgxImportVo.getEduLevel(), "AM_XL", "", dictMap));//学历
+                auxQsgxImportVo.setKjysgbFlag(getDictValue(auxQsgxImportVo.getKjysgbFlag(), "KJYSGB_FLAG", "", dictMap));//科级以上干部
+                /*auxQsgxImportVo.setIdcard(auxQsgxImportVo.getIdcard());//个人身份证*/
+
+                if ("1".equals(auxQsgxImportVo.getCgjFlag())) {//出国境
+                    auxQsgxImportVo.setCgjFlag("无");
+                } else if ("2".equals(auxQsgxImportVo.getCgjFlag())) {
+                    auxQsgxImportVo.setCgjFlag("有");
+                }
+                if ("1".equals(auxQsgxImportVo.getFzFlag())) {//犯罪
+                    auxQsgxImportVo.setFzFlag("无");
+                } else if ("2".equals(auxQsgxImportVo.getFzFlag())) {
+                    auxQsgxImportVo.setFzFlag("有");
+                }
+                if ("1".equals(auxQsgxImportVo.getSysjFlag())) {//收押收教
+                    auxQsgxImportVo.setSysjFlag("无");
+                } else if ("2".equals(auxQsgxImportVo.getSysjFlag())) {
+                    auxQsgxImportVo.setSysjFlag("有");
+                }
+                if ("1".equals(auxQsgxImportVo.getRhflFlag())) {//人户分离
+                    auxQsgxImportVo.setRhflFlag("无");
+                } else if ("2".equals(auxQsgxImportVo.getRhflFlag())) {
+                    auxQsgxImportVo.setRhflFlag("有");
+                }
+                auxQsgxImportVo.setBjgzFlag(getDictValue(auxQsgxImportVo.getBjgzFlag(), "BJGZ_FLAG", "", dictMap));//本局人员编制类别
+                auxQsgxImportVo.setGzddssfw(getDictValue(auxQsgxImportVo.getGzddssfw(), "DDSSFW", "", dictMap));//工作地点所属范围
+                auxQsgxImportVo.setGzdwxz(getDictValue(auxQsgxImportVo.getGzdwxz(), "GZDWXZ", "", dictMap));//工作单位性质
+                auxQsgxImportVo.setJzddssfw(getDictValue(auxQsgxImportVo.getJzddssfw(), "DDSSFW", "", dictMap));//居住地点所属范围
+
+            }
+            ExcelUtil<AuxQsgxImportVo> util = new ExcelUtil<AuxQsgxImportVo>(AuxQsgxImportVo.class);
+            AjaxResult ajaxResult = util.exportExcel(list, "亲属关系信息数据");
+            return ajaxResult;
+        } else if ("2".equals(exportType)) {//工作简历信息
+            criteria.setAppCode(SystemConfig.getConfigData("AUXILIARY_APP_CODE"));
+            List<JobResumeImportVo> list = jobResumeService.searchExport(criteria);
+            for (JobResumeImportVo jobResumeImportVo : list) {
+
+            }
+            ExcelUtil<JobResumeImportVo> util = new ExcelUtil<JobResumeImportVo>(JobResumeImportVo.class);
+            AjaxResult ajaxResult = util.exportExcel(list, "工作简历信息数据");
+            return ajaxResult;
+        } else if ("3".equals(exportType)) {//学历简历
+            criteria.setAppCode(SystemConfig.getConfigData("AUXILIARY_APP_CODE"));
+            List<EduResumeImportVo> list = eduResumeService.searchExport(criteria);
+            for (EduResumeImportVo eduResumeImportVo : list) {
+                eduResumeImportVo.setEduLevel(getDictValue(eduResumeImportVo.getEduLevel(), "AM_XL", "", dictMap));//学历
+                eduResumeImportVo.setDegree(getDictValue(eduResumeImportVo.getDegree(), "AM_XW", "", dictMap));//学位
+            }
+            ExcelUtil<EduResumeImportVo> util = new ExcelUtil<EduResumeImportVo>(EduResumeImportVo.class);
+            AjaxResult ajaxResult = util.exportExcel(list, "学历简历信息数据");
+            return ajaxResult;
+        }/*else if("4".equals(exportType)){//合同信息
+            List<ContractImportVo> list = contractService.searchExport(criteria);
+            for(ContractImportVo contractImportVo:list){
+                contractImportVo.setCategory(getDictValue(contractImportVo.getCategory(),"CONTRACT_CATEGORY","",dictMap));//合同类别
+                contractImportVo.setState(getDictValue(contractImportVo.getState(),"CONTRACT_STATE","",dictMap));//合同状态
+            }
+            ExcelUtil<ContractImportVo> util = new ExcelUtil<ContractImportVo>(ContractImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(list, "合同信息数据");
+            return  ajaxResult;
+        }*/
+
+
+        return null;
+    }
+
+    /**
+     * 导入
+     */
+    @RequestMapping("/import")
+    @ResponseBody
+    public Object importData(
+            @RequestParam(value = "loginCode", required = true) String loginCode,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestParam(value = "isJbxxCover", required = false) String isJbxxCover,
+            @RequestParam(value = "importType", required = false) String importType,
+            @RequestParam(value = "isDelete", required = false) String isDelete,
+            MultipartFile file) throws Exception {
+        //goodsService.unSale(id);
+        Admin admin = AdminLoginSessionService.getLoginSession(loginCode).getAdmin();
+        Map<String, Object> params = new HashMap<>();
+        params.put("createBy", admin.getUserId());
+        params.put("isJbxxCover", isJbxxCover);
+        params.put("isDelete", isDelete);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (file == null) {
+            result.put("errCode", 1);
+            result.put("errMsg", "请选择文件");
+            return result;
+        }
+        String msg = "";
+        if ("0".equals(importType)) {//基本信息
+            ExcelUtil<AuxDaglImportVo> util = new ExcelUtil<AuxDaglImportVo>(AuxDaglImportVo.class);
+            List<AuxDaglImportVo> amJbxxImportList = util.importExcel(file.getInputStream());
+            msg = auxDaglService.importJbxx(amJbxxImportList, params);
+        } else if ("2".equals(importType)) {//工作简历
+            ExcelUtil<JobResumeImportVo> util = new ExcelUtil<JobResumeImportVo>(JobResumeImportVo.class);
+            List<JobResumeImportVo> jobResumeImportList = util.importExcel(file.getInputStream());
+            msg = jobResumeService.importJobResume(jobResumeImportList, params);
+        } else if ("3".equals(importType)) {//学历简历
+            ExcelUtil<EduResumeImportVo> util = new ExcelUtil<EduResumeImportVo>(EduResumeImportVo.class);
+            List<EduResumeImportVo> eduResumeImportList = util.importExcel(file.getInputStream());
+            msg = eduResumeService.importEduResume(eduResumeImportList, params);
+        } else if ("1".equals(importType)) {//亲属关系
+            ExcelUtil<AuxQsgxImportVo> util = new ExcelUtil<AuxQsgxImportVo>(AuxQsgxImportVo.class);
+            List<AuxQsgxImportVo> auxQsgxImportVoList = util.importExcel(file.getInputStream());
+            msg = auxQsgxService.importAuxQsgx(auxQsgxImportVoList, params);
+        }/*else if("4".equals(importType)){//合同信息
+            ExcelUtil<ContractImportVo> util = new ExcelUtil<ContractImportVo>(ContractImportVo.class);
+            List<ContractImportVo> contractImportList = util.importExcel(file.getInputStream());
+            msg=contractService.importContract(contractImportList,params);
+        }*/
+
+
+        result.put("errCode", 0);
+        result.put("errMsg", "SUCCESS");
+        result.put("msg", msg);
+        return result;
+    }
+
+   /* @ResponseBody
+    @RequestMapping(value = "/export")
+    public Object export(
+            @RequestParam(value = "loginCode", required = true) String loginCode ,
+            @RequestParam(value = "charset", required = false) String charset,
+            @RequestParam(value = "exportType", required = false) String exportType,
+            @RequestBody String strJson,
+            HttpServletRequest request)
+            throws ValidateException {
+        //3、对json里面的参数进行校验
+        JSONObject json = new JsonParamValidate(strJson,exception)
+                .addIntegerRule("sortField", false, 1,2, exception)
+                .validate();
+
+        if(json.containsKey("kwFields") && json.containsKey("keyword")){
+            new ParamterValidate()
+                    .addRule(new IsInteger(exception))
+                    .addRule(new com.greathack.utils.validate.rule.IntegerBetween(1, 15, true, exception))
+                    .validate(json.getString("kwFields"));
+        }
+        AuxDaglSearchCriteria criteria = JSON.parseObject(strJson, AuxDaglSearchCriteria.class);
+        //数据权限读取
+        List<PowerItem> powerItemList= (List<PowerItem>) request.getAttribute("powerItemList");
+        for(PowerItem powerItem:powerItemList){
+            criteria.addFilter(powerItem.getParameter());
+        }
+        //封装数据字典所有值
+        List<Dict> dictList=dictService.getList(SystemConfig.getConfigData("DICT_APP_CODE"));
+        Map<String,List<DictData>> dictMap=new HashMap<>();
+        for(Dict dict:dictList){
+            List<DictData> dictDataList=dictDataService.getList(dict.getDictId());
+            dictMap.put(dict.getDictCode()+"",dictDataList);
+        }
+        if("0".equals(exportType)){//基本信息
+
+            List<AuxDagl> auxDaglList = auxDaglService.search(criteria);//查询所有档案管理基本信息
+
+            //新建集合
+            List<AuxDaglImportVo> auxDaglImportVos = new ArrayList<>();
+
+            for(AuxDagl auxDagl:auxDaglList){
+                //基本信息
+                AuxDaglImportVo auxDaglImportVo = new AuxDaglImportVo();
+                auxDaglImportVo.setXm(auxDagl.getXm());//姓名
+                auxDaglImportVo.setXb(getDictValue(auxDagl.getXb(),"SEX","",dictMap));//性别
+                auxDaglImportVo.setIdcard(auxDagl.getIdcard());//身份证号
+                auxDaglImportVo.setLxfs(auxDagl.getLxfs());//联系方式
+                auxDaglImportVo.setMz(getDictValue(auxDagl.getMz(),"MZ","",dictMap));//民族
+                auxDaglImportVo.setJz(getDictValue(auxDagl.getJz(),"DRIVER_CARD","",dictMap));//驾照
+                if("1".equals(auxDaglImportVo.getFby())){
+                    auxDaglImportVo.setFby("是");//服兵役
+                }else if ("0".equals(auxDaglImportVo.getFby())){
+                    auxDaglImportVo.setFby("否");//服兵役
+                }
+                auxDaglImportVo.setHyzk(getDictValue(auxDagl.getHyzk(),"HYZK","",dictMap));//婚姻状况
+                auxDaglImportVo.setZzmm(getDictValue(auxDagl.getZzmm(),"AM_ZZMM","",dictMap));//政治面貌
+                auxDaglImportVo.setXl(getDictValue(auxDagl.getXl(),"AM_XL","",dictMap));//学历
+                auxDaglImportVo.setHjdlx(getDictValue(auxDagl.getHjdlx(),"AM_HJDLX","",dictMap));//户籍地类型
+                auxDaglImportVo.setState(getDictValue(auxDagl.getState(),"AM_STATE","",dictMap));//辅警人员状态
+                auxDaglImportVo.setFjType(getDictValue(auxDagl.getFjType(),"AUX_FJLB","",dictMap));//辅警类别
+                auxDaglImportVos.add(auxDaglImportVo);
+            }
+            ExcelUtil<AuxDaglImportVo> util = new ExcelUtil<AuxDaglImportVo>(AuxDaglImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(auxDaglImportVos, "基本信息数据");
+            return  ajaxResult;
+        }*//*else if("1".equals(exportType)){//亲属关系
+            criteria.setAppCode(SystemConfig.getConfigData("RELATION_APP_CODE"));
+            List<RelationImportVo> list = relationService.searchExport(criteria);
+            for(RelationImportVo relationImportVo:list){
+                relationImportVo.setKinshipTerm(getDictValue(relationImportVo.getKinshipTerm(),"APPELLATION","",dictMap));//称谓
+                relationImportVo.setNowStatus(getDictValue(relationImportVo.getNowStatus(),"AM_REALTION_NOW_STATUS","",dictMap));//现状
+                relationImportVo.setHealthState(getDictValue(relationImportVo.getHealthState(),"AM_HEALTH_STATE","",dictMap));//健康状况
+                relationImportVo.setEduLevel(getDictValue(relationImportVo.getEduLevel(),"AM_XL","",dictMap));//学历
+                relationImportVo.setKjysgbFlag(getDictValue(relationImportVo.getKjysgbFlag(),"KJYSGB_FLAG","",dictMap));//科级以上干部
+
+                if("1".equals(relationImportVo.getCgjFlag())){//出国境
+                    relationImportVo.setCgjFlag("无");
+                }else if ("2".equals(relationImportVo.getCgjFlag())){
+                    relationImportVo.setCgjFlag("有");
+                }
+                if("1".equals(relationImportVo.getFzFlag())){//犯罪
+                    relationImportVo.setFzFlag("无");
+                }else if ("2".equals(relationImportVo.getFzFlag())){
+                    relationImportVo.setFzFlag("有");
+                }
+                if("1".equals(relationImportVo.getSysjFlag())){//收押收教
+                    relationImportVo.setSysjFlag("无");
+                }else if ("2".equals(relationImportVo.getSysjFlag())){
+                    relationImportVo.setSysjFlag("有");
+                }
+                if("1".equals(relationImportVo.getRhflFlag())){//人户分离
+                    relationImportVo.setRhflFlag("无");
+                }else if ("2".equals(relationImportVo.getRhflFlag())){
+                    relationImportVo.setRhflFlag("有");
+                }
+                relationImportVo.setBjgzFlag(getDictValue(relationImportVo.getBjgzFlag(),"BJGZ_FLAG","",dictMap));//本局人员编制类别
+                relationImportVo.setGzddssfw(getDictValue(relationImportVo.getGzddssfw(),"DDSSFW","",dictMap));//工作地点所属范围
+                relationImportVo.setGzdwxz(getDictValue(relationImportVo.getGzdwxz(),"GZDWXZ","",dictMap));//工作单位性质
+                relationImportVo.setJzddssfw(getDictValue(relationImportVo.getJzddssfw(),"DDSSFW","",dictMap));//居住地点所属范围
+
+            }
+            ExcelUtil<RelationImportVo> util = new ExcelUtil<RelationImportVo>(RelationImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(list, "亲属关系信息数据");
+            return  ajaxResult;
+        }else if("2".equals(exportType)){//工作简历信息
+            criteria.setAppCode(SystemConfig.getConfigData("JOB_RESUME_APP_CODE"));
+            List<JobResumeImportVo> list = jobResumeService.searchExport(criteria);
+            for(JobResumeImportVo jobResumeImportVo:list){
+
+            }
+            ExcelUtil<JobResumeImportVo> util = new ExcelUtil<JobResumeImportVo>(JobResumeImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(list, "工作简历信息数据");
+            return  ajaxResult;
+        }else if("3".equals(exportType)){//学历简历
+            criteria.setAppCode(SystemConfig.getConfigData("EDU_RESUME_APP_CODE"));
+            List<EduResumeImportVo> list = eduResumeService.searchExport(criteria);
+            for(EduResumeImportVo eduResumeImportVo:list){
+                eduResumeImportVo.setEduLevel(getDictValue(eduResumeImportVo.getEduLevel(),"AM_XL","",dictMap));//学历
+                eduResumeImportVo.setDegree(getDictValue(eduResumeImportVo.getDegree(),"AM_XW","",dictMap));//学位
+            }
+            ExcelUtil<EduResumeImportVo> util = new ExcelUtil<EduResumeImportVo>(EduResumeImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(list, "学历简历信息数据");
+            return  ajaxResult;
+        }else if("4".equals(exportType)){//合同信息
+            List<ContractImportVo> list = contractService.searchExport(criteria);
+            for(ContractImportVo contractImportVo:list){
+                contractImportVo.setCategory(getDictValue(contractImportVo.getCategory(),"CONTRACT_CATEGORY","",dictMap));//合同类别
+                contractImportVo.setState(getDictValue(contractImportVo.getState(),"CONTRACT_STATE","",dictMap));//合同状态
+            }
+            ExcelUtil<ContractImportVo> util = new ExcelUtil<ContractImportVo>(ContractImportVo.class);
+            AjaxResult ajaxResult= util.exportExcel(list, "合同信息数据");
+            return  ajaxResult;
+        }*//*
+
+
+        return null;
+    }*/
+
+
+}

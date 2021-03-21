@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>layui</title>
+		<meta name="renderer" content="webkit" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all">
+		<link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+		<style type="text/css">
+			.cos-label {width: 14%!important;}
+			.cos-line {width: 18%!important;}
+
+			.cos-sm-1 {width: 15%!important;}
+			.cos-sm-3 {width: 33%!important;}
+			#addAdmin { position: relative }
+			.imgRen{
+				position: absolute;
+				display: block;
+				width: 16%;
+				height: 200px;
+				right: 100px;
+				top: 34px;
+				border: 1px solid #D0D0D0;
+			}
+		</style>
+		<script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+		<script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+		<!--[if lt IE 9]>
+		<script src="../baseJs/html5shiv.min.js"></script>
+		<script src="../baseJs/respond.min.js"></script>
+		<script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+		<![endif]-->
+		<script src="../baseJs/function.js?v=1.60"></script>
+		<script src="../js/config.js?v=1.60"></script>
+		<script src="../js/global.js?v=1.60"></script>
+		<script src="../js/userLive.js?v=1.60"></script>
+		<!--<script src="../js/am/editArchive.js?v=1.60" charset="utf-8"></script>-->
+		<script src="../js/auxiliary/editArchive.js?v=1.60" charset="utf-8"></script>
+		<script src="../js/area.js?v=1.60"></script>
+	</head>
+	<body>
+		<!-- 外壳开始 -->
+		<div class="layui-fluid">
+		  <div class="layui-row layui-col-space10 layui-card">
+			  <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+				<div class="layui-container">
+				<!-- 内容开始 -->
+				<div class="layui-fluid">
+				  <div class="layui-row layui-col-space10 layui-card">
+						<div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+							<div class="layui-tab  layui-tab-card" lay-filter="tabFilter">
+								<ul class="layui-tab-title">
+									<li class="layui-this">人员基本信息</li>
+									<li>工作简历</li>
+									<li>学历简历</li>
+									<li>年度考核</li>
+									<li>月度考核</li>
+									<li>亲属关系</li>
+									<li>受奖情况</li>
+									<!-- <li>合同信息</li> -->
+									<!-- <li>被装信息</li> -->
+								</ul>
+								<div class="layui-tab-content" style="min-height: 700px;" >
+									<!-- 选项卡一、基本信息 start-->
+									<div class="layui-tab-item layui-show">
+										<div class="layui-fluid">
+											<form class="layui-form layui-form-pane" action="" lay-filter="edit" id="edit">
+												<!--<input type="hidden" name="daId" value=""/>-->
+												<input type="hidden" name="state"/>
+
+												<!-- 人员图片 -->
+												<img class="imgRen" src="" alt=""/>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" name="xm" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+															   lay-verify="required" maxlength="64">
+													</div>
+
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>性别</label>
+													<div class="layui-input-inline cos-line">
+														<select class="xb" name="xb" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" name="idcard" placeholder="请输入身份证" autocomplete="off" class="layui-input"
+															   lay-verify="required|numbermsg" maxlength="30">
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>最高学历</label>
+													<div class="layui-input-inline cos-line">
+														<select class="xl" name="xl" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label">籍贯</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="jgszss" placeholder="请输入籍贯">
+													</div>
+													<label class="layui-form-label cos-label">户籍地址</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="hjdz" placeholder="请输入户籍地址">
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label">现住地址</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="xjtzz" placeholder="请输入现住地址">
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>是否党员</label>
+													<div class="layui-input-inline cos-line">
+														<select class="isdy" name="isdy" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>是否退伍军人</label>
+													<div class="layui-input-inline cos-line">
+														<select class="fby" name="fby" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>联系方式</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" name="lxfs" placeholder="请输入联系方式" autocomplete="off" class="layui-input"
+															   maxlength="64" lay-verify="required">
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>入职日期</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input date" name="rzrq" placeholder="请输入入职日期" lay-verify="required">
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>由局购买保险</label>
+													<div class="layui-input-inline cos-line">
+														<select class="isbx" name="isbx" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>辅警编号</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="fjbh" placeholder="请输入辅警编号" lay-verify="required">
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label">
+														工作单位名称
+													</label>
+													<div class="layui-input-inline cos-line">
+														<select name="orgId" class="orgId" lay-filter="aihao" disabled="disabled">
+															<option value="" selected="">请选择</option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label">
+														辅警类别
+													</label>
+													<div class="layui-input-inline cos-line">
+														<select name="fjType" class="fjType" lay-filter="aihao" disabled="disabled">
+															<option value="" selected="">请选择</option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>政治面貌</label>
+													<div class="layui-input-inline cos-line">
+														<select class="zzmm" name="zzmm" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+												</div>
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>民族</label>
+													<div class="layui-input-inline cos-line">
+														<select class="mz" name="mz" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>婚姻状况</label>
+													<div class="layui-input-inline cos-line">
+														<select class="hyzk" name="hyzk" lay-verify="required">
+															<option value="" selected></option>
+														</select>
+													</div>
+													<label class="layui-form-label cos-label">驾照</label>
+													<div class="layui-input-inline cos-line">
+														<select class="jz" name="jz">
+															<option value="" selected></option>
+														</select>
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>毕业院校</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="byys" placeholder="请输入毕业院校" lay-verify="required">
+													</div>
+													<label class="layui-form-label cos-label">专业</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="zy" placeholder="请输入专业">
+													</div>
+													<label class="layui-form-label cos-label">毕业日期</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input date" name="byrq" placeholder="请输入毕业日期">
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label cos-label">爱好</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="aihao" placeholder="请输入爱好">
+													</div>
+													<label class="layui-form-label cos-label">特长</label>
+													<div class="layui-input-inline cos-line">
+														<input type="text" class="layui-input" name="techang" placeholder="请输入特长">
+													</div>
+												</div>
+
+
+
+
+
+												<div class="layui-form-item layui-form-text">
+													<label class="layui-form-label">现具体职责</label>
+													<div class="layui-input-block">
+														<textarea name="jtzz" class="layui-textarea" maxlength="255"></textarea>
+													</div>
+												</div>
+
+												<div class="layui-form-item">
+													<div class="layui-upload">
+														<button type="button" class="layui-btn layui-btn-normal" id="edit_selectFileBtn">选择照片</button>
+														<div class="layui-upload-list">
+															<table class="layui-table">
+																<thead>
+																<tr>
+																	<th>文件名</th>
+																	<th>大小</th>
+																	<th>状态</th>
+																	<th>操作</th>
+																</tr>
+																</thead>
+																<tbody id="edit_uploadList"></tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="layui-form-item layui-form-text">
+													<label class="layui-form-label">备注</label>
+													<div class="layui-input-block">
+														<textarea name="remark" class="layui-textarea" maxlength="255"></textarea>
+													</div>
+												</div>
+												<div style="text-align: center;">
+													<button class="layui-btn" id="editSubmit" lay-filter="edit"  lay-submit="">保存</button>&nbsp;
+													<button class="layui-btn layui-btn-danger" id="closeAdmin" type="button" onclick="closeTab();" >关闭</button>&nbsp;
+												</div>
+											</form>
+
+										</div>
+									</div>
+									<!-- 选项卡一、基本信息 end-->
+
+									<!-- 选项卡三、工作简历start -->
+									<div class="layui-tab-item" >
+										<div class="layui-fluid" >
+										  <div class="layui-row layui-col-space15">
+											<div class="layui-col-md12">
+											  <div class="layui-card">
+												<div class="layui-card-body">
+												  <table class="layui-hide" id="jobResumeElem" lay-filter="jobResumeElem"></table>
+													<script type="text/html" id="toolbarJobResume">
+													<div class="layui-btn-container">
+														<button class="layui-btn layui-btn-sm" lay-event="addJobResume">新增</button>
+													</div>
+												  </script>
+
+												  <script type="text/html" id="barJobResume">
+													<a class="layui-btn layui-btn-xs" lay-event="editJobResume">编辑</a>
+													<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delJobResume">删除</a>
+												  </script>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+									</div>
+									<!-- 选项卡三、工作简历end -->
+
+									<!-- 选项卡四、学历简历start -->
+									<div class="layui-tab-item" >
+										<div class="layui-fluid" >
+										  <div class="layui-row layui-col-space15">
+											<div class="layui-col-md12">
+											  <div class="layui-card">
+												<div class="layui-card-body">
+												  <table class="layui-hide" id="eduResumeElem" lay-filter="eduResumeElem"></table>
+													<script type="text/html" id="toolbarEduResume">
+													<div class="layui-btn-container">
+														<button class="layui-btn layui-btn-sm" lay-event="addEduResume">新增</button>
+													</div>
+												  </script>
+
+												  <script type="text/html" id="barEduResume">
+													<a class="layui-btn layui-btn-xs" lay-event="editEduResume">编辑</a>
+													<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delEduResume">删除</a>
+												  </script>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+									</div>
+									<!-- 选项卡四、学历简历end -->
+
+									<!--年度考核-->
+									<div class="layui-tab-item" >
+										<div class="layui-fluid" >
+											<div class="layui-row layui-col-space15">
+												<div class="layui-col-md12">
+													<div class="layui-card">
+														<div class="layui-card-body">
+															<table class="layui-hide" id="amNdkhElem" lay-filter="amNdkhElem"></table>
+															<script type="text/html" id="toolbarAmNdkh">
+																<div class="layui-btn-container">
+																	<button class="layui-btn layui-btn-sm" lay-event="addAmNdkh">新增</button>
+																</div>
+															</script>
+
+															<script type="text/html" id="barAmNdkh">
+																<a class="layui-btn layui-btn-xs" lay-event="editAmNdkh">编辑</a>
+																<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delAmNdkh">删除</a>
+															</script>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!--月度考核-->
+									<div class="layui-tab-item" >
+										<div class="layui-fluid" >
+											<div class="layui-row layui-col-space15">
+												<div class="layui-col-md12">
+													<div class="layui-card">
+														<div class="layui-card-body">
+															<table class="layui-hide" id="amYdkhElem" lay-filter="amYdkhElem"></table>
+															<script type="text/html" id="toolbarAmYdkh">
+																<div class="layui-btn-container">
+																	<button class="layui-btn layui-btn-sm" lay-event="addAmYdkh">新增</button>
+																</div>
+															</script>
+
+															<script type="text/html" id="barAmYdkh">
+																<a class="layui-btn layui-btn-xs" lay-event="editAmYdkh">编辑</a>
+																<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delAmYdkh">删除</a>
+															</script>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- 选项卡二、亲属关系start -->
+									 <div class="layui-tab-item" >
+										<div class="layui-fluid" >
+										  <div class="layui-row layui-col-space15">
+											<div class="layui-col-md12">
+											  <div class="layui-card">
+												<div class="layui-card-body">
+												  <table class="layui-hide" id="relationElem" lay-filter="relationElem"></table>
+												  <script type="text/html" id="toolbarRelation">
+													<div class="layui-btn-container">
+														<button class="layui-btn layui-btn-sm" lay-event="addRelation">新增</button>
+													</div>
+												  </script>
+
+												  <script type="text/html" id="barRelation">
+													<a class="layui-btn layui-btn-xs" lay-event="editRelation">编辑</a>
+													<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delRelation">删除</a>
+												  </script>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+									</div>
+									<!-- 选项卡二、亲属关系end -->
+
+									<!-- 选项卡二、受奖情况start -->
+									<div class="layui-tab-item" >
+										<div class="layui-fluid" >
+											<div class="layui-row layui-col-space15">
+												<div class="layui-col-md12">
+													<div class="layui-card">
+														<div class="layui-card-body">
+															<table class="layui-hide" id="sjqkElem" lay-filter="sjqkElem"></table>
+															<script type="text/html" id="toolbarSjqk">
+																<div class="layui-btn-container">
+																	<button class="layui-btn layui-btn-sm" lay-event="addSjqk">新增</button>
+																</div>
+															</script>
+
+															<script type="text/html" id="barSjqk">
+																<a class="layui-btn layui-btn-xs" lay-event="editSjqk">编辑</a>
+																<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delSjqk">删除</a>
+															</script>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 选项卡二、亲属关系end -->
+
+									<!-- 选项卡五、合同信息start -->
+									<!-- <div class="layui-tab-item" >
+										<div class="layui-fluid" >
+										  <div class="layui-row layui-col-space15">
+											<div class="layui-col-md12">
+											  <div class="layui-card">
+												<div class="layui-card-body">
+												  <table class="layui-hide" id="contractElem" lay-filter="contractElem"></table>
+													<script type="text/html" id="toolbarContract">
+													<div class="layui-btn-container">
+														<button class="layui-btn layui-btn-sm" lay-event="addContract">新增</button>
+													</div>
+												  </script>
+
+												  <script type="text/html" id="barContract">
+													<a class="layui-btn layui-btn-xs" lay-event="editContract">编辑</a>
+													<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delContract">删除</a>
+												  </script>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+									</div> -->
+									<!-- 选项卡五、合同信息end -->
+
+									<!-- 选项卡六、被装信息start -->
+									<!-- <div class="layui-tab-item" >
+										<div class="layui-fluid" >
+										  <div class="layui-row layui-col-space15">
+											<div class="layui-col-md12">
+											  <div class="layui-card">
+												<div class="layui-card-body">
+												  <table class="layui-hide" id="amBzxxElem" lay-filter="amBzxxElem"></table>
+													<script type="text/html" id="toolbarAmBzxx">
+													<div class="layui-btn-container">
+														<button class="layui-btn layui-btn-sm" lay-event="addAmBzxx">新增</button>
+													</div>
+												  </script>
+
+												  <script type="text/html" id="barAmBzxx">
+													<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delAmBzxx">删除</a>
+												  </script>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+									</div> -->
+									<!-- 选项卡六、被装信息end -->
+
+								</div>
+							</div>
+						</div>
+				  </div>
+				</div>
+
+				<!-- 亲属关系新增 -->
+				<div class="layui-fluid" id="addRelationPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="addRelation" id="addRelation">
+					  <!-- <input type="hidden" name="instanceId" id="relationInstanceId" value=""/> -->
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>称谓</label>
+						<div class="layui-input-inline cos-sm-3">
+							<select name="kinshipTerm" class="kinshipTerm"  lay-verify="required" lay-search >
+								<option value="" selected></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="qsname" lay-verify="required" placeholder="请输入姓名"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="ownIdcard" lay-verify="required" placeholder="请输入身份证号"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>出生日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="birthdayStr">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="workUnit" lay-verify="required" placeholder="请输入工作单位"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>职务</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="post"  lay-verify="required" placeholder="请输入职务"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>学历</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="eduLevel" class="eduLevel"  lay-verify="required">
+								<option value="" selected></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>现状</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="nowStatus" class="nowStatus"  lay-verify="required">
+								<option value="" selected></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>健康状况</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="healthState" class="healthState"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >健康说明</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="healthDetail"  placeholder="请输入健康说明"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						标识
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>科级以上干部</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="kjysgbFlag" class="kjysgbFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>出国境</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="cgjFlag" class="cgjFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>犯罪</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="fzFlag" class="fzFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>收押收教</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="sysjFlag" class="sysjFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>人户分离</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="rhflFlag" class="rhflFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						本局工作信息
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>编制类别</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="bjgzFlag" class="bjgzFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >工作部门</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<input type="hidden" name="bjOrgId" class="bjOrgId" id="addBjOrgId"  class="layui-input">
+							<input type="text" name="bjOrgName" id="addBjOrgName"  placeholder="请选择单位"  class="layui-input">
+							<!-- <select name="bjOrgId" class="bjOrgId" >
+								<option value=""></option>
+							</select> -->
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						工作地点
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >省</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddSheng" id="add_gzddSheng" lay-filter="addGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >市</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddShi" id="add_gzddShi" lay-filter="addGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >县</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddXian" id="add_gzddXian" lay-filter="addGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >详细地址</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="gzddAddress"  placeholder="请输入详细地址"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >所属范围</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddssfw" class="gzddssfw" >
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >单位性质</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzdwxz" class="gzdwxz"  >
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+
+
+					  <div class="layui-form-item">
+						居住地点
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >省</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddSheng" id="add_jzddSheng" lay-filter="addJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >市</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddShi" id="add_jzddShi" lay-filter="addJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >县</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddXian" id="add_jzddXian" lay-filter="addJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >详细地址</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="jzddAddress"  placeholder="请输入详细地址"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >所属范围</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddssfw" class="jzddssfw"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >其他</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="others"  placeholder="请输入其他"  class="layui-input">
+						</div>
+					  </div>
+						<div class="layui-form-item">
+							<button type="button" id="addRelationSubmit"  lay-filter="addRelation" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+				<!-- 亲属关系修改 -->
+				<div class="layui-fluid" id="editRelationPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="editRelation" id="editRelation">
+					  <input type="hidden" name="id" />
+					  <!--<input type="hidden" name="appCode" />
+					  <input type="hidden" name="idcard" />-->
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>称谓</label>
+						<div class="layui-input-inline cos-sm-3">
+							<select name="kinshipTerm" class="kinshipTerm"  lay-verify="required" lay-search >
+								<option value="" selected></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="qsname" lay-verify="required" placeholder="请输入姓名"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="ownIdcard"  lay-verify="required"  placeholder="请输入身份证号"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>出生日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="birthdayStr" >
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="workUnit" lay-verify="required"   placeholder="请输入工作单位"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>职务</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="post" lay-verify="required"   placeholder="请输入职务"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>学历</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="eduLevel" class="eduLevel"  lay-verify="required" >
+								<option value="" selected></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>现状</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="nowStatus" class="nowStatus"  lay-verify="required" >
+								<option value="" selected></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>健康状况</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="healthState" class="healthState"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >健康说明</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="healthDetail"  placeholder="请输入健康说明"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						标识
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>科级以上干部</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="kjysgbFlag" class="kjysgbFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>出国境</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="cgjFlag" class="cgjFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>犯罪</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="fzFlag" class="fzFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>收押收教</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="sysjFlag" class="sysjFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>人户分离</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="rhflFlag" class="rhflFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						本局工作信息
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >编制类别</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="bjgzFlag" class="bjgzFlag"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >工作部门</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<input type="hidden" name="bjOrgId" class="bjOrgId" id="editBjOrgId"  class="layui-input">
+							<input type="text" name="bjOrgName" id="editBjOrgName"  placeholder="请选择单位"  class="layui-input">
+							<!-- <select name="bjOrgId" class="bjOrgId" >
+								<option value=""></option>
+							</select> -->
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						工作地点
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >省</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddSheng" id="edit_gzddSheng" lay-filter="editGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >市</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddShi" id="edit_gzddShi" lay-filter="editGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >县</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddXian" id="edit_gzddXian" lay-filter="editGzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >详细地址</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="gzddAddress"  placeholder="请输入详细地址"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >所属范围</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzddssfw" class="gzddssfw" >
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >单位性质</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="gzdwxz" class="gzdwxz" >
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+
+
+					  <div class="layui-form-item">
+						居住地点
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >省</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddSheng" id="edit_jzddSheng" lay-filter="editJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >市</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddShi" id="edit_jzddShi" lay-filter="editJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >县</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddXian" id="edit_jzddXian" lay-filter="editJzdd" lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+						<label class="layui-form-label cos-sm-1" >详细地址</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="jzddAddress"  placeholder="请输入详细地址"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >所属范围</label>
+						<div class="layui-input-inline cos-sm-3" >
+							<select name="jzddssfw" class="jzddssfw"  lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" >其他</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="others"  placeholder="请输入其他"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						  <button type="button" id="editRelationSubmit"  lay-filter="editRelation" style="display:none" lay-submit></button>
+					  </div>
+				  </form>
+				</div>
+
+
+
+					<!-- 受奖情况新增 -->
+					<div class="layui-fluid" id="addSjqkPage" style="display:none;">
+						<!-- <input type="hidden" name="instanceId" id="relationInstanceId" value=""/> -->
+						<form class="layui-form layui-form-pane" action="" lay-filter="addSjqk" id="addSjqk">
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>受奖日期</label>
+								<div class="layui-input-inline cos-sm-3" >
+									<input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="sjrq">
+								</div>
+								<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>受奖类别</label>
+								<div class="layui-input-inline cos-sm-3" >
+									<select name="sjlb" class="sjlb"  lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>受奖名称</label>
+								<div class="layui-input-inline cos-sm-3">
+									<input type="text" name="sjmc" lay-verify="required" placeholder="受奖名称"  class="layui-input">
+								</div>
+								<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>批准单位</label>
+								<div class="layui-input-inline cos-sm-3">
+									<input type="text" name="pzdw" lay-verify="required" placeholder="批准单位"  class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">受奖原因</label>
+								<div class="layui-input-block">
+									<textarea class="layui-textarea" name="sjyy" placeholder="请输入受奖原因"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-upload">
+									<button type="button" class="layui-btn layui-btn-normal" id="add_selectFileBtn">选择文件</button>
+									<div class="layui-upload-list">
+										<table class="layui-table">
+											<thead>
+											<tr>
+												<th>文件名</th>
+												<th>大小</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+											</thead>
+											<tbody id="add_uploadList"></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<button type="button" id="addSjqkSubmit"  lay-filter="addSjqk" style="display:none" lay-submit></button>
+							</div>
+						</form>
+					</div>
+
+					<!-- 受奖情况修改 -->
+					<div class="layui-fluid" id="editSjqkPage" style="display:none;">
+						<!-- <input type="hidden" name="instanceId" id="relationInstanceId" value=""/> -->
+						<form class="layui-form layui-form-pane" action="" lay-filter="editSjqk" id="editSjqk">
+							<input type="hidden" name="id" />
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>受奖日期</label>
+								<div class="layui-input-inline cos-sm-3" >
+									<input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="sjrq">
+								</div>
+								<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>受奖类别</label>
+								<div class="layui-input-inline cos-sm-3" >
+									<select name="sjlb" class="sjlb"  lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>受奖名称</label>
+								<div class="layui-input-inline cos-sm-3">
+									<input type="text" name="sjmc" lay-verify="required" placeholder="受奖名称"  class="layui-input">
+								</div>
+								<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>批准单位</label>
+								<div class="layui-input-inline cos-sm-3">
+									<input type="text" name="pzdw" lay-verify="required" placeholder="批准单位"  class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">受奖原因</label>
+								<div class="layui-input-block">
+									<textarea class="layui-textarea" name="sjyy" placeholder="请输入受奖原因"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-upload">
+									<button type="button" class="layui-btn layui-btn-normal" id="edit_sjqk_selectFileBtn">选择文件</button>
+									<div class="layui-upload-list">
+										<table class="layui-table">
+											<thead>
+											<tr>
+												<th>文件名</th>
+												<th>大小</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+											</thead>
+											<tbody id="edit_sjqk_uploadList"></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<button type="button" id="editSjqkSubmit"  lay-filter="editSjqk" style="display:none" lay-submit></button>
+							</div>
+						</form>
+					</div>
+
+
+
+
+
+				<!-- 工作简历新增 -->
+				<div class="layui-fluid" id="addJobResumePage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="addJobResumeForm" id="addJobResumeForm">
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" class="layui-input" name="workUnit" lay-verify="required" placeholder="请输入工作单位">
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>职务</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" class="layui-input" name="post" lay-verify="required" placeholder="请输入职务">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>开始日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" name="startDate" lay-verify="required" placeholder="yyyy-MM-dd">
+						</div>
+						<label class="layui-form-label cos-sm-1" >结束日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" name="endDate" placeholder="yyyy-MM-dd" >
+						</div>
+					  </div>
+					 <div class="layui-form-item layui-form-text">
+					     <label class="layui-form-label">备注</label>
+					     <div class="layui-input-block">
+					        <textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+					     </div>
+					 </div>
+						<div class="layui-form-item">
+							<button type="button" id="addJobResumeSubmit"  lay-filter="addJobResumeSubmit" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+				<!-- 工作简历修改 -->
+				<div class="layui-fluid" id="editJobResumePage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="editJobResumeForm" id="editJobResumeForm">
+						<input type="hidden" name="id" />
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+							<div class="layui-input-inline cos-sm-3">
+							  <input type="text" class="layui-input" name="workUnit" lay-verify="required" placeholder="请输入工作单位">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>职务</label>
+							<div class="layui-input-inline cos-sm-3">
+							  <input type="text" class="layui-input" name="post" lay-verify="required" placeholder="请输入职务">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>开始日期</label>
+							<div class="layui-input-inline cos-sm-3" >
+								 <input type="text" class="layui-input date" name="startDate" lay-verify="required" placeholder="yyyy-MM-dd">
+							</div>
+							<label class="layui-form-label cos-sm-1" >结束日期</label>
+							<div class="layui-input-inline cos-sm-3" >
+								 <input type="text" class="layui-input date" name="endDate" placeholder="yyyy-MM-dd" >
+							</div>
+						</div>
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="editJobResumeSubmit"  lay-filter="editJobResumeSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+
+				<!-- 学历简历新增 -->
+				<div class="layui-fluid" id="addEduResumePage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="addEduResumeForm" id="addEduResumeForm">
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>毕业院校</label>
+							<div class="layui-input-inline cos-sm-3">
+								<input type="text" class="layui-input" name="university" lay-verify="required" placeholder="请输入毕业院校">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>专业</label>
+							<div class="layui-input-inline cos-sm-3">
+								<input type="text" class="layui-input" name="specialitie" lay-verify="required" placeholder="请输入专业">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>开始日期</label>
+							<div class="layui-input-inline cos-sm-3" >
+								<input type="text" class="layui-input date" name="startDate" lay-verify="required" placeholder="yyyy-MM-dd">
+							</div>
+							<label class="layui-form-label cos-sm-1" >结束日期</label>
+							<div class="layui-input-inline cos-sm-3" >
+								<input type="text" class="layui-input date" name="endDate" placeholder="yyyy-MM-dd">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>学历</label>
+							<div class="layui-input-inline cos-sm-3">
+								 <select class="eduLevel" name="eduLevel" lay-verify="required">
+									<option value="" selected></option>
+								 </select>
+							</div>
+							<label class="layui-form-label cos-sm-1">学位</label>
+							<div class="layui-input-inline cos-sm-3">
+								<select class="degree" name="degree">
+									<option value="" selected></option>
+								</select>
+							</div>
+						</div>
+						 <div class="layui-form-item layui-form-text">
+							 <label class="layui-form-label">备注</label>
+							 <div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							 </div>
+						 </div>
+						<div class="layui-form-item">
+							<div class="layui-upload">
+								<button type="button" class="layui-btn layui-btn-normal" id="add_edu_selectFileBtn">选择文件</button>
+								<div class="layui-upload-list">
+									<table class="layui-table">
+										<thead>
+										<tr>
+											<th>文件名</th>
+											<th>大小</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="add_edu_uploadList"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="addEduResumeSubmit"  lay-filter="addEduResumeSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+
+				<!-- 学历简历修改 -->
+				<div class="layui-fluid" id="editEduResumePage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="editEduResumeForm" id="editEduResumeForm">
+					  <input type="hidden" name="id" />
+					  <div class="layui-form-item">
+					  	<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>毕业院校</label>
+					  	<div class="layui-input-inline cos-sm-3">
+					  		<input type="text" class="layui-input" name="university" lay-verify="required" placeholder="请输入毕业院校">
+					  	</div>
+					  	<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>专业</label>
+					  	<div class="layui-input-inline cos-sm-3">
+					  		<input type="text" class="layui-input" name="specialitie" lay-verify="required" placeholder="请输入专业">
+					  	</div>
+					  </div>
+					  <div class="layui-form-item">
+					  	<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>开始日期</label>
+					  	<div class="layui-input-inline cos-sm-3" >
+					  		<input type="text" class="layui-input date" name="startDate" lay-verify="required" placeholder="yyyy-MM-dd">
+					  	</div>
+					  	<label class="layui-form-label cos-sm-1" >结束日期</label>
+					  	<div class="layui-input-inline cos-sm-3" >
+					  		<input type="text" class="layui-input date" name="endDate" placeholder="yyyy-MM-dd">
+					  	</div>
+					  </div>
+					  <div class="layui-form-item">
+					  	<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>学历</label>
+					  	<div class="layui-input-inline cos-sm-3">
+					  		 <select class="eduLevel" name="eduLevel" lay-verify="required">
+					  			<option value="" selected></option>
+					  		 </select>
+					  	</div>
+					  	<label class="layui-form-label cos-sm-1">学位</label>
+					  	<div class="layui-input-inline cos-sm-3">
+					  		<select class="degree" name="degree">
+					  			<option value="" selected></option>
+					  		</select>
+					  	</div>
+					  </div>
+					   <div class="layui-form-item layui-form-text">
+					  	 <label class="layui-form-label">备注</label>
+					  	 <div class="layui-input-block">
+					  		<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+					  	 </div>
+					   </div>
+					  <div class="layui-form-item">
+						  <div class="layui-upload">
+							  <button type="button" class="layui-btn layui-btn-normal" id="edit_edu_selectFileBtn">选择文件</button>
+							  <div class="layui-upload-list">
+								  <table class="layui-table">
+									  <thead>
+									  <tr>
+										  <th>文件名</th>
+										  <th>大小</th>
+										  <th>状态</th>
+										  <th>操作</th>
+									  </tr>
+									  </thead>
+									  <tbody id="edit_edu_uploadList"></tbody>
+								  </table>
+							  </div>
+						  </div>
+					  </div>
+						<div class="layui-form-item">
+							<button type="button" id="editEduResumeSubmit"  lay-filter="editEduResumeSubmit" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+
+				<!-- 年度考核新增 -->
+				<div class="layui-fluid" id="addAmNdkhPage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="addAmNdkhForm" id="addAmNdkhForm">
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核年度</label>
+							<div class="layui-input-inline cos-sm-3">
+								 <input type="text" class="layui-input year" name="khnd" placeholder="yyyy" lay-verify="required">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核结论</label>
+							<div class="layui-input-inline cos-sm-3">
+								<select class="khjl" name="khjl" lay-verify="required">
+									<option value="" selected=""></option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="addAmNdkhSubmit" lay-filter="addAmNdkhSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+				<!-- 年度考核修改 -->
+				<div class="layui-fluid" id="editAmNdkhPage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="editAmNdkhForm" id="editAmNdkhForm">
+						<input type="hidden" name="id" />
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核年度</label>
+							<div class="layui-input-inline cos-sm-3">
+								 <input type="text" class="layui-input year" name="khnd" placeholder="yyyy" lay-verify="required">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核结论</label>
+							<div class="layui-input-inline cos-sm-3">
+								<select class="khjl" name="khjl" lay-verify="required">
+									<option value="" selected=""></option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="editAmNdkhSubmit" lay-filter="editAmNdkhSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+
+				<!-- 月度考核新增 -->
+				<div class="layui-fluid" id="addAmYdkhPage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="addAmYdkhForm" id="addAmYdkhForm">
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核月度</label>
+							<div class="layui-input-inline cos-sm-3">
+								 <input type="text" class="layui-input month" name="khyd" placeholder="yyyyMM" lay-verify="required">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核结论</label>
+							<div class="layui-input-inline cos-sm-3">
+								<select class="khjl" name="khjl" lay-verify="required">
+									<option value="" selected=""></option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="addAmYdkhSubmit" lay-filter="addAmYdkhSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+				<!-- 月度考核修改 -->
+				<div class="layui-fluid" id="editAmYdkhPage" style="display:none;">
+					<form class="layui-form layui-form-pane" action="" lay-filter="editAmYdkhForm" id="editAmYdkhForm">
+						<input type="hidden" name="id" />
+						<div class="layui-form-item">
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核月度</label>
+							<div class="layui-input-inline cos-sm-3">
+								 <input type="text" class="layui-input month" name="khyd" placeholder="yyyyMM" lay-verify="required">
+							</div>
+							<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>考核结论</label>
+							<div class="layui-input-inline cos-sm-3">
+								<select class="khjl" name="khjl" lay-verify="required">
+									<option value="" selected=""></option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" name="remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<button type="button" id="editAmYdkhSubmit" lay-filter="editAmYdkhSubmit" style="display:none" lay-submit></button>
+						</div>
+					</form>
+				</div>
+
+				<!-- 合同信息新增 -->
+				<div class="layui-fluid" id="addContractPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="addContract" id="addContract">
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同类别</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <select name="category" class="contractCategory"  lay-verify="required">
+						  	<option value="" selected></option>
+						  </select>
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同编号</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="contractNo" lay-verify="required" placeholder="请输入合同编号"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同名称</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="contractName" lay-verify="required" placeholder="请输入合同编号"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同状态</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <select name="state" class="contractState" >
+						  	<option value="" selected></option>
+						  </select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>签订日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input" lay-verify="required" id="signDateAdd" placeholder="yyyy-MM-dd" name="signDate" >
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>生效日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="effectiveDate" >
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>失效日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="expirationDate" >
+						</div>
+						<label class="layui-form-label cos-sm-1" >终止日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" placeholder="yyyy-MM-dd" name="terminationDate" >
+						</div>
+					  </div>
+					  <div class="layui-form-item layui-form-text">
+					      <label class="layui-form-label">合同内容</label>
+					      <div class="layui-input-block">
+					         <textarea placeholder="请输入合同内容" name="content" class="layui-textarea"></textarea>
+					      </div>
+					  </div>
+					  <div class="layui-form-item layui-form-text">
+					      <label class="layui-form-label">终止原因</label>
+					      <div class="layui-input-block">
+					         <textarea placeholder="请输入终止原因" name="reason" class="layui-textarea"></textarea>
+					      </div>
+					  </div>
+					 <div class="layui-form-item layui-form-text">
+					     <label class="layui-form-label">备注</label>
+					     <div class="layui-input-block">
+					        <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+					     </div>
+					 </div>
+						<div class="layui-form-item">
+							<button type="button" id="addContractSubmit"  lay-filter="addContract" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+
+				<!-- 合同信息修改 -->
+				<div class="layui-fluid" id="editContractPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="editContract" id="editContract">
+					  <input type="hidden" name="contractId" />
+					  <input type="hidden" name="appCode" />
+					  <input type="hidden" name="idcard" />
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同类别</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <select name="category" class="contractCategory"  lay-verify="required">
+						  	<option value="" selected></option>
+						  </select>
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同编号</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="contractNo" lay-verify="required" placeholder="请输入合同编号"  class="layui-input">
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同名称</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="contractName" lay-verify="required" placeholder="请输入合同编号"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>合同状态</label>
+						<div class="layui-input-inline cos-sm-3">
+							 <select name="state" class="contractState" >
+								<option value="" selected></option>
+							 </select>
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>签订日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="signDate" >
+						</div>
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>生效日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date"  lay-verify="required" placeholder="yyyy-MM-dd" name="effectiveDate" >
+						</div>
+					  </div>
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1" ><font color="#ff0000"><strong>*</strong></font>失效日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" lay-verify="required" placeholder="yyyy-MM-dd" name="expirationDate" >
+						</div>
+						<label class="layui-form-label cos-sm-1" >终止日期</label>
+						<div class="layui-input-inline cos-sm-3" >
+							 <input type="text" class="layui-input date" placeholder="yyyy-MM-dd" name="terminationDate" >
+						</div>
+					  </div>
+					  <div class="layui-form-item layui-form-text">
+					      <label class="layui-form-label">合同内容</label>
+					      <div class="layui-input-block">
+					         <textarea placeholder="请输入合同内容" name="content" class="layui-textarea"></textarea>
+					      </div>
+					  </div>
+					  <div class="layui-form-item layui-form-text">
+					      <label class="layui-form-label">终止原因</label>
+					      <div class="layui-input-block">
+					         <textarea placeholder="请输入终止原因" name="reason" class="layui-textarea"></textarea>
+					      </div>
+					  </div>
+					 <div class="layui-form-item layui-form-text">
+					     <label class="layui-form-label">备注</label>
+					     <div class="layui-input-block">
+					        <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+					     </div>
+					 </div>
+						<div class="layui-form-item">
+							<button type="button" id="editContractSubmit"  lay-filter="editContract" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+
+				<!-- 被装信息新增 -->
+				<div class="layui-fluid" id="addAmBzxxPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="addAmBzxx" id="addAmBzxx">
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="workUnit" lay-verify="required" placeholder="请输入工作单位"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>职务</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="post" lay-verify="required" placeholder="请输入职务"  class="layui-input">
+						</div>
+					  </div>
+					 <div class="layui-form-item layui-form-text">
+					     <label class="layui-form-label">备注</label>
+					     <div class="layui-input-block">
+					        <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+					     </div>
+					 </div>
+						<div class="layui-form-item">
+							<button type="button" id="addAmBzxxSubmit"  lay-filter="addAmBzxx" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+
+				<!-- 被装信息修改 -->
+				<div class="layui-fluid" id="editAmBzxxPage" style="display:none;">
+				  <form class="layui-form layui-form-pane" action="" lay-filter="editAmBzxx" id="editAmBzxx">
+					  <input type="hidden" name="id" />
+					  <input type="hidden" name="appCode" />
+					  <input type="hidden" name="idcard" />
+					  <div class="layui-form-item">
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>工作单位</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="workUnit" lay-verify="required" placeholder="请输入工作单位"  class="layui-input">
+						</div>
+						<label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>职务</label>
+						<div class="layui-input-inline cos-sm-3">
+						  <input type="text" name="post" lay-verify="required" placeholder="请输入职务"  class="layui-input">
+						</div>
+					  </div>
+					 <div class="layui-form-item layui-form-text">
+					     <label class="layui-form-label">备注</label>
+					     <div class="layui-input-block">
+					        <textarea placeholder="请输入备注" name="remark" class="layui-textarea"></textarea>
+					     </div>
+					 </div>
+						<div class="layui-form-item">
+							<button type="button" id="editAmBzxxSubmit"  lay-filter="editAmBzxx" style="display:none" lay-submit></button>
+						</div>
+				  </form>
+				</div>
+
+				<!-- 装备选择列表 -->
+				<div id="hidden1" lay-filter="hidden1" style="display: none;width:1000px;">
+					<div class="layui-card-header">
+						<form class="layui-form" action="" lay-filter="searchJbxxForm">
+							<div class="layui-form-item">
+							  <div class="layui-inline">
+								<label class="layui-form-label">装备名称</label>
+								<div class="layui-input-inline">
+								  <input type="text" name="commodityName" id="commodityName"  class="layui-input">
+								</div>
+							  </div>
+							  <div class="layui-inline">
+							    <label class="layui-form-label">装备类别</label>
+							    <div class="layui-input-inline">
+							       <select name="commodityType" id="commodityType" class="commodityType"  >
+							          <option value="" selected=""></option>
+							        </select>
+							    </div>
+							  </div>
+							  <div class="layui-inline">
+								<button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBzxxBtn">查询</button>
+							  </div>
+							</div>
+						</form>
+					</div>
+					<div class="layui-fluid" id="saveEnrollPage" style="min-height: 700px;">
+						<div id="zhuangbeiId">
+						</div>
+					</div>
+				</div>
+
+				<!-- 内容结束 -->
+
+			  </div>
+			</div>
+		 </div>
+		</div>
+	</body>
+</html>

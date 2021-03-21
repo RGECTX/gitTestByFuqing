@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.attachment.IAttachmentDAO">
+	<resultMap id="resultAttachment" type="com.greathack.homlin.pojo.attachment.Attachment">
+		<result column="id" property="id" />
+		<result column="app_code" property="appCode" />
+		<result column="instance_type" property="instanceType" />
+		<result column="instance_id" property="instanceId" />
+		<result column="attachment_type" property="attachmentType" />
+		<result column="fileName" property="fileName" />
+		<result column="filePath" property="filePath" />
+		<result column="fileSize" property="fileSize" />
+		<result column="mime" property="mime" />
+		<result column="fileExtName" property="fileExtName" />
+		<result column="saveFileName" property="saveFileName" />
+		<result column="fileRealPath" property="fileRealPath" />
+		<result column="remark" property="remark" />
+		<result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+		<result column="outKey1" property="outKey1" />
+		<result column="outKey2" property="outKey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.greathack.homlin.pojo.attachment.Attachment">
+    INSERT INTO attachment(id,app_code,instance_type,instance_id,attachment_type,fileName,filePath,fileSize,mime,fileExtName,saveFileName,fileRealPath,remark,create_by,create_time,outKey1,outKey2,bak1,bak2)
+    	VALUES(#{id},#{appCode},#{instanceType},#{instanceId},#{attachmentType},#{fileName},#{filePath},#{fileSize},#{mime},#{fileExtName},#{saveFileName},#{fileRealPath},#{remark},#{createBy},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2})
+ 	</insert>
+
+
+ 	<delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM attachment WHERE id=#{value}
+  	</delete>
+
+	<delete id="deleteByinstanceId" parameterType="java.lang.Long">
+  	 	DELETE FROM attachment WHERE instance_id=#{value}
+  	</delete>
+
+	<update id="update" parameterType="com.greathack.homlin.pojo.attachment.Attachment">
+		update attachment
+		set
+		app_code=#{appCode},
+		instance_type=#{instanceType},
+		instance_id=#{instanceId},
+		attachment_type=#{attachmentType},
+		fileName=#{fileName},
+		filePath=#{filePath},
+		fileSize=#{fileSize},
+		mime=#{mime},
+		fileExtName=#{fileExtName},
+		saveFileName=#{saveFileName},
+		fileRealPath=#{fileRealPath},
+		remark=#{remark},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where id=#{id}
+  	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultAttachment" >
+		select * from attachment where id = #{value}
+	</select>
+
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.attachment.Attachment"  resultMap="resultAttachment" >
+		select * from attachment where 1=1
+		<if test="appCode != null"> and app_code=#{appCode}</if>
+		<if test="instanceType != null"> and instance_type=#{instanceType}</if>
+		<if test="instanceId != null"> and instance_id=#{instanceId}</if>
+		<if test="attachmentType != null"> and attachment_type=#{attachmentType}</if>
+		<if test="fileName != null"> and fileName=#{fileName}</if>
+		<if test="filePath != null"> and filePath=#{filePath}</if>
+		<if test="mime != null"> and mime=#{mime}</if>
+		<if test="fileExtName != null"> and fileExtName=#{fileExtName}</if>
+		<if test="saveFileName != null"> and saveFileName=#{saveFileName}</if>
+		<if test="fileRealPath != null"> and fileRealPath=#{fileRealPath}</if>
+		<if test="remark != null"> and remark=#{remark}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+		order by create_time desc
+	</select>
+
+	<select id="findAll" resultMap="resultAttachment" >
+		select * from attachment
+	</select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.process.IApprovalItemDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.process.ApprovalItem">
+    INSERT INTO approvalItem(approvalItemId,processId,processNodeId,nodeCode,userId,itemContent,itemState,remark,createTime,updateTime)
+    VALUES(#{approvalItemId},#{processId},#{processNodeId},#{nodeCode},#{userId},#{itemContent},#{itemState},#{remark},#{createTime},#{updateTime});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM approvalItem WHERE approvalItemId=#{value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.process.ApprovalItem">
+    UPDATE approvalItem
+    SET 
+    processId=#{processId},
+    processNodeId=#{processNodeId},
+    nodeCode=#{nodeCode},
+    userId=#{userId},
+    itemContent=#{itemContent},
+    itemState=#{itemState},  
+    remark=#{remark} 
+    WHERE approvalItemId=${approvalItemId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.process.ApprovalItem" >
+	select * from approvalItem where approvalItemId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.process.ApprovalItem"  resultType="com.greathack.homlin.pojo.process.ApprovalItem" >	
+	select * from approvalItem where 1=1
+	<if test="processId != null"> and processId=#{processId}</if>
+	<if test="processNodeId != null"> and processNodeId=#{processNodeId}</if>
+	<if test="nodeCode != null"> and nodeCode=#{nodeCode}</if>
+	<if test="userId != null"> and userId=#{userId}</if>
+	<if test="itemState > 0"> and itemState=#{itemState}</if>
+	order by approvalItemId asc
+	</select>
+	
+</mapper>

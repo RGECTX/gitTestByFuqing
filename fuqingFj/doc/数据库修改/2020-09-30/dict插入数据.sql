@@ -1,0 +1,1 @@
+INSERT INTO `dict`(`dictId`, `appCode`, `dictName`, `dictCode`, `remark`, `createTime`, `outKey1`, `outKey2`, `bak1`, `bak2`) VALUES (115734583705601, 'am-dict', '工伤审核状态', 'AUX_GSSH_STATE', NULL, 1601458550135, NULL, NULL, NULL, NULL);

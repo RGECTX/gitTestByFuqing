@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxBzglDAO">
+    <parameterMap id="parameterAuxBzgl" type="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+        <parameter property="bzglId"/>
+        <parameter property="orgId"/>
+        <parameter property="orgName"/>
+        <parameter property="pm"/>
+        <parameter property="bzNumber"/>
+        <parameter property="sqDate"/>
+        <parameter property="reason"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+        <parameter property="state"/>
+        <parameter property="progress"/>
+        <parameter property="processId"/>
+    </parameterMap>
+
+    <insert id="add" parameterMap="parameterAuxBzgl">
+    INSERT INTO aux_bzgl(bzglId,orgId,orgName,pm,bzNumber,sqDate,reason,createBy,createTime,outKey1,outKey2,bak1,bak2,state,progress,processId)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_bzgl WHERE bzglId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxBzgl">
+		update aux_bzgl
+		set
+		orgId=#{orgId},
+		orgName=#{orgName},
+		pm=#{pm},
+		bzNumber=#{bzNumber},
+		sqDate=#{sqDate},
+		reason=#{reason},
+		createBy=#{createBy},
+		createTime=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		state=#{state},
+		progress=#{progress},
+		processId=#{processId}
+		where bzglId=#{bzglId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+		select * from aux_bzgl where bzglId = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxBzgl" resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+        select * from aux_bzgl where 1=1
+        <if test="orgId != null and orgId !='' ">and orgId=#{orgId}</if>
+        <if test="orgName != null and orgName !='' ">and orgName=#{orgName}</if>
+        <if test="pm != null and pm !='' ">and pm=#{pm}</if>
+        <if test="bzNumber != null and bzNumber !='' ">and bzNumber=#{bzNumber}</if>
+        <if test="sqDate != null and sqDate !='' ">and sqDate=#{sqDate}</if>
+        <if test="reason != null and reason !='' ">and reason=#{reason}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        <if test="state != null and state !='' ">and state=#{state}</if>
+        <if test="progress != null and progress !='' ">and progress=#{progress}</if>
+        <if test="processId != null and processId !='' ">and processId=#{processId}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+		select * from aux_bzgl
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxBzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+        SELECT
+        b.*
+        FROM aux_bzgl b
+        left join organization org on org.orgId=b.orgId
+        WHERE b.state = '1'
+
+        <!--<if test="orgName != null  and orgName !='' "> and b.orgName = #{orgName}</if>-->
+        <if test="orgName != null  and orgName !='' ">and ( org.orgName=#{orgName} or concat(',',org.parents,',') like
+            concat('%,',#{orgName},',%') )
+        </if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="pm != null  and pm !='' ">and b.pm LIKE concat('%',#{pm},'%')</if>
+
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxBzglSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.bzglId) FROM aux_bzgl b
+        left join organization org on org.orgId=b.orgId
+
+        WHERE 1 = 1
+
+        <!--<if test="orgName != null  and orgName !='' ">and b.orgName = #{orgName}</if>-->
+        <if test="orgName != null  and orgName !='' ">and ( org.orgName=#{orgName} or concat(',',org.parents,',') like
+            concat('%,',#{orgName},',%') )
+        </if>
+        <if test="orgId != null  and orgId !='' ">and ( org.orgId=#{orgId} or concat(',',org.parents,',') like
+            concat('%,',#{orgId},',%') )
+        </if>
+        <if test="pm != null  and pm !='' ">and b.pm LIKE concat('%',#{pm},'%')</if>
+
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="searchDcl" parameterType="com.greathack.homlin.pojo.auxiliary.AuxBzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+
+        SELECT
+        b.bzglId as bzglId,
+        b.orgId as orgId,
+        b.orgName as orgName,
+        b.pm as pm,
+        b.bzNumber as bzNumber,
+        b.sqDate as sqDate,
+        b.reason as reason,
+        b.createBy as createBy,
+        b.createTime as createTime,
+        b.outKey1 as outKey1,
+        b.outKey2 as outKey2,
+        b.bak1 as bak1,
+        b.bak2 as bak2,
+        b.state as state,
+        b.progress as progress,
+        b.processid as processid,
+        org.parentName,
+        pro.pendingUserIds AS pendingUserIds,
+        pro.handledUserIds AS handledUserIds,
+        u.userId AS `creator.userId`,
+        u.userName AS `creator.name`,
+        u.nickName AS `creator.loginName`,
+        u.outKey1 AS `creator.amUnitId`
+
+        FROM aux_bzgl b
+        left join organization org on org.orgId=b.orgId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+
+        WHERE b.state = '2'
+
+        <if test="pm != null  and pm !='' ">and pm = #{pm}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchYcl" parameterType="com.greathack.homlin.pojo.auxiliary.AuxBzglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxBzgl">
+
+        SELECT
+        b.bzglId as bzglId,
+        b.orgId as orgId,
+        b.orgName as orgName,
+        b.pm as pm,
+        b.bzNumber as bzNumber,
+        b.sqDate as sqDate,
+        b.reason as reason,
+        b.createBy as createBy,
+        b.createTime as createTime,
+        b.outKey1 as outKey1,
+        b.outKey2 as outKey2,
+        b.bak1 as bak1,
+        b.bak2 as bak2,
+        b.state as state,
+        b.progress as progress,
+        b.processid as processid,
+        org.parentName,
+        pro.pendingUserIds AS pendingUserIds,
+        pro.handledUserIds AS handledUserIds,
+        u.userId AS `creator.userId`,
+        u.userName AS `creator.name`,
+        u.nickName AS `creator.loginName`,
+        u.outKey1 AS `creator.amUnitId`
+
+        FROM aux_bzgl b
+        left join organization org on org.orgId=b.orgId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+
+        WHERE (b.state = '4' or b.state = '8')
+
+        <if test="pm != null  and pm !='' ">and pm = #{pm}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+</mapper>

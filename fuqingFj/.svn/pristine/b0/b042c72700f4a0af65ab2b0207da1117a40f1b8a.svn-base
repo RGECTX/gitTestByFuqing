@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.category.ICategoryDAO">
+	<parameterMap id="parameterCategory" type="com.greathack.homlin.pojo.category.Category">
+		<parameter property="categoryId"/>
+		<parameter property="appCode"/>
+		<parameter property="parentId"/>
+		<parameter property="parentName"/>
+		<parameter property="parents"/>
+		<parameter property="categoryName"/>
+		<parameter property="categoryCode"/>
+		<parameter property="icons"/>
+		<parameter property="sortNum"/>
+		<parameter property="outKey1"/>
+		<parameter property="outKey2"/>
+		<parameter property="bak1"/>
+		<parameter property="bak2"/>
+
+	</parameterMap>
+	<resultMap id="resultCategory" type="com.greathack.homlin.pojo.category.Category">
+		<result column="categoryId" property="categoryId" />
+		<result column="appCode" property="appCode" />
+		<result column="parentId" property="parentId" />
+		<result column="parentName" property="parentName" />
+		<result column="parents" property="parents" />
+		<result column="categoryName" property="categoryName" />
+		<result column="categoryCode" property="categoryCode" />
+		<result column="icons" property="icons" />
+		<result column="sortNum" property="sortNum" />
+		<result column="outKey1" property="outKey1" />
+		<result column="outKey2" property="outKey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+
+	</resultMap>
+
+	<insert id="add" parameterMap="parameterCategory">
+    insert into category (categoryId,appCode,parentId,parentName,parents,categoryName,categoryCode,icons,
+  	sortNum,outKey1,outKey2,bak1,bak2) VALUES (
+  	#{categoryId,jdbcType=BIGINT},
+  	#{appCode,jdbcType=VARCHAR},
+  	#{parentId,jdbcType=BIGINT},
+  	#{parentName,jdbcType=VARCHAR},
+  	#{parents,jdbcType=VARCHAR},
+  	#{categoryName,jdbcType=VARCHAR},
+  	#{categoryCode,jdbcType=VARCHAR},
+    #{icons,jdbcType=VARCHAR},
+  	#{sortNum,jdbcType=BIGINT},
+  	#{outKey1,jdbcType=VARCHAR},
+  	#{outKey2,jdbcType=VARCHAR},
+  	#{bak1,jdbcType=VARCHAR},
+  	#{bak2,jdbcType=VARCHAR}	)
+ 	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+   DELETE FROM category WHERE categoryId=${value}
+  	</delete>
+
+	<update id="update" parameterMap="parameterCategory">
+		UPDATE category
+		SET
+		parentId=#{parentId},parentName=#{parentName},parents=#{parents},categoryName=#{categoryName},categoryCode=#{categoryCode},icons=#{icons},
+		outKey1=#{outKey1},outKey2=#{outKey2},bak1=#{bak1},bak2=#{bak2},sortNum=#{sortNum}
+		WHERE categoryId=#{categoryId};
+		<if test="subCategoryList!=null and subCategoryList.size>0">
+			<foreach collection="subCategoryList" item="category">
+				UPDATE category set parentName=#{category.parentName},parents=#{category.parents} WHERE categoryId=#{category.categoryId};
+			</foreach>
+		</if>
+	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultCategory" >
+	select * from category where categoryId = #{id}
+	</select>
+
+	<select id="findByExample" parameterMap="parameterCategory"  resultMap="resultCategory" >
+		select * from category where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="parentId != null"> and parentId=#{parentId}</if>
+		<if test="parentName != null"> and parentName=#{parentName}</if>
+		<if test="categoryName != null"> and categoryName=#{categoryName}</if>
+		<if test="categoryCode != null"> and categoryCode=#{categoryCode}</if>
+		<if test="icons != null"> and icons=#{icons}</if>
+		<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+		order by sortNum desc
+	</select>
+
+	<!--获取子孙类别列表 -->
+	<select id="getDescendants" parameterType="long" resultMap="resultCategory" >
+		SELECT * FROM category WHERE  concat(',',parents,',') like concat('%,',#{value},',%') ORDER BY sortNum DESC
+	</select>
+
+	<!-- WBC -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.category.CategorySearchCriteria" resultMap="resultCategory" >
+		SELECT * FROM category WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="parents != null"> and parentId in (#{parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="categoryCode != null"> and categoryCode= #{categoryCode}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+		order by sortNum desc
+		LIMIT #{startLine},#{pageSize}
+	</select>
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.category.CategorySearchCriteria" resultType="long" >
+		SELECT count(categoryId) FROM category WHERE 1 = 1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null">
+			and
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+				${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="parents != null"> and parentId in (#{parents})</if>
+		<if test="parentId != null"> and parentId= #{parentId}</if>
+		<if test="categoryCode != null"> and categoryCode= #{categoryCode}</if>
+		<if test="outKey1 != null"> and outKey1= #{outKey1}</if>
+		<if test="outKey2 != null"> and outKey2= #{outKey2}</if>
+	</select>
+
+</mapper>

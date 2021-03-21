@@ -1,0 +1,31 @@
+layui.use(['element', 'form', 'table', 'layer'], function() {
+	var $ = layui.jquery;
+	var element = layui.element;
+	var table = layui.table;
+	var form = layui.form;
+	var layer = layui.layer;
+
+	$(".layadmin-shortcut").find("a").click(function() {
+		top.topTabAdd($(this).find("cite").html(), '<div class="layui-body"><iframe name="' + $(this).attr("lay-href") +
+			'" src="' + $(this).attr("lay-href") + '" frameborder="0" class="layadmin-iframe"></iframe></div>', $(this).attr(
+				"lay-href"));
+	});
+
+	$(".layadmin-pending").find("a").click(function() {
+		top.topTabAdd($(this).find("h3").html(), '<div class="layui-body"><iframe name="' + $(this).attr("lay-href") +
+			'" src="' + $(this).attr("lay-href") + '" frameborder="0" class="layadmin-iframe"></iframe></div>', $(this).attr(
+				"lay-href"));
+	});
+
+	//首页待处理
+	$.ajax({
+		type: "POST",
+		url: servicePath + "/console/toDo?charset=utf-8&loginCode=" + adminInfo.loginCode,
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(data) {
+			
+		}
+	})
+
+});

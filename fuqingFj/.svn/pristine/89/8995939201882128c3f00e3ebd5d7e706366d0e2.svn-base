@@ -1,0 +1,93 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>layuiAdmin 控制台主页一</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.60" media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.60" media="all">
+    <link id="layuicss-layer" rel="stylesheet" href="css/layer.css?v=1.60" media="all">
+    <style id="LAY_layadmin_theme">.layui-side-menu,.layadmin-pagetabs .layui-tab-title li:after,.layadmin-pagetabs .layui-tab-title li.layui-this:after,.layui-layer-admin .layui-layer-title,.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child{background-color:#20222A !important;}.layui-nav-tree .layui-this,.layui-nav-tree .layui-this>a,.layui-nav-tree .layui-nav-child dd.layui-this,.layui-nav-tree .layui-nav-child dd.layui-this a{background-color:#009688 !important;}.layui-layout-admin .layui-logo{background-color:#20222A !important;}</style>
+	<script src="layui/layui.js?v=1.60" charset="utf-8"></script>
+	<script src="baseJs/function.js?v=1.60"></script>
+	<script src="js/config.js?v=1.60"></script>     
+	<script src="js/global.js?v=1.60"></script>
+	<script src="js/userLive.js?v=1.60"></script>
+	<script src="js/console.js"></script>
+</head>
+<body class="LAY_layadmin_theme">
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md4">
+            <div class="layui-card">
+              <div class="layui-card-header">快捷方式</div>
+              <div class="layui-card-body">
+                <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                  <div carousel-item="">
+                    <ul class="layui-row layui-col-space10 layui-this">
+                      <li class="layui-col-xs3 ">
+                        <a lay-href="">
+                          <i class="layui-icon layui-icon-list"></i>
+                          <cite>测试</cite>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md4">
+            <div class="layui-card">
+              <div class="layui-card-header">待办事项</div>
+              <div class="layui-card-body">
+                <div class="layui-carousel layadmin-carousel layadmin-pending layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                  <div carousel-item="" style="overflow-y: auto;">
+                    <ul class="layui-row layui-col-space10 layui-this">
+                      <li class="layui-col-xs6 ">
+                        <a lay-href="" class="layadmin-backlog-body">
+                          <h3>测试</h3>
+                          <p><cite id=""></cite></p>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md4">
+			  <div class="layui-card">
+				<div class="layui-card-header">个人信息</div>
+				<div class="layui-card-body layui-text">
+				  <table class="layui-table" style="margin-bottom: 22px;">
+					<colgroup><col width="100"><col></colgroup>
+					<tbody>
+					  <tr>
+						<td>登录名</td>
+						<td><script>document.write(adminInfo.loginName);</script></td>
+					  </tr>
+					  <tr>
+						<td>姓名</td>
+						<td><script>document.write(adminInfo.name);</script></td>
+					  </tr>
+					  <tr>
+						<td>单位</td>
+						<td><script>document.write(adminInfo.unitName);</script></td>
+					  </tr>
+					  <tr>
+						<td>性别</td>
+						<td><script>document.write(getDictDataLabel("SEX",adminInfo.sex));</script></td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>
+			  </div>
+		  </div>
+		  
+        </div>
+    </div>
+  </div>
+</body></html>

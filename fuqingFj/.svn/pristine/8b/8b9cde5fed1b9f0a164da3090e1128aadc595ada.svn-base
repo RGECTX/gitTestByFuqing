@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>辅警档案管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../layui/css/layui.css?v=1.60"  media="all">
+  <link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+  <script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+	<script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+	<!--[if lt IE 9]>
+	<script src="../baseJs/html5shiv.min.js"></script>
+	<script src="../baseJs/respond.min.js"></script>
+	<script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+	<![endif]-->
+  <script src="../baseJs/function.js?v=1.60"></script>
+  <script src="../js/config.js?v=1.60"></script>
+  <script src="../js/global.js?v=1.60"></script>
+  <script src="../js/userLive.js?v=1.60"></script>
+  <script src="../js/auxiliary/archiveList.js?v=1.60" charset="utf-8"></script>
+  <style>
+  /* .layui-form-label{
+	  width:36px;
+  }
+  .layui-form-item{
+	 margin-bottom:0px;
+  }
+  #oneKeyPassPage .layui-form-item{
+	 margin-bottom:15px;
+  } */
+  </style>
+</head>
+<body>
+<div class="layui-fluid">
+<div class="layui-row layui-col-space10">
+      <div class="layui-col-sm2 layui-col-md2 layui-col-lg2">
+        <div class="layui-card" style="overflow:auto">
+          <div id="amUnitTree" class="demo-tree demo-tree-box"></div>
+        </div>
+      </div>
+      <div class="layui-col-sm10 layui-col-md10 layui-col-lg10">
+        <div class="layui-card col2">
+          <div class="layui-fluid" style="padding: 15px 0px;">
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">
+                  <form class="layui-form" action="" lay-filter="searchForm">
+
+
+
+					  <input type="hidden" name="daId"/>
+					  <div class="layui-form-item">
+
+
+						  <div class="layui-inline">
+							  <label class="layui-form-label">姓名</label>
+							  <div class="layui-input-inline">
+								  <input type="text" name="xm" autocomplete="off" class="layui-input">
+							  </div>
+						  </div>
+						  <div class="layui-inline">
+							  <label class="layui-form-label" style="width:42px;">身份证</label>
+							  <div class="layui-input-inline">
+								  <input type="text" name="idcard" autocomplete="off" class="layui-input">
+							  </div>
+						  </div>
+						  <div class="layui-inline">
+							  <label class="layui-form-label">单位</label>
+							  <div class="layui-input-inline">
+								  <select name="orgId" class="orgId" lay-filter="aihao" lay-search="">
+									  <option value="" selected="">请选择</option>
+								  </select>
+							  </div>
+						  </div>
+						  <div class="layui-inline">
+							  <label class="layui-form-label">状态</label>
+							  <div class="layui-input-inline">
+								  <select name="state" class="state" lay-filter="aihao">
+									  <option value="" selected=""></option>
+								  </select>
+							  </div>
+						  </div>
+
+
+						<div class="layui-inline">
+						  <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+						</div>
+						<!--<div class="layui-inline">
+						  <button type="button" class="layui-btn AM_JBXX_ADV_SEARCH_ALL AM_JBXX_ADV_SEARCH_SZDWJYX" lay-submit="" lay-filter="advSearchBtn">高级查询</button>
+						</div>-->
+
+
+					  </div>
+                  </form>
+                  </div>
+                  </div>
+                  <div class="layui-card-body">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                    <script type="text/html" id="toolbarDemo">
+                      <div class="layui-btn-container">
+					  	<button class="layui-btn layui-btn-sm AM_JBXX_ADD" lay-event="addArchive">添加档案</button>
+						  <button class="layui-btn layui-btn-sm AM_JBXX_IMPORT" lay-event="importData">导入</button>
+						  <button class="layui-btn layui-btn-sm AM_JBXX_EXPORT" lay-event="exportData">导出</button>
+						  <button class="layui-btn layui-btn-sm AM_JBXX_EXPORT_JBXX_CARD" lay-event="exportJbxxCard">打印基本信息卡</button>
+						  <button class="layui-btn layui-btn-sm layui-btn-danger  AM_JBXX_PL_DELETE"
+								  lay-event="del">
+							  批量删除
+						  </button>
+						<!--
+						<button class="layui-btn layui-btn-sm AM_JBXX_EXPORT_JBXX_CARD" lay-event="exportJbxxCard">打印基本信息卡</button>-->
+					  </div>
+                    </script>
+
+                    <script type="text/html" id="barDemo">
+                      <a class="layui-btn layui-btn-xs AM_JBXX_VIEW" lay-event="view">查看</a>
+                      <a class="layui-btn layui-btn-xs AM_JBXX_UPDATE" lay-event="editArchive">编辑</a>
+					  <!-- 删除功能不到万不得已绝不能开启 -->
+                       <!--<a class="layui-btn layui-btn-danger layui-btn-xs AM_JBXX_DELETE" lay-event="del">删除</a>-->
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</div>
+
+  <!-- 导入 -->
+  <div class="layui-fluid" id="importDataPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="importData" id="importData">
+		<div class="layui-form-item">
+			<div class="layui-upload">
+			  <input type="file" id="file" name="file"/>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			导入类型
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-upload">
+			  <input name="importType" value="0" type="radio" checked="" title="基本信息" >
+			  <input name="importType" value="2" type="radio" title="工作简历" >
+			  <input name="importType" value="3" type="radio" title="学历简历" >
+			  <input name="importType" value="1" type="radio" title="亲属关系" >
+			  <!--<input name="importType" value="4" type="radio" title="合同信息" >-->
+			</div>
+		</div>
+		<div class="layui-form-item">
+			模板下载
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-upload">
+			  <button type="button" class="layui-btn layui-btn-normal" id="downloadJbxx">基本信息</button>
+			  <button type="button" class="layui-btn layui-btn-normal" id="downloadGzjl">工作简历</button>
+			  <button type="button" class="layui-btn layui-btn-normal" id="downloadXljl">学历简历</button>
+			  <button type="button" class="layui-btn layui-btn-normal" id="downloadQsgx">亲属关系</button>
+			  <!--<button type="button" class="layui-btn layui-btn-normal" id="downloadHtxx">合同信息</button>-->
+			</div>
+		</div>
+		<div class="layui-form-item">
+			基本信息
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-upload">
+			  <input name="isJbxxCover" value="0" type="radio" checked="" title="遇到相同身份证号不操作" >
+			  <input name="isJbxxCover" value="1" type="radio" title="遇到相同身份证号全部覆盖" >
+			  <input name="isJbxxCover" value="2" type="radio" title="遇到相同身份证号只覆盖excel有的数据" >
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			亲属关系、工作简历、学历简历<!--、合同信息-->
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-upload">
+			  <input name="isDelete" value="0" type="radio" checked="" title="直接新增" >
+			  <input name="isDelete" value="1" type="radio" title="删除该人员的旧数据再进行新增" >
+			</div>
+		</div>
+
+  		<div class="layui-form-item">
+  			<button type="button" id="importDataSubmit"  lay-filter="importData" style="display:none" lay-submit></button>
+  		</div>
+    </form>
+  </div>
+
+  <!-- 导入 -->
+  <div class="layui-fluid" id="exportDataPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="exportData" id="exportData">
+  		<div class="layui-form-item">
+  			<div class="layui-upload">
+  			  <button type="button" class="layui-btn layui-btn-normal" id="exportJbxx">基本信息</button>
+			  <button type="button" class="layui-btn layui-btn-normal" id="exportGzjl">工作简历</button>
+			  <button type="button" class="layui-btn layui-btn-normal" id="exportXljl">学历简历</button>
+  			  <button type="button" class="layui-btn layui-btn-normal" id="exportQsgx">亲属关系</button>
+  			  <!--<button type="button" class="layui-btn layui-btn-normal" id="exportHtxx">合同信息</button>-->
+  			</div>
+  		</div>
+    </form>
+  </div>
+
+</body>
+</html>

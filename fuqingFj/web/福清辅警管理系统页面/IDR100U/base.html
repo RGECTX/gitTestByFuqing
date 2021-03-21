@@ -1,0 +1,101 @@
+<!DOCTYPE html>  
+<html lang="zh-cn">
+	<head>
+  		<title>身份证读取</title>
+		<meta charset="UTF-8"></meta>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="css/whole.css" media="screen" />
+		<link type="text/css" rel="stylesheet" href="jBox/Skins/Default/jbox.css"/>
+		<script src="js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="jBox/jquery.jBox-2.3.min.js"></script>
+		<script type="text/javascript" src="js/baseISSObject.js"></script>
+		<script type="text/javascript" src="js/baseISSOnline.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+  	</head>
+	<body>
+		<p id="cert_message" style="display: none;"></p>
+		<p id="cert_message_type" style="display: none;"></p>
+		<table class="pTableStyle">	
+		<caption style="margin-bottom:5px"><img src="images/logo.png"/></caption>
+		<tr>
+			<td>
+				<table class="tableStyle">
+					<tr>
+						<td>
+							<label>姓名</label>
+						</td>
+						<td>
+							<input readonly="readonly" type="text" value="" id="personName"/>
+						</td>
+						<td>
+							<label>出生日期</label>
+						</td>
+						<td>
+						<input readonly="readonly" type="text" value="" id="birthday"/>
+						</td>
+				    </tr>
+				    <tr>
+				    	<td>
+							<label>性别</label>
+						</td>
+						<td>
+						<input readonly="readonly" type="text" value="" id="gender"/>
+						</td>
+						<td>
+							<label>证件号码</label>
+						</td>
+						<td>
+							<input readonly="readonly" type="text" value="" id="certNumber"/>
+                        </td>
+					</tr>
+					<tr>	
+						<td>
+							<label>民族</label>
+						</td>
+						<td>
+							<input readonly="readonly" type="text" value="" id="nation"/>
+						</td>
+						<td>
+							<label>签发机关</label>
+						</td>
+						<td>
+							<input readonly="readonly" type="text" value="" id="idIssued"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>住址</label>
+						</td>
+						<td colspan="3">
+							<input readonly="readonly" type="text" value="" id="address" style="width:95.5%"/>
+						</td>
+					</tr>
+					<tr>
+				    	<td>
+							<label>有效期限</label>
+						</td>
+						<td>
+							<input readonly="readonly" type="text" value="" id="issuedValidDate"/>
+						</td>	
+					</tr>
+				</table>	
+			</td>
+			<td>
+				<div class="floatL">
+					<div id="localImag">
+						<img width="120px" height="140px" src="images/userImage.png" onerror="this.src='images/userImage.png'" style="margin-left:5px" id="id_img_pers">
+						<br/>
+						<span>(尺寸大小120×140)</span>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td id="readIDDiv" colspan="4" style="text-align:center;">
+				<button id="button_readID" onclick="new Device().startFun()"><img src="images/base_readCard.png" id="button_readID">读取身份证信息</button>
+			</td>
+		</tr>
+		</table>
+	</body>
+</html>

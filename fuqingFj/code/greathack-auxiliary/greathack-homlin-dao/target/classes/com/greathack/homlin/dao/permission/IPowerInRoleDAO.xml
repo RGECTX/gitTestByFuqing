@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.permission.IPowerInRoleDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.permission.PowerInRole">
+    INSERT INTO PowerInRole(powerInRoleId,appCode,roleId,powerCode,powerLevel)
+    VALUES(#{powerInRoleId},#{appCode},#{roleId},#{powerCode},#{powerLevel});
+ 	</insert>
+    
+    <insert id="addBatch" parameterType="java.util.List">
+    INSERT INTO PowerInRole(powerInRoleId,appCode,roleId,powerCode,powerLevel)
+    VALUES
+    <foreach collection="list" item="powerInRole" index="index" separator=",">  
+        (#{powerInRole.powerInRoleId},#{powerInRole.appCode},#{powerInRole.roleId},#{powerInRole.powerCode},#{powerInRole.powerLevel})
+    </foreach> 
+    </insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM PowerInRole WHERE powerInRoleId=#{value};
+  	</delete>
+ 	
+ 	<delete id="deleteByRoleId" parameterType="java.lang.String">
+    DELETE FROM PowerInRole WHERE roleId=#{value};
+  	</delete>
+  	
+  	<delete id="clean">
+    DELETE FROM PowerInRole WHERE appCode=#{0} and roleId=#{1};
+    </delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.permission.PowerInRole">
+    UPDATE PowerInRole
+    SET roleId=#{roleId},
+    powerCode=#{powerCode},
+    powerLevel=#{powerLevel}
+    WHERE powerItemId=#{powerItemId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.permission.PowerInRole" >
+	select * from PowerInRole where powerInRoleId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.permission.PowerInRole"  resultType="com.greathack.homlin.pojo.permission.PowerInRole" >	
+	select * from PowerInRole where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="roleId != null"> and roleId=#{roleId}</if>
+	<if test="powerCode != null"> and powerCode=#{powerCode}</if>
+    <if test="powerLevel != null"> and powerLevel=#{powerLevel}</if>
+	</select>
+	
+</mapper>

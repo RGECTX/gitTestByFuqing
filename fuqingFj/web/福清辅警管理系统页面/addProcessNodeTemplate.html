@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layui</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css?v=1.58"  media="all">
+  <link rel="stylesheet" href="css/admin.css?v=1.58" media="all">
+  <script src="layui/layui.js?v=1.58" charset="utf-8"></script>
+   <script src="baseJs/jquery-3.2.1.js?v=1.58"></script>
+   <script src="baseJs/function.js?v=1.58"></script>
+   <script src="js/config.js?v=1.58"></script>     
+   <script src="js/global.js?v=1.58"></script>
+   <script src="js/userLive.js?v=1.58"></script>
+   <script src="baseJs/Validform_v5.3.2.js?v=1.58"></script>
+   <script src="baseJs/jquery-form.js?v=1.58"></script>
+  <script src="js/addProcessNodeTemplate.js?v=1.58" charset="utf-8"></script>
+  <style>
+  	  .addNodeBranch{
+  		      padding-right: 55px;
+  	  }
+  	  .editNode{
+  		  position:sticky;
+  	  }
+  	  .editNode:before{
+  		  content: '';
+  		  position: absolute;
+  		  top: 0;
+  		  left: 0;
+  		  width: 0;
+  		  border-radius: 0;
+  		  background-color: #292B34;
+  	  }
+  	  .delNode{
+  		  position:sticky;
+  	  }
+  	  .delNode:before{
+  		  content: '';
+  		  position: absolute;
+  		  top: 0;
+  		  left: 20;
+  		  width: 0;
+  		  border-radius: 0;
+  		  background-color: #292B34;
+  	  }
+  </style>
+</head>
+<body>  
+  <div class="layui-fluid">
+  <div class="layui-row layui-col-space10 layui-card">
+  <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+    <div class="layui-container">
+		<div class="layui-card  layui-tab-card">
+		  <div class="layui-card-header">    
+			<div class="addRole">
+		        <form class="layui-form" action="" id="roleForm">
+		  		  <div class="layui-form-item">
+					<button type="button" class="layui-btn layui-btn-radius">开始</button><button type="button" id="tdAdd" class="layui-btn addNode SYS_SETTING_PROCESS_NODE_TEMPLETE_ADD">添加</button>
+		  		  </div>
+		  		</form>
+		    </div>
+		  </div>
+		  <div class="layui-card-body">
+			  <table class="layui-hide" id="procseeNodeBranchTemplateList" lay-filter="procseeNodeBranchTemplateList"></table>
+			  <script type="text/html" id="toolbarDemo">
+			    <div class="layui-btn-container">
+			    	<button class="layui-btn layui-btn-sm" lay-event="addArchive">添加档案</button>
+			    	<button class="layui-btn layui-btn-sm" lay-event="getCheckData">导入档案</button>
+			    </div>
+			  </script>
+			   
+			  <script type="text/html" id="barDemo">
+				<a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="edit">修改</a>
+			    <a class="layui-btn layui-btn-danger layui-btn-xs SYS_SETTING_PROCESS_NODE_BRANCH_TEMPLETE_DELETE" lay-event="del">删除</a>
+			  </script>
+		  </div>
+		</div>
+    </div>
+  </div>
+  </div>
+  </div>
+  
+  <div class="layui-fluid" id="addNode" style="display:none">
+  	<form class="layui-form" action="" id="nodeForm"  lay-filter="nodeForm">
+  		<input type="hidden" id="processNodeId" name="processNodeId" />
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label"><span class="must">*</span>节点名称</label>
+  		<div class="layui-input-inline">
+  		  <input type="text" id="processNodeName" name="processNodeName" lay-verify="required" placeholder="请输入节点名称"  class="layui-input">
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item" pane="">
+  		<label class="layui-form-label">审批人类型</label>
+  		<div class="layui-input-block">
+  		<input type="radio" lay-filter="roleType" name="roleType" lay-skin="primary" title="发起人自己" value="self" checked>
+  		<input type="radio" lay-filter="roleType" name="roleType" lay-skin="primary" title="指定人员" value="users">
+  		<input type="radio" lay-filter="roleType" name="roleType" lay-skin="primary" title="角色" value="role">
+  		<input type="radio" lay-filter="roleType" name="roleType" lay-skin="primary" title="分管领导" value="upLeader">
+  		<input type="radio" lay-filter="roleType" name="roleType" lay-skin="primary" title="职务" value="position">
+  		</div>
+  	  </div>
+  	  <div class="layui-tab" lay-filter="roleTypeTab">
+  	    <ul class="layui-tab-title" style="display:none">
+  	      <li lay-id="self" class="layui-this">发起人自己</li>
+  	  	  <li lay-id="users">指定人员</li>
+  	  	  <li lay-id="role">角色</li>
+  	  	  <li lay-id="upLeader">分管领导</li>
+  	  	  <li lay-id="position">职务</li>
+  	    </ul>
+  	    <div class="layui-tab-content layui-fluid">
+  	      <div class="layui-tab-item layui-show">
+  	          
+  	      </div>
+  	      <div class="layui-tab-item">
+  			  <div class="layui-form-item">
+  				  <div class="layui-input-inline">
+  					  <button type="button" class="layui-btn layui-btn-sm" id="selectUser">选择人员</button>
+  				  </div>
+  			  </div>
+  			  <div class="layui-form-item">
+  				  <div class="layui-input-inline">
+  					  <span style="line-height: 20px;" id="approvalNames"></span>
+  				  </div>
+  			  </div>
+  	      </div>
+  	      <div class="layui-tab-item">
+  			  <label class="layui-form-label">选择角色</label>
+  	          <div class="layui-input-inline roleList">
+  	          </div>
+  	      </div>
+  	      <div class="layui-tab-item">
+  	          
+  	      </div>
+  	      <div class="layui-tab-item">
+  			    <div class="layui-form-item">
+  					<label class="layui-form-label cos-label" ><font color="#ff0000"><strong>*</strong></font>单位</label>
+  					<div class="layui-input-inline cos-line" >
+  						<select name="org" id="org" lay-filter="aihao" lay-search="" lay-verify="required">
+  						   <option value="any" selected="">任意单位</option>
+  						</select>
+  					</div>
+  					<label class="layui-form-label cos-label" ><font color="#ff0000"><strong>*</strong></font>职务</label>
+  					<div class="layui-input-inline cos-line" >
+  						<input type="text" name="position"  id="position" placeholder="请输入职务,多个用逗号隔开" autocomplete="off" lay-verify="" class="layui-input">
+  					</div>
+  				</div>
+  	      </div>
+  	    </div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">且为申请人的</label>
+  		<div class="layui-input-inline">
+  		  <select id="relation" name="relation">
+  			<option value="any" selected>任意关系</option>
+  			<option value="directSuperior">直接上级</option>
+  			<option value="directLineSuperior">直系上级</option>
+  		  </select>
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">审批方式</label>
+  		<div class="layui-input-inline">
+  		  <select id="approvalType" name="approvalType">
+  			<option value="1">会签</option>
+  			<option value="2" selected>或签</option>
+  		  </select>
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">节点类型</label>
+  		<div class="layui-input-inline">
+  		  <select id="processNodeType" name="processNodeType">
+  			<option value="1" selected>审批（可驳回）</option>
+  			<option value="2">审阅（不可驳回）</option>
+  		  </select>
+  		</div>
+  	  </div>
+	  <div class="layui-form-item">
+		<label class="layui-form-label">绑定进度</label>
+		<div class="layui-input-inline">
+			<select id="bindProgress" name="bindProgress" class="bindProgress" >
+				<option value=""></option>
+			</select>
+		</div>
+	  </div>	 
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">事件</label>
+  		<div class="layui-input-inline">
+  		  <input type="text" id="nodeEventImpl" name="nodeEventImpl" placeholder="请输入事件Bean名称" class="layui-input">
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">审批意见关联栏目</label>
+  		<div class="layui-input-inline">
+  			<select id="bindField" name="bindField" class="bindField" >
+  				<option value="">无关联</option>
+  			</select>
+  		</div>
+  	  </div>	 
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">排序</label>
+  		<div class="layui-input-inline">
+  		  <input type="text" name="sort" value="0" placeholder="请输入排序号" onblur="this.placeholder='请输入排序号'" onclick="this.placeholder=''" class="layui-input">
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<div class="layui-input-block">
+  		  <button type="button" class="layui-btn" id="addNodeSubmit"  lay-filter="addNodeSubmit" style="display:none" lay-submit="">提交</button>
+  		</div>
+  	  </div>
+  	</form>
+  </div>
+  
+  <div class="layui-fluid" id="addNodeBranch" style="display:none">
+  	<form class="layui-form" action="" id="nodeBranchForm" lay-filter="nodeBranchForm">	  
+  		<input type="hidden" id="branchId" name="branchId" />
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">本节点</label>
+  		<div class="layui-input-inline">
+  			<select id="processNodeTemplateId" name="processNodeTemplateId">
+  			</select>
+  		</div>
+  	  </div>
+  		  <div class="layui-form-item">
+  		    <label class="layui-form-label">所在单位</label>
+  		    <div class="layui-input-inline">
+  		      <select id="orgId" name="orgId" lay-search="">
+              <option value="any">任意单位</option>
+  		      </select>
+  		    </div>
+  		  </div>
+  		  <div class="layui-form-item">
+  		    <label class="layui-form-label">所属角色</label>
+  		    <div class="layui-input-block condRoleList">
+            <input type="radio" name="condRole" lay-skin="primary" title="任意角色" value="any" checked>
+  		    </div>
+  		  </div>
+  			<div class="layui-form-item">
+  				<label class="layui-form-label cos-label" >现任职务</label>
+  				<div class="layui-input-inline cos-line" >
+  					<select name="condOrg" id="condOrg" lay-filter="aihao" lay-search="" lay-verify="required">
+  					   <option value="any" selected="">任意单位</option>
+  					</select>
+  				</div>
+  				<div class="layui-input-inline cos-line" >
+  					<input type="text" name="condPosition" id="condPosition"  placeholder="请输入职务,多个用逗号隔开" autocomplete="off" lay-verify="" class="layui-input">
+  				</div>
+  			</div>
+  		  <!-- <div class="layui-form-item" pane="">
+  		    <label class="layui-form-label">分管领导是否为政委或局长</label>
+  		    <div class="layui-input-inline" id="leaveTypeList">
+  		      <select id="upleaderInAfter" name="upleaderInAfter">
+              <option value="any">任意</option>
+              <option value="true">是</option>
+              <option value="false">否</option>
+  		      </select>
+  		    </div>
+  		  </div> -->
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">下个节点</label>
+  		<div class="layui-input-inline">
+  		  <select id="nextNode" name="nextNode">
+  		  <option value="end">结束</option>
+  		  </select>
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<label class="layui-form-label">排序</label>
+  		<div class="layui-input-inline">
+  		  <input type="text" name="sort" value="0" placeholder="请输入排序号" onblur="this.placeholder='请输入排序号'" onclick="this.placeholder=''" class="layui-input" >
+  		</div>
+  	  </div>
+  	  <div class="layui-form-item">
+  		<div class="layui-input-block">
+  		  <button type="button" class="layui-btn" id="addNodeBranchSubmit"  lay-filter="addNodeBranchSubmit" style="display:none" lay-submit="">提交</button>
+  		</div>
+  	  </div>
+  	</form>
+  </div>
+</body>
+</html>

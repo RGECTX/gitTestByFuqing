@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.process.IProcessNodeDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.process.ProcessNode">
+    INSERT INTO ProcessNode(processNodeId,nodeName,nodeCode,approvalRoleId,processId,passRequire,passNum,approvalType,preNodeCode,nextNodeCode,nodeState,fetchTime,endTime,nodeEventImpl,beforeParameter,afterParameter,sort)
+    VALUES(#{processNodeId},#{nodeName},#{nodeCode},#{approvalRoleId},#{processId},#{passRequire},#{passNum},#{approvalType},#{preNodeCode},#{nextNodeCode},#{nodeState},#{fetchTime},#{endTime},#{nodeEventImpl},#{beforeParameter},#{afterParameter},#{sort});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM ProcessNode WHERE processNodeId=#{value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.process.ProcessNode">
+    UPDATE ProcessNode
+    SET 
+    nodeName=#{nodeName},
+    nodeCode=#{nodeCode},
+    approvalRoleId=#{approvalRoleId},  
+    processId=#{processId} ,  
+    passRequire=#{passRequire} ,  
+    passNum=#{passNum} ,
+    approvalType=#{approvalType} ,
+    preNodeCode=#{preNodeCode} ,  
+    nextNodeCode=#{nextNodeCode} ,  
+    nodeState=#{nodeState} ,  
+    fetchTime=#{fetchTime} ,  
+    endTime=#{endTime}  ,
+    nodeEventImpl=#{nodeEventImpl} ,
+    beforeParameter=#{beforeParameter} ,
+    afterParameter=#{afterParameter} ,
+    sort=#{sort} 
+    WHERE processNodeId=${processNodeId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.process.ProcessNode" >
+	select * from ProcessNode where processNodeId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.process.ProcessNode"  resultType="com.greathack.homlin.pojo.process.ProcessNode" >	
+	select * from ProcessNode where 1=1
+	<if test="nodeName != null"> and nodeName=#{nodeName}</if>
+	<if test="nodeCode != null"> and nodeCode=#{nodeCode}</if>
+	<if test="approvalRoleId != null"> and approvalRoleId=#{approvalRoleId}</if>
+	<if test="processId != null"> and processId=#{processId}</if>
+	<if test="preNodeCode != null"> and preNodeCode=#{preNodeCode}</if>
+	<if test="nextNodeCode != null"> and nextNodeCode=#{nextNodeCode}</if>
+	<if test="nodeState != null"> and nodeState=#{nodeState}</if>
+	order by sort desc
+	</select>
+	
+</mapper>

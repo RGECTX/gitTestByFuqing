@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+
+    <bean id="systemConfig" class="com.greathack.homlin.system.SystemConfigBean">
+        <!-- token超时时长（秒） -->
+        <property name="tokenExpire" value="7200"></property>
+    </bean>
+
+    <bean id="springContextHolder" class="com.greathack.homlin.common.SpringContextHolder" lazy-init="false"/>
+    <!--流程开始-->
+    <bean id="DefaultApproval" class="com.greathack.homlin.service.process.DefaultApproval"></bean>
+
+    <bean id="ProcessHistoryRecordService" class="com.greathack.homlin.service.process.ProcessHistoryRecordService"></bean>
+    <!--流程结束-->
+
+    <bean id="amUnitService" class="com.greathack.homlin.service.am.AmUnitService"></bean>
+    <bean id="amQuotasService" class="com.greathack.homlin.service.am.AmQuotasService"></bean>
+    <!-- 系统开始 -->
+    <bean id="menuService" class="com.greathack.homlin.service.system.MenuService"></bean>
+    <bean id="adminService" class="com.greathack.homlin.service.AdminService"></bean>
+    <bean id="roleService" class="com.greathack.homlin.service.RoleService"></bean>
+    <bean id="adminPermissionService" class="com.greathack.homlin.service.AdminPermissionService"></bean>
+    <bean id="adminPowerItemService" class="com.greathack.homlin.service.AdminPowerItemService"></bean>
+    <bean id="attachmentService" class="com.greathack.homlin.service.attachment.AttachmentService"></bean>
+    <!-- 系统结束 -->
+
+    <!-- 登录开始 -->
+    <bean id="loginInstanceService" class="com.greathack.homlin.service.login.LoginInstanceService"></bean>
+    <bean id="loginService" class="com.greathack.homlin.service.login.LoginService"></bean>
+    <!-- 登录结束 -->
+    <!-- 权限开始 -->
+    <bean id="permissionService" class="com.greathack.homlin.service.permission.PermissionService"></bean>
+    <bean id="powerItemService" class="com.greathack.homlin.service.permission.PowerItemService"></bean>
+    <!-- 权限结束-->
+    <!-- 用户开始 -->
+    <bean id="userService" class="com.greathack.homlin.service.user.UserService"></bean>
+    <bean id="AddressItemService" class="com.greathack.homlin.service.user.AddressItemService"></bean>
+    <bean id="linkItemTypeService" class="com.greathack.homlin.service.user.LinkItemTypeService"></bean>
+    <bean id="IdcardService" class="com.greathack.homlin.service.user.IdcardService"></bean>
+    <bean id="linkItemService" class="com.greathack.homlin.service.user.LinkItemService"></bean>
+    <bean id="CustomItemService" class="com.greathack.homlin.service.user.CustomItemService"></bean>
+    <!-- 用户结束 -->
+    <!-- 多级分类开始 -->
+    <bean id="categoryService" class="com.greathack.homlin.service.category.CategoryService"/>
+    <!-- 多级分类结束 -->
+    <!-- 组织机构开始 -->
+    <bean id="organizationService" class="com.greathack.homlin.service.org.OrganizationService"/>
+    <!-- 组织机构结束 -->
+    <!-- 字典开始 -->
+    <bean id="dictDataService" class="com.greathack.homlin.service.dict.DictDataService"></bean>
+    <bean id="dictService" class="com.greathack.homlin.service.dict.DictService"></bean>
+    <!-- 字典结束 -->
+    <!-- 节假日开始 -->
+    <bean id="holidayService" class="com.greathack.homlin.service.holiday.HolidayService"></bean>
+    <!-- 节假日结束 -->
+    <!-- 地区开始 -->
+    <bean id="circleService" class="com.greathack.homlin.service.area.CircleService"></bean>
+    <bean id="areaService" class="com.greathack.homlin.service.area.AreaService"></bean>
+    <!-- 地区结束 -->
+    <!-- 表达式开始 -->
+    <bean id="expressionService" class="com.greathack.homlin.service.expression.ExpressionService"/>
+    <bean id="criteriaService" class="com.greathack.homlin.service.expression.CriteriaService"/>
+    <!-- 表达式结束 -->
+    <!-- 站内信开始 -->
+    <bean id="innerMessageService" class="com.greathack.homlin.service.innerMessage.InnerMessageService"/>
+    <bean id="receiveService" class="com.greathack.homlin.service.innerMessage.ReceiveService"/>
+    <!-- 站内信结束 -->
+    <!--定时任务开始-->
+    <bean id="scheduleTaskService" class="com.greathack.homlin.service.scheduletask.ScheduleTaskService"></bean>
+    <!--定时任务结束-->
+
+    <!--减员申请节点到达时bean-->
+    <bean id="JyglNodeEvent" class="com.greathack.homlin.service.am.jyProcess.JyglNodeEvent"></bean>
+    <!--减员申请结束时bean-->
+    <bean id="JyglApproval" class="com.greathack.homlin.service.auxiliary.jyglProcess.JyglApproval"></bean>
+    <!--招录申请节点到达时bean-->
+    <bean id="ZlglNodeEvent" class="com.greathack.homlin.service.am.zlProcess.ZlglNodeEvent"></bean>
+    <!--招录申请结束时bean-->
+    <bean id="ZlglApproval" class="com.greathack.homlin.service.auxiliary.zlglProcess.ZlglApproval"></bean>
+    <!--被装申请节点到达时bean-->
+    <bean id="BzNodeEvent" class="com.greathack.homlin.service.am.bzProcess.bzNodeEvent"></bean>
+    <!--被装申请结束时bean-->
+    <bean id="BzApproval" class="com.greathack.homlin.service.auxiliary.bzProcess.BzApproval"></bean>
+
+</beans>

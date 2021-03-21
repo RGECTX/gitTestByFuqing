@@ -1,0 +1,83 @@
+var id = getParameter('id');
+layui.use(['form', 'table', 'jquery'], function() {
+	var table = layui.table;
+	var form = layui.form;
+	var $ = layui.jquery;
+	var jbxxIdList=[];
+	
+	function exportJbxxCard() {
+		var url = servicePath + "/amJbxx/exportJbxxCard?charset=utf-8&loginCode=" + adminInfo.loginCode+"&id="+id;
+		$.ajax({
+			type: "POST",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify({"id":id}),
+			dataType: "json",
+			success: function(data) {
+				if (data.errCode == 0) {
+					var amJbxx=data.amJbxx;
+					var amHjxx=data.amHjxx;
+					var amGzxx=data.amGzxx;
+					var amJtqk=data.amJtqk;
+					var amStqk=data.amStqk;
+					var jobResumeList=data.jobResumeList;
+					var relationList=data.relationList;
+					$("#xm").text(amJbxx.xm);//姓名
+					$("#xb").text(getDictDataLabel("SEX", amJbxx.xb));//性别
+					$("#csrq").text(formatDate8To10(amJbxx.csrq+''));//出生日期
+					$("#mz").text(getDictDataLabel("MZ", amJbxx.mz));//民族
+					$("#jgszss").text(amJbxx.jgszss);//籍贯
+					$("#hjdszss").text(amHjxx.hjdszss);//户籍地
+					$("#lxfs").text(amJbxx.lxfs);//联系方式
+					if(amGzxx.cjgzrq!=null){
+						$("#cjgzrq").text(formatDate8To10(amGzxx.cjgzrq+'') );//参加工作时间
+					}
+					$("#ndtjqk").text(amStqk.ndtjqk);//健康状况
+					$("#zy").text(amJbxx.zy);//专业
+					if(amJbxx.techang!=null){
+						$("#techang").text(amJbxx.techang);//特长
+					}
+					$("#xl").text(getDictDataLabel("AM_XL", amJbxx.xl));//学历
+					$("#byys").text(amJbxx.byys+"（"+amJbxx.zy+"）");//毕业院校及专业
+					$("#orgId").text(data.orgName+"  "+amGzxx.zwmc);//工作单位及职务
+					
+					var gzjl="";//工作简历
+					for(var i=0;i<jobResumeList.length;i++){
+						var jobResume=jobResumeList[i];
+						gzjl=gzjl+ formatDate8To10(jobResume.startDate+'') +" ~ "+ formatDate8To10(jobResume.endDate+'') +"   "
+							+jobResume.workUnit+" "+jobResume.post+"<br/>";
+					}
+					$("#gzjl").html(gzjl);
+					
+					var zyjtqk="";//主要家庭情况
+					for(var j=0;j<relationList.length;j++){
+						var relation=relationList[j];
+						zyjtqk=zyjtqk+"称谓："+ getDictDataLabel("APPELLATION", relation.kinshipTerm)+"、姓名：" +relation.name+
+								"、出生年月："+ formatDate8To10(relation.birthday+'')+"、工作单位及职务："+relation.workUnit+"  "+relation.post+"<br/>";
+					}
+					$("#zyjtqk").html(zyjtqk);
+					
+					
+				} else if (data.errCode == 200061 || data.errCode == 200062) {
+					showTicket("请先登录！",2000,function(){
+						parent.location.href="index.html?v=1.60";
+					});
+				} else if (data.errCode == 200063) {
+					showTicket("没有权限！",2000);
+				} else {
+					showTicket(data.errMsg, 2000);
+				}
+			}
+		})
+	}
+	
+	exportJbxxCard();
+	
+	$("#printBtn").click(function(){
+		$("#printBtn").hide();
+		window.print();
+	});
+	
+	
+});
+

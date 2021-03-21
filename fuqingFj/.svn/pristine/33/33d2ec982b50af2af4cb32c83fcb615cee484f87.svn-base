@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxJyglDAO">
+    <parameterMap id="parameterAuxJygl" type="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+        <parameter property="jyId"/>
+        <parameter property="daId"/>
+        <parameter property="xm"/>
+        <parameter property="idcard"/>
+        <parameter property="reason"/>
+        <parameter property="state"/>
+        <parameter property="reportId"/>
+        <parameter property="reportName"/>
+        <parameter property="remark"/>
+        <parameter property="createBy"/>
+        <parameter property="createTime"/>
+        <parameter property="outKey1"/>
+        <parameter property="outKey2"/>
+        <parameter property="bak1"/>
+        <parameter property="bak2"/>
+        <parameter property="progress"/>
+        <parameter property="processId"/>
+        <parameter property="fjbh"/>
+        <parameter property="jyrq"/>
+    </parameterMap>
+
+
+    <insert id="add" parameterMap="parameterAuxJygl">
+    INSERT INTO aux_jygl(jyId,daId,xm,idcard,reason,state,reportId,reportName,remark,createBy,createTime,outKey1,outKey2,bak1,bak2,progress,processId,fjbh,jyrq)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+  	 	DELETE FROM aux_jygl WHERE jyId=${value}
+  	</delete>
+
+    <update id="update" parameterMap="parameterAuxJygl">
+		update aux_jygl
+		set
+		daId=#{daId},
+		xm=#{xm},
+		idcard=#{idcard},
+		reason=#{reason},
+		state=#{state},
+		reportId=#{reportId},
+		reportName=#{reportName},
+		remark=#{remark},
+		createBy=#{createBy},
+		createTime=#{createTime},
+		outKey1=#{outKey1},
+		outKey2=#{outKey2},
+		bak1=#{bak1},
+		bak2=#{bak2},
+		progress=#{progress},
+		processid=#{processId},
+		fjbh=#{fjbh},
+		jyrq=#{jyrq}
+		where jyId=#{jyId}
+  	</update>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+		select * from aux_jygl where jyId = ${value}
+	</select>
+
+    <select id="findByExample" parameterMap="parameterAuxJygl" resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+        select * from aux_jygl where 1=1
+
+        <if test="daId != null and daId !='' ">and daId=#{daId}</if>
+        <if test="xm != null and xm !='' ">and xm=#{xm}</if>
+        <if test="idcard != null and idcard !='' ">and idcard=#{idcard}</if>
+        <if test="reason != null and reason !='' ">and reason=#{reason}</if>
+        <if test="state != null and state !='' ">and state=#{state}</if>
+        <if test="reportId != null and reportId !='' ">and reportId=#{reportId}</if>
+        <if test="reportName != null and reportName !='' ">and reportName=#{reportName}</if>
+        <if test="remark != null and remark !='' ">and remark=#{remark}</if>
+        <if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+        <if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+        <if test="outKey1 != null and outKey1 !='' ">and outKey1=#{outKey1}</if>
+        <if test="outKey2 != null and outKey2 !='' ">and outKey2=#{outKey2}</if>
+        <if test="bak1 != null and bak1 !='' ">and bak1=#{bak1}</if>
+        <if test="bak2 != null and bak2 !='' ">and bak2=#{bak2}</if>
+        <if test="progress != null and progress !='' ">and progress=#{progress}</if>
+        <if test="processId != null and processId !='' ">and processId=#{processId}</if>
+        <if test="fjbh != null and fjbh !='' ">and fjbh=#{fjbh}</if>
+        <if test="jyrq != null and jyrq !='' ">and jyrq=#{jyrq}</if>
+        order by createTime desc
+    </select>
+
+    <select id="findAll" resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+		select * from aux_jygl
+	</select>
+
+    <select id="search" parameterType="com.greathack.homlin.pojo.auxiliary.AuxJyglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+
+        SELECT
+        b.jyId as jyId,
+        b.idcard as idcard,
+        b.daId as daId,
+        b.xm as xm,
+        b.reason as reason,
+        b.state as state,
+        b.reportId as reportId,
+        b.reportName as reportName,
+        b.remark as remark,
+        b.createBy as createBy,
+        b.createTime as createTime,
+        b.outKey1 as outKey1,
+        b.outKey2 as outKey2,
+        b.bak1 as bak1,
+        b.bak2 as bak2,
+        b.progress as progress,
+        b.processid as processid,
+        b.fjbh as fjbh,
+        b.jyrq as jyrq,
+
+        org.parentName,
+
+        pro.pendingUserIds AS pendingUserIds,
+        pro.handledUserIds AS handledUserIds,
+
+        u.userId AS `creator.userId`,
+        u.userName AS `creator.name`,
+        u.nickName AS `creator.loginName`,
+        u.outKey1 AS `creator.amUnitId`
+
+        FROM aux_jygl b
+        left join organization org on org.orgId=b.reportId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+
+        WHERE b.state = '1'
+
+        <if test="reason != null  and reason !='' ">and reason = #{reason}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+        <if test="reportId != null  and reportId !='' ">and ( org.orgId=#{reportId} or concat(',',org.parents,',') like
+            concat('%,',#{reportId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchDcl" parameterType="com.greathack.homlin.pojo.auxiliary.AuxJyglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+
+        SELECT
+        b.jyId as jyId,
+        b.idcard as idcard,
+        b.daId as daId,
+        b.xm as xm,
+        b.reason as reason,
+        b.state as state,
+        b.reportId as reportId,
+        b.reportName as reportName,
+        b.remark as remark,
+        b.createBy as createBy,
+        b.createTime as createTime,
+        b.outKey1 as outKey1,
+        b.outKey2 as outKey2,
+        b.bak1 as bak1,
+        b.bak2 as bak2,
+        b.progress as progress,
+        b.processid as processid,
+        b.fjbh as fjbh,
+        b.jyrq as jyrq,
+
+        org.parentName,
+
+        pro.pendingUserIds AS pendingUserIds,
+        pro.handledUserIds AS handledUserIds,
+
+        u.userId AS `creator.userId`,
+        u.userName AS `creator.name`,
+        u.nickName AS `creator.loginName`,
+        u.outKey1 AS `creator.amUnitId`
+
+        FROM aux_jygl b
+        left join organization org on org.orgId=b.reportId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+
+        WHERE b.state = '2'
+        <if test="beginTime != null  and beginTime !='' "> and b.jyrq >= #{beginTime}</if>
+        <if test="endTime != null  and endTime !='' "> and b.jyrq &lt;= #{endTime}</if>
+        <if test="reason != null  and reason !='' ">and reason = #{reason}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+        <if test="idcard != null  and idcard !='' "> and b.idcard LIKE concat('%',#{idcard},'%')</if>
+        <if test="xm != null  and xm !='' "> and b.xm LIKE concat('%',#{xm},'%')</if>
+        <!--<if test="jyrq != null  and jyrq !='' "> and b.jyrq = #{jyrq}</if>-->
+        <if test="reportId != null  and reportId !='' ">and ( org.orgId=#{reportId} or concat(',',org.parents,',') like
+            concat('%,',#{reportId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="searchYcl" parameterType="com.greathack.homlin.pojo.auxiliary.AuxJyglSearchCriteria"
+            resultType="com.greathack.homlin.pojo.auxiliary.AuxJygl">
+
+        SELECT
+        b.jyId as jyId,
+        b.idcard as idcard,
+        b.daId as daId,
+        b.xm as xm,
+        b.reason as reason,
+        b.state as state,
+        b.reportId as reportId,
+        b.reportName as reportName,
+        b.remark as remark,
+        b.createBy as createBy,
+        b.createTime as createTime,
+        b.outKey1 as outKey1,
+        b.outKey2 as outKey2,
+        b.bak1 as bak1,
+        b.bak2 as bak2,
+        b.progress as progress,
+        b.processid as processid,
+        b.fjbh as fjbh,
+        b.jyrq as jyrq,
+
+        org.parentName,
+
+        pro.pendingUserIds AS pendingUserIds,
+        pro.handledUserIds AS handledUserIds,
+
+        u.userId AS `creator.userId`,
+        u.userName AS `creator.name`,
+        u.nickName AS `creator.loginName`,
+        u.outKey1 AS `creator.amUnitId`
+
+        FROM aux_jygl b
+        left join organization org on org.orgId=b.reportId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+
+        WHERE (b.state = '4' or b.state = '8')
+        <if test="beginTime != null  and beginTime !='' "> and b.jyrq >= #{beginTime}</if>
+        <if test="endTime != null  and endTime !='' "> and b.jyrq &lt;= #{endTime}</if>
+        <if test="reason != null  and reason !='' ">and reason = #{reason}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+        <if test="idcard != null  and idcard !='' "> and b.idcard LIKE concat('%',#{idcard},'%')</if>
+        <if test="xm != null  and xm !='' "> and b.xm LIKE concat('%',#{xm},'%')</if>
+        <!--<if test="jyrq != null  and jyrq !='' "> and b.jyrq = #{jyrq}</if>-->
+        <if test="reportId != null  and reportId !='' ">and ( org.orgId=#{reportId} or concat(',',org.parents,',') like
+            concat('%,',#{reportId},',%') )
+        </if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%\_',#{pendingUserId},'\_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%\_',#{handledUserId},'\_%')
+        </if>
+        order by b.createTime desc
+        LIMIT #{startLine},#{pageSize}
+    </select>
+
+    <select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.auxiliary.AuxJyglSearchCriteria"
+            resultType="long">
+
+        SELECT count(b.jyId) FROM aux_jygl b
+        left join organization org on org.orgId=b.reportId
+        left join process pro on b.processid =pro.processid
+        left join user u on b.createBy =u.userId
+        WHERE 1 = 1
+
+        <if test="reason != null  and reason !='' ">and reason = #{reason}</if>
+        <if test="state != null  and state !='' ">and state = #{state}</if>
+        <if test="filterList!=null and filterList.size>0">
+            and
+            <foreach collection="filterList" item="filter" separator=" or " open="(" close=")">
+                ${filter}
+            </foreach>
+        </if>
+        <if test="pendingUserId != null">
+            and pro.pendingUserIds LIKE concat('%_',#{pendingUserId},'_%')
+        </if>
+        <if test="handledUserId != null">
+            and pro.handledUserIds LIKE concat('%_',#{handledUserId},'_%')
+        </if>
+    </select>
+
+</mapper>

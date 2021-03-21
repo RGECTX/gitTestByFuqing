@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>layui</title>
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all">
+	<link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+	<style type="text/css">
+		.cos-label {width: 14%!important;}
+		.cos-line {width: 18%!important;}
+	</style>
+	<script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+	<script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+	<!--[if lt IE 9]>
+	<script src="../baseJs/html5shiv.min.js"></script>
+	<script src="../baseJs/respond.min.js"></script>
+	<script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+	<![endif]-->
+	<script src="../baseJs/function.js?v=1.60"></script>
+	<script src="../js/config.js?v=1.60"></script>
+	<script src="../js/global.js?v=1.60"></script>
+	<script src="../js/userLive.js?v=1.60"></script>
+	<script src="../js/auxiliary/daglList.js?v=1.60" charset="utf-8"></script>
+	<!--<script src="../js/auxiliary/archiveList.js?v=1.60" charset="utf-8"></script>-->
+</head>
+<body>
+<!-- 外壳开始 -->
+<div class="layui-fluid">
+	<div class="layui-row layui-col-space10 layui-card">
+		<div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+			<div class="layui-container">
+				<div class="layui-tab  layui-tab-card"><!-- 外壳结束 -->
+					<!-- 内容开始 -->
+					<div class="layui-fluid" id="saveEnrollPage" style="min-height: 700px;">
+						<form class="layui-form layui-form-pane" action="" lay-filter="add" id="add">
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" name="xm" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+										   lay-verify="required" maxlength="64">
+								</div>
+
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" name="idcard" placeholder="请输入身份证" autocomplete="off" class="layui-input"
+										   lay-verify="required|numbermsg" maxlength="30">
+								</div>
+
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>最高学历</label>
+								<div class="layui-input-inline cos-line">
+									<select class="xl" name="xl" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label">籍贯</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="jgszss" placeholder="请输入籍贯">
+								</div>
+								<label class="layui-form-label cos-label">户籍地址</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="hjdz" placeholder="请输入户籍地址">
+								</div>
+								<label class="layui-form-label cos-label">现住地址</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="xjtzz" placeholder="请输入现住地址">
+								</div>
+
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>是否党员</label>
+								<div class="layui-input-inline cos-line">
+									<select class="isdy" name="isdy" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>是否退伍军人</label>
+								<div class="layui-input-inline cos-line">
+									<select class="fby" name="fby" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>联系方式</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" name="lxfs" placeholder="请输入联系方式" autocomplete="off" class="layui-input"
+										   maxlength="64" lay-verify="required">
+								</div>
+
+
+
+
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>入职日期</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input date" name="rzrq" placeholder="请输入入职日期" lay-verify="required">
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>是否由局购买保险</label>
+								<div class="layui-input-inline cos-line">
+									<select class="isbx" name="isbx" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>辅警编号</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="fjbh" placeholder="请输入辅警编号" lay-verify="required|numbermsg2">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>
+									工作单位
+								</label>
+								<div class="layui-input-inline cos-line">
+									<select name="orgId" class="orgId" lay-filter="aihao" lay-search="" lay-verify="required">
+										<option value="" selected="">请选择</option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>
+									辅警类别
+								</label>
+								<div class="layui-input-inline cos-line">
+									<select name="fjType" class="fjType" lay-filter="aihao" lay-search="" lay-verify="required">
+										<option value="" selected="">请选择</option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>政治面貌</label>
+								<div class="layui-input-inline cos-line">
+									<select class="zzmm" name="zzmm" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>民族</label>
+								<div class="layui-input-inline cos-line">
+									<select class="mz" name="mz" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>婚姻状况</label>
+								<div class="layui-input-inline cos-line">
+									<select class="hyzk" name="hyzk" lay-verify="required">
+										<option value="" selected></option>
+									</select>
+								</div>
+								<label class="layui-form-label cos-label">驾照</label>
+								<div class="layui-input-inline cos-line">
+									<select class="jz" name="jz">
+										<option value="" selected></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label"><font color="#ff0000"><strong>*</strong></font>毕业院校</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="byys" placeholder="请输入毕业院校" lay-verify="required">
+								</div>
+								<label class="layui-form-label cos-label">专业</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="zy" placeholder="请输入专业">
+								</div>
+								<label class="layui-form-label cos-label">毕业日期</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input date" name="byrq" placeholder="请输入毕业日期">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label cos-label">爱好</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="aihao" placeholder="请输入爱好">
+								</div>
+								<label class="layui-form-label cos-label">特长</label>
+								<div class="layui-input-inline cos-line">
+									<input type="text" class="layui-input" name="techang" placeholder="请输入特长">
+								</div>
+							</div>
+
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">现具体职责</label>
+								<div class="layui-input-block">
+									<textarea name="jtzz" class="layui-textarea" maxlength="255"></textarea>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<div class="layui-upload">
+									<button type="button" class="layui-btn layui-btn-normal" id="add_selectFileBtn">选择照片</button>
+									<div class="layui-upload-list">
+										<table class="layui-table">
+											<thead>
+											<tr>
+												<th>文件名</th>
+												<th>大小</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+											</thead>
+											<tbody id="add_uploadList"></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注</label>
+								<div class="layui-input-block">
+									<textarea name="remark" class="layui-textarea" maxlength="255"></textarea>
+								</div>
+							</div>
+
+							<div style="text-align: center;">
+								<button class="layui-btn" id="addSubmit" lay-filter="add" lay-submit>保存</button>&nbsp;
+								<a class="layui-btn layui-btn-danger" onclick="closeTab();">关闭<a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

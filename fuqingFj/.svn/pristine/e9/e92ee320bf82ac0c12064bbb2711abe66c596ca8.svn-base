@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>黑名单</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all">
+    <link rel="stylesheet" href="../css/admin.css?v=1.60" media="all">
+    <style type="text/css">
+        .cos-sm-1 {
+            width: 20% !important;
+        }
+
+        .cos-sm-3 {
+            width: 28% !important;
+        }
+    </style>
+    <script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="../baseJs/function.js?v=1.60"></script>
+    <script src="../js/config.js?v=1.60"></script>
+    <script src="../js/global.js?v=1.60"></script>
+    <script src="../js/userLive.js?v=1.60"></script>
+    <script src="../js/auxiliary/hmdList.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <form class="layui-form" action="" lay-filter="searchForm">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">姓名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="xm" autocomplete="off" class="layui-input"
+                                           placeholder="请输入姓名">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                    <script type="text/html" id="toolbarDemo">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm AUX_HDM_ADD" lay-event="addData">添加</button>
+                            <button class="layui-btn layui-btn-sm layui-btn-danger  AUX_HDM_DELETE"
+                                    lay-event="del">
+                                批量删除
+                            </button>
+                        </div>
+                    </script>
+                    <script type="text/html" id="barDemo">
+                        <a class="layui-btn layui-btn-xs " lay-event="view">查看</a>
+                        <a class="layui-btn layui-btn-xs AUX_HDM_UPDATE" lay-event="edit">编辑</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="addPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="add" id="add">
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+                       lay-verify="required" maxlength="64">
+            </div>
+
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" placeholder="请输入身份证" autocomplete="off" class="layui-input"
+                       lay-verify="required|numbermsg" maxlength="30">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">加入黑名单原因</label>
+            <div class="layui-input-block">
+                <textarea name="reason" class="layui-textarea" maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="addSubmit" lay-filter="add" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+
+<div class="layui-fluid" id="editPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit" id="edit">
+        <input type="hidden" name="hmdId"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+                       lay-verify="required" maxlength="64">
+            </div>
+
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" placeholder="请输入身份证" autocomplete="off" class="layui-input"
+                       lay-verify="required" maxlength="30" lay-verify="numbermsg">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">加入黑名单原因</label>
+            <div class="layui-input-block">
+                <textarea name="reason" class="layui-textarea" maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="button" id="editSubmit" lay-filter="edit" style="display:none"
+                    lay-submit></button>
+        </div>
+    </form>
+</div>
+
+<div class="layui-fluid" id="viewPage" style="display:none;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="view" id="view">
+        <input type="hidden" name="hmdId"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>姓名</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="xm" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+                       lay-verify="required" maxlength="64" readonly="readonly">
+            </div>
+            <label class="layui-form-label cos-sm-1"><font color="#ff0000"><strong>*</strong></font>身份证号</label>
+            <div class="layui-input-inline cos-sm-3">
+                <input type="text" name="idcard" placeholder="请输入身份证" autocomplete="off" class="layui-input"
+                       lay-verify="required" maxlength="30" lay-verify="numbermsg" readonly="readonly">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">加入黑名单原因</label>
+            <div class="layui-input-block">
+                <textarea name="reason" class="layui-textarea" maxlength="255" readonly="readonly"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" maxlength="255" readonly="readonly"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

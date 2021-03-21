@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.innerMessage.IReceiveDAO">
+	<!-- id:方法名 parameterType:参数类型 resultType：返回值类型 -->
+	<insert id="add" parameterType="com.greathack.homlin.pojo.innerMessage.Receive">
+    INSERT INTO Receive(receiveId,appCode,receiveType,innerMessageId,recipient,recipientName,receiveState,readTime)
+    VALUES(#{receiveId},#{appCode},#{receiveType},#{innerMessageId},#{recipient},#{recipientName},#{receiveState},#{readTime});
+ 	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM Receive WHERE receiveId=${value};
+  	</delete>
+
+	<delete id="empty" parameterType="java.lang.Long">
+    DELETE FROM Receive WHERE innerMessageId=${value};
+  	</delete>
+
+	<update id="update" parameterType="com.greathack.homlin.pojo.innerMessage.Receive">
+    UPDATE Receive
+    SET innerMessageId=#{innerMessageId},
+    recipient=#{recipient},
+    recipientName=#{recipientName},
+    receiveState=#{receiveState}
+    
+    WHERE receiveId=${receiveId};
+  	</update>
+
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.innerMessage.Receive" >
+	select * from Receive where receiveId=#{value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.innerMessage.Receive"  resultType="com.greathack.homlin.pojo.innerMessage.Receive" >
+		select * from Receive where 1=1
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="receiveType != null"> and receiveType=#{receiveType}</if>
+		<if test="innerMessageId != null"> and innerMessageId =#{innerMessageId}</if>
+		<if test="recipient != null"> and  recipient =#{recipient}</if>
+		<if test="recipientName != null"> and  recipientName =#{recipientName}</if>
+		<if test="receiveState != null"> and  receiveState =#{receiveState}</if>
+		<if test="readTime != null"> and  readTime=#{readTime}</if>
+	</select>
+
+	<!-- 	search  -->
+	<select id="search" parameterType="com.greathack.homlin.pojo.innerMessage.ReceiveSearchCriteria" resultType="com.greathack.homlin.pojo.innerMessage.Receive" >
+		select * from v_receive where 1=1
+
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="receiveType != null"> and receiveType=#{receiveType}</if>
+		<if test="innerMessageId != null"> and innerMessageId=#{innerMessageId}</if>
+		<if test="recipient != null"> and recipient=#{recipient}</if>
+		<if test="receiveState != null"> and receiveState=#{receiveState}</if>
+		<if test="sender != null"> and `innerMessage.sender`=#{sender}</if>
+		<if test="msgType != null"> and `innerMessage.msgType`=#{msgType}</if>
+		<if test="msgState != null"> and `innerMessage.msgState`=#{msgState}</if>
+		LIMIT #{startLine},#{pageSize}
+	</select>
+
+	<!-- 	getSearchResultCount  -->
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.innerMessage.ReceiveSearchCriteria" resultType="long" >
+		select count(*) from v_receive where 1=1
+
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="receiveType != null"> and receiveType=#{receiveType}</if>
+		<if test="innerMessageId != null"> and innerMessageId=#{innerMessageId}</if>
+		<if test="recipient != null"> and recipient=#{recipient}</if>
+		<if test="receiveState != null"> and receiveState=#{receiveState}</if>
+		<if test="sender != null"> and `innerMessage.sender`=#{sender}</if>
+		<if test="msgType != null"> and `innerMessage.msgType`=#{msgType}</if>
+		<if test="msgState != null"> and `innerMessage.msgState`=#{msgState}</if>
+	</select>
+</mapper>

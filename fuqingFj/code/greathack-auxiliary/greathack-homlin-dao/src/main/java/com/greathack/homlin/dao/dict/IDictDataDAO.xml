@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.dict.IDictDataDAO">
+	
+	<insert id="add" parameterType="com.greathack.homlin.pojo.dict.DictData">
+    INSERT INTO Dict_Data(dictDataId,appCode,dictId,dataName,dataCode,sortNum,content,remark,createTime,outKey1,outKey2,bak1,bak2)
+    VALUES(#{dictDataId},#{appCode},#{dictId},#{dataName},#{dataCode},#{sortNum},#{content},#{remark},#{createTime},#{outKey1},#{outKey2},#{bak1},#{bak2});
+	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM Dict_Data WHERE dictDataId=${value};
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.dict.DictData">
+    UPDATE Dict_Data
+    SET dictId=#{dictId},
+    dataName=#{dataName},
+    dataCode=#{dataCode},
+    sortNum=#{sortNum},
+    content=#{content},
+    remark=#{remark},
+    outKey1=#{outKey1},
+    outKey2=#{outKey2},
+    bak1=#{bak1},
+    bak2=#{bak2}
+    WHERE dictDataId=${dictDataId};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.dict.DictData" >
+	select * from Dict_Data where dictDataId=#{value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.dict.DictData"  resultType="com.greathack.homlin.pojo.dict.DictData" >	
+	select * from Dict_Data where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="dictId != null"> and dictId=#{dictId}</if>
+	<if test="dataName != null"> and dataName=#{dataName}</if>
+    <if test="dataCode != null"> and dataCode=#{dataCode}</if>
+	<if test="content != null"> and content=#{content}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	<if test="outKey1 != null"> and outKey1=#{outKey1}</if>
+	<if test="outKey2 != null"> and outKey2=#{outKey2}</if>
+	<if test="bak1 != null"> and bak1=#{bak1}</if>
+	<if test="bak2 != null"> and bak2=#{bak2}</if>
+	order by sortNum desc
+	</select>
+	
+</mapper>

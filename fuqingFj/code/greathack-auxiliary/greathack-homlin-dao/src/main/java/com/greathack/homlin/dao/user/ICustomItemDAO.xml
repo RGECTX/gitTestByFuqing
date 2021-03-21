@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.ICustomItemDAO">
+	<parameterMap type="com.greathack.homlin.pojo.user.CustomItem" id="parameterMap">
+    	<parameter property="customItemId" />
+    	<parameter property="appCode"/>
+    	<parameter property="userId"/>
+    	<parameter property="itemName"/>
+    	<parameter property="content"/>
+    	<parameter property="remark"/>
+    	<parameter property="createTime"/>
+    	
+  	</parameterMap>
+	<resultMap id="resultMap"
+		type="com.greathack.homlin.pojo.user.CustomItem">
+		<result column="customItemId" property="customItemId" />
+		<result column="appCode" property="appCode" />
+		<result column="userId" property="userId" />
+		<result column="itemName" property="itemName" />
+		<result column="content" property="content" />
+		<result column="remark" property="remark" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+	
+	<insert id="add" parameterMap="parameterMap">
+    	INSERT INTO customitem(customItemId,appCode,userId,itemName,content,remark,createTime)
+    	VALUES(?,?,?,?,?,?,?)
+ 	</insert>
+ 	 <delete id="delete" parameterType="java.lang.Long">
+    	DELETE FROM customitem 
+    	WHERE customItemId=${value}
+  	</delete>
+  	 <delete id="deleteByUserId" parameterType="java.lang.Long">
+    	DELETE FROM customitem 
+    	WHERE userId=${value}
+  	</delete>
+	
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultMap" >	
+		select * from customitem 
+		 where customItemId=#{value}
+	</select>
+	
+	<update id="update" parameterMap="parameterMap">
+	    UPDATE customitem
+	     <trim prefix="set" suffixOverrides=",">
+	        <if test="itemName != null and itemName != ''"> itemName=#{itemName}, </if>
+		    <if test="content != null and content != ''"> content=#{content}, </if>
+		    <if test="remark != null and remark != ''">  remark=#{remark}, </if>
+	    </trim>
+	    	WHERE customItemId=${customItemId}
+  	</update>
+  	
+  	<select id="search" parameterType="com.greathack.homlin.pojo.user.CustomItemSearchCriteria" resultMap="resultMap" >	
+		select * from customitem where 1=1 
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null"> 
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId != null"> and userId=#{userId}</if>
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+	    <if test="sortField == 2"> ORDER BY createTime ASC</if>
+	    LIMIT #{startLine},#{pageSize}
+		
+	</select>
+  	
+  	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.user.CustomItemSearchCriteria" resultMap="resultMap" >	
+		select * from customitem where 1=1 
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword!=null"> 
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId != null"> and userId=#{userId}</if>		
+	</select>
+</mapper>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <link rel="stylesheet" href="../layui/css/layui.css?v=1.60" media="all"> -->
+    <!-- <link rel="stylesheet" href="../css/admin.css?v=1.60" media="all"> -->
+    <style type="text/css">
+        page[size="A4"] {
+            background: white;
+            width: 21cm;
+            /* height: 29.7cm; */
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+        }
+
+        .td-width1 {
+            width: 10%;
+        }
+
+        .td-width2 {
+            width: 18%;
+        }
+
+        .td-width3 {
+            width: 15%;
+        }
+
+        th {
+            border: 0px;
+        }
+
+        td {
+            height: 3em;
+            /* vertical-align:bottom; */
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="../baseJs/html5shiv.min.js"></script>
+    <script src="../baseJs/respond.min.js"></script>
+    <![endif]-->
+    <script src="../layui/layui.js?v=1.60" charset="utf-8"></script>
+    <script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+    <!--[if lt IE 9]>
+    <script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+    <![endif]-->
+    <script src="../baseJs/function.js?v=1.60"></script>
+    <script src="../js/config.js?v=1.60"></script>
+    <script src="../js/global.js?v=1.60"></script>
+    <script src="../js/userLive.js?v=1.60"></script>
+    <script src="../js/auxiliary/amJbxxCard.js?v=1.60" charset="utf-8"></script>
+</head>
+<body>
+<page size="A4">
+    <table class="table" style="width:100%;height:100%;border:1px solid grey;align:center;font-size:12px;" border cellspacing="0" cellpadding="0">
+        <caption style="font-size:24px;font-weight:bold;padding: 10px;">个人基本信息表
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius"
+                    style="background-color: #b0d1f5;" id="printBtn">打印
+            </button>
+        </caption>
+        <tr>
+            <th class="td-width1"></th>
+            <th class="td-width2"></th>
+            <th class="td-width1"></th>
+            <th class="td-width2"></th>
+            <th class="td-width1"></th>
+            <th class="td-width2"></th>
+            <th class="td-width3"></th>
+        </tr>
+        <tr align="center">
+            <td> 姓名</td>
+            <td id="xm"></td>
+            <td>性别</td>
+            <td id="xb"></td>
+            <td>身份证号</td>
+            <td id="idcard"></td>
+            <!--<td>出生年月</td>
+            <td id="csrq"></td>-->
+            <td rowspan="4" style="font-size: 18px;">人<br>员<br>照<br>片</td>
+        </tr>
+        <tr align="center">
+            <td>民族</td>
+            <td id="mz"></td>
+            <td>籍贯</td>
+            <td id="jgszss"></td>
+            <td>户籍地</td>
+            <td id="hjdz"></td>
+        </tr>
+        <tr align="center">
+            <td>联系方式</td>
+            <td id="lxfs"></td>
+            <td>婚姻状况</td>
+            <td id="hyzk"></td>
+            <!--<td>参加工<br>作时间</td>
+            <td id="cjgzrq"></td>-->
+            <!--<td>健康状况</td>
+            <td id="ndtjqk"></td>-->
+            <td>政治面貌</td>
+            <td id="zzmm"></td>
+        </tr>
+        <tr align="center">
+            <td>驾照</td>
+            <td id="jz"></td>
+            <td>辅警类别</td>
+            <td id="fjType"></td>
+            <td>由局购买保险</td>
+            <td id="isbx"></td>
+           <!-- <td>专业</td>
+            <td colspan="2" id="zy"></td>
+            <td>特长</td>
+            <td colspan="2" id="techang"></td>-->
+        </tr>
+        <tr align="center">
+            <td>毕业日期</td>
+            <td id="byrq"></td>
+            <td>专业</td>
+            <td id="zy"></td>
+            <td>毕业院校</td>
+            <td colspan="2" id="byys"></td>
+            <!--<td>学历<br>学位</td>
+            <td>全日制<br>教育</td>-->
+            <!--<td colspan="2" id="xl"></td>
+            <td>毕业院校<br>系及专业</td>
+            <td colspan="2" id="byys"></td>-->
+        </tr>
+        <!-- <tr align="center">
+          <td rowspan="2">学历<br>学位</td>
+          <td>全日制<br>教育</td>
+          <td colspan="2"></td>
+          <td>毕业院校<br>系及专业</td>
+          <td colspan="2"></td>
+        </tr>
+        <tr align="center">
+          <td>在职<br>教育</td>
+          <td colspan="2"></td>
+          <td>毕业院校<br>系及专业</td>
+          <td colspan="2"></td>
+        </tr> -->
+        <tr align="center">
+            <td>现住地址</td>
+            <td colspan="6" id="xjtzz"></td>
+            <!--<td>工作单位<br>及职务</td>
+            <td colspan="6" id="orgId"></td>-->
+        </tr>
+        <tr align="center">
+            <td>学<br>历<br>简<br>历</td>
+            <td colspan="6" style="height:400px;text-align: left;padding-left: 2em;" id="xljl"></td>
+            <!--<td>简<br><br><br><br><br><br><br><br>历</td>
+            <td colspan="6" style="height:400px;text-align: left;padding-left: 2em;" id="gzjl"></td>-->
+        </tr>
+        <tr align="center">
+            <td>工<br>作<br>简<br>历</td>
+            <td colspan="6" style="height:400px;text-align: left;padding-left: 2em;" id="gzjl"></td>
+        </tr>
+        <tr align="center">
+            <td>备<br>注</td>
+            <td colspan="6" style="height:200px;text-align: left;padding-left: 2em;" id="remark"></td>
+        </tr>
+    </table>
+</page>
+</body>
+</html>

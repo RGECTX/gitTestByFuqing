@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.user.ILinkItemDAO">
+
+	<parameterMap type="com.greathack.homlin.pojo.user.LinkItem" id="parameterLinkItem">
+    	<parameter property="linkItemId"  />
+    	<parameter property="userId"/>
+    	<parameter property="itemTypeId"/>
+    	<parameter property="content"/>
+    	<parameter property="isDefault"/>
+    	<parameter property="remark"/>
+    	<parameter property="createTime"/>
+    	<parameter property="appCode"/>
+  	</parameterMap>
+  	
+	<resultMap id="resultLinkItem" type="com.greathack.homlin.pojo.user.LinkItem">
+		<result column="linkItemId" property="linkItemId" />
+		<result column="userId" property="userId" />
+		<result column="itemTypeId" property="itemTypeId"/>
+		<result column="content" property="content" />
+		<result column="isDefault" property="isDefault" />
+		<result column="remark" property="remark" />
+		<result column="createTime" property="createTime" />
+		<result column="appCode" property="appCode" />
+	</resultMap>
+	
+	<insert id="add" parameterMap="parameterLinkItem">
+    INSERT INTO linkitem (linkItemId,userId,itemTypeId,content,isDefault,remark,createTime,appCode)
+    VALUES(?,?,?,?,?,?,?,?)
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM linkitem 
+    WHERE linkItemId=#{id}
+  	</delete>
+  	
+  	<delete id="deleteByUserId" parameterType="java.lang.Long">
+    DELETE FROM linkitem 
+    WHERE userId=#{userId}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.user.LinkItem" >
+    UPDATE linkitem
+    SET 
+    	itemTypeId=#{itemTypeId},
+    	content=#{content},
+    	isDefault=#{isDefault},
+    	remark=#{remark}
+    	
+    WHERE linkItemId=#{linkItemId} 
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long"  resultMap="resultLinkItem">
+	select * from linkitem where linkItemId=#{id}
+	</select>
+	
+	<select id="findByItemTypeId" parameterType="java.lang.Long"  resultMap="resultLinkItem">
+	select * from linkitem where itemTypeId=#{itemTypeId}
+	</select>
+	
+	<select id="findByExample" parameterMap="parameterLinkItem" resultMap="resultLinkItem" >	
+	select * from linkitem where 1=1
+	<if test="appCode != null"> and appCode=#{appCode}</if>
+	<if test="userId != null"> and userId=#{userId}</if>
+	<if test="itemTypeId != null"> and itemTypeId=#{itemTypeId}</if>
+	<if test="content != null"> and content=#{content}</if>
+	<if test="isDefault != null"> and isDefault=#{isDefault}</if>
+	<if test="remark != null"> and remark=#{remark}</if>
+	</select>	
+	
+	<select id="search" parameterType="com.greathack.homlin.pojo.user.LinkItemSearchCriteria" resultMap="resultLinkItem" >	
+		SELECT * from linkitem  where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null " >
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="itemTypeId !=null">and itemTypeId = #{itemTypeId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>	
+		
+		<if test="sortField == 1"> ORDER BY createTime DESC </if>
+	    <if test="sortField == 2"> ORDER BY createTime ASC</if>
+		 LIMIT #{startLine},#{pageSize}	
+	</select>	
+	
+	<select id="getSearchResultCount" parameterType="com.greathack.homlin.pojo.user.LinkItemSearchCriteria" resultMap="resultLinkItem" >	
+		SELECT * from linkitem  where 1=1
+		<if test="kwFieldList!=null and kwFieldList.size>0 and keyword !=null " >
+			 and 
+			<foreach collection="kwFieldList" item="kwField" separator=" or " open="(" close=")">
+			${kwField} LIKE concat('%',#{keyword},'%')
+			</foreach>
+		</if>
+		
+		<if test="appCode != null"> and appCode=#{appCode}</if>
+		<if test="userId !=null">and userId = #{userId}</if>
+		<if test="itemTypeId !=null">and itemTypeId = #{itemTypeId}</if>
+		<if test="isDefault !=null">and isDefault = #{isDefault} </if>
+	</select>
+	
+	
+	
+</mapper>

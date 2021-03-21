@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd"
+>
+
+
+    <!-- <context:annotation-config />
+    <context:component-scan base-package="com.greathack.dao.*" /> -->
+
+    <!-- 数据源配置 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!--添加微信昵称含有特殊字符 做字符设置,下面Url也做了修改  add by lzj 2017.12.14 -->
+        <property name="connectionInitSqls" value="set names utf8mb4;"/>
+        <!-- 基本属性 url、user、password  homlin_dbServer-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/jyxlgl?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;failOverReadOnly=false&amp;allowMultiQueries=true" />-->
+        <property name="url"
+                  value="jdbc:mysql://auxiliary_dbServer/auxiliary_fuqing?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;failOverReadOnly=false&amp;allowMultiQueries=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="7UQFLj#X"/><!-- 测试环境 -->
+        <!--        <property name="password" value="123456"/>&lt;!&ndash; 正式环境 &ndash;&gt;-->
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="20"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="20"/>
+
+        <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
+        <property name="filters" value="stat"/>
+    </bean>
+
+    <!-- SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath*:com/greathack/homlin/**/*DAO.xml"/>
+    </bean>
+
+    <!-- 定义事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务  -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <!-- ScanMapperFiles -->
+    <!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+      <property name="basePackage" value="com.greathack.homlin.dao.mapper" />
+    </bean> -->
+
+    <!-- 以下为自定义Bean-->
+    <!--  <bean id="userDao" class="com.greathack.homlin.dao.UserDAO" autowire="byType" /> -->
+    <!-- 辅警编制开始 -->
+    <bean id="IAmQuotasDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.am.IAmQuotasDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+
+    <bean id="IConfigDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.system.IConfigDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 附件开始 -->
+    <bean id="IAttachmentDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.attachment.IAttachmentDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 流程开始 -->
+    <bean id="IApprovalItemDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IApprovalItemDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessNodeBranchDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessNodeBranchDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessNodeBranchTemplateDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.greathack.homlin.daointerface.process.IProcessNodeBranchTemplateDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessNodeDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessNodeDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessNodeTemplateDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessNodeTemplateDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessTemplateDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessTemplateDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IProcessHistoryRecordDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.process.IProcessHistoryRecordDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 流程结束 -->
+    <!-- 登录开始 -->
+    <bean id="ILoginInstancesDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.login.ILoginInstancesDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="ILoginLogsDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.login.ILoginLogsDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="ILoginTypesDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.login.ILoginTypesDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 登录结束 -->
+    <!-- 用户开始 -->
+    <bean id="IUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.IUserDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="ILinkItemTypeDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.ILinkItemTypeDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <bean id="ILinkItemDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.ILinkItemDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <bean id="IAddressItemDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.IAddressItemDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IIdcardDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.IIdcardDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <bean id="ICustomItemDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.user.ICustomItemDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <!-- 用户结束 -->
+    <!-- 权限开始 -->
+    <bean id="IPowerInRoleDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.permission.IPowerInRoleDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IPowerInUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.permission.IPowerInUserDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IPowerItemDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.permission.IPowerItemDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IRoleOfUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.permission.IRoleOfUserDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 权限结束 -->
+    <!-- 多级分类开始 -->
+    <bean id="ICategoryDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.category.ICategoryDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 多级分类结束 -->
+    <!-- 组织机构开始 -->
+    <bean id="IOrganizationDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.org.IOrganizationDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 组织机构结束 -->
+    <!-- 字典开始 -->
+    <bean id="IDictDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.dict.IDictDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IDictDataDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.dict.IDictDataDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 字典结束 -->
+    <!-- 节假日开始 -->
+    <bean id="IHolidayDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.holiday.IHolidayDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 节假日结束 -->
+    <!-- 地区开始 -->
+    <bean id="ICircleDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.area.ICircleDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAreaDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.area.IAreaDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 地区结束 -->
+    <!-- 表达式开始 -->
+    <bean id="ICriteriaDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.expression.ICriteriaDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IExpressionDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.expression.IExpressionDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 表达式结束 -->
+    <!-- 站内信开始 -->
+    <bean id="IReceiveDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.innerMessage.IReceiveDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IInnerMessageDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.innerMessage.IInnerMessageDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 站内信结束 -->
+
+    <!-- 福清辅警项目开始 -->
+    <bean id="IAuxHmdDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxHmdDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxZljdDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxZljdDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxDaglDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxDaglDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxJyglDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxJyglDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxKqtjDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxKqtjDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxQjsqDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxQjsqDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxGzglDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxGzglDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxGsglDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxGsglDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxBzglDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxBzglDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="IAuxFjbzfpDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxFjbzfpDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 工作简历开始 -->
+    <bean id="IJobResumeDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IJobResumeDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 学历简历开始 -->
+    <bean id="IEduResumeDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IEduResumeDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 年度考核开始 -->
+    <bean id="IAuxNdkhDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxNdkhDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- 月度考核开始 -->
+    <bean id="IAuxYdkhDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxYdkhDAO" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <!-- 亲属关系开始 -->
+    <bean id="IAuxQsgxDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxQsgxDAO" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="IAuxPayDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxPayDAO" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <!--授奖情况开始-->
+    <bean id="IAuxSjqkDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxSjqkDAO" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <!--单位考勤开始-->
+    <bean id="IAuxDwkqDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.auxiliary.IAuxDwkqDAO" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+
+    <!-- 福清辅警项目结束 -->
+
+    <!--定时任务开始-->
+    <bean id="IScheduleTaskDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.scheduletask.IScheduleTaskDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!--定时任务结束-->
+    <!--角色开始-->
+    <bean id="IRoleDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.greathack.homlin.daointerface.IRoleDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!--角色结束-->
+    <!-- 定时任务配置  开始-->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.scheduler.instanceName">scheduler</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <!-- 线程池配置 -->
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">40</prop>
+                <prop key="org.quartz.threadPool.threadPriority">5</prop>
+                <prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
+                <!-- JobStore 配置 -->
+                <prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
+                <!-- 集群配置 -->
+                <prop key="org.quartz.jobStore.isClustered">false</prop>
+                <prop key="org.quartz.jobStore.clusterCheckinInterval">15000</prop>
+                <prop key="org.quartz.jobStore.maxMisfiresToHandleAtATime">1</prop>
+                <!-- 数据表设置 -->
+                <!-- <prop key="org.quartz.jobStore.tablePrefix">bus_t_sched_</prop> -->
+                <prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+                <prop key="org.quartz.jobStore.dataSource">qzDS</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- 定时任务配置  结束-->
+</beans>

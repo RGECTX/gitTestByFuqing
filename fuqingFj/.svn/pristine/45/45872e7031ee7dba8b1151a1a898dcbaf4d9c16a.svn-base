@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.process.IProcessHistoryRecordDAO">
+	<parameterMap id="parameterProcessHistoryRecord" type="com.greathack.homlin.pojo.process.ProcessHistoryRecord">
+		<parameter property="id"/>
+		<parameter property="instanceType"/>
+		<parameter property="instanceId"/>
+		<parameter property="processId"/>
+		<parameter property="createBy"/>
+		<parameter property="createTime"/>
+		<parameter property="remark"/>
+	</parameterMap>
+	<resultMap id="resultProcessHistoryRecord" type="com.greathack.homlin.pojo.process.ProcessHistoryRecord">
+		<result column="id" property="id" />
+		<result column="instance_type" property="instanceType" />
+		<result column="instance_id" property="instanceId" />
+		<result column="process_id" property="processId" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<insert id="add" parameterMap="parameterProcessHistoryRecord">
+    INSERT INTO process_history_record(id,instance_type,instance_id,process_id,create_by,create_time,remark)
+    VALUES(#{id},#{instanceType},#{instanceId},#{processId},#{createBy},#{createTime},#{remark});
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM process_history_record WHERE id=#{id};
+  	</delete>
+  	
+  	<update id="update" parameterMap="parameterProcessHistoryRecord">
+    UPDATE process_history_record
+    SET 
+    instance_type=#{instanceType},
+    instance_id=#{instanceId},
+    process_id=#{processId},
+    create_by=#{createBy},
+    create_time=#{createTime},
+    remark=#{remark} 
+    WHERE id=${id};
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultMap="resultProcessHistoryRecord">
+	select * from process_history_record where id=#{value}
+	</select>
+	
+	<select id="findByExample" parameterMap="parameterProcessHistoryRecord" resultMap="resultProcessHistoryRecord">
+	select * from process_history_record where 1=1
+	<if test="instanceType != null"> and instance_type=#{instanceType}</if>
+	<if test="instanceId != null"> and instance_id=#{instanceId}</if>
+	<if test="processId != null"> and processId=#{processId}</if>
+	order by create_time asc
+	</select>
+
+	<select id="findAll" resultMap="resultProcessHistoryRecord" >
+		select * from process_history_record
+	</select>
+	
+</mapper>

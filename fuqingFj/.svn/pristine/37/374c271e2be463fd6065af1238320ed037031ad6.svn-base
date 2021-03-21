@@ -1,0 +1,13 @@
+serverAddr=redisServer
+port=6379
+#测试环境
+password=Homlin@507
+#正式环境
+#password=
+database=7
+maxActive=10000
+maxIdle=1000
+maxWaitMillis=2000
+testOnBorrow=true
+softMinEvictableIdleTimeMillis=10000
+timeout=10000

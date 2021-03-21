@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>工资记录</title>
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../layui/css/layui.css" media="all">
+<link rel="stylesheet" href="../css/admin.css" media="all">
+<script src="../layui/layui.js" charset="utf-8"></script>
+	<script src="../baseJs/jquery-1.12.4.min.js?v=1.60"></script>
+	<!--[if lt IE 9]>
+	<script src="../baseJs/html5shiv.min.js"></script>
+	<script src="../baseJs/respond.min.js"></script>
+	<script src="../baseJs/jquery.xdomainrequest.min.js"></script>
+	<![endif]-->
+<script src="../baseJs/function.js?v=1.60"></script>
+<script src="../js/config.js?v=1.60"></script>
+<script src="../js/global.js?v=1.60"></script>
+<script src="../js/userLive.js?v=1.60"></script>
+<script src="../js/auxiliary/auxPay.js" charset="utf-8"></script>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">
+						<form class="layui-form" action="" lay-filter="searchForm">
+							<div class="layui-form-item">
+								<div class="layui-inline">
+									<label class="layui-form-label">姓名</label>
+									<div class="layui-input-inline">
+										<input type="text" name="xm" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">单位</label>
+									<div class="layui-input-inline">
+										<input type="hidden" name="orgIds" id="orgIds" autocomplete="off" class="layui-input">
+										<input type="text" name="orgNames" id="orgNames" placeholder="请选择单位" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">开户行名称</label>
+									<div class="layui-input-inline">
+										<input type="text" name="khhmc" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<button type="submit" class="layui-btn" lay-submit lay-filter="searchSubmit">查询</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="layui-card-body">
+						<table class="layui-hide" id="amPayrollList" lay-filter="amPayrollList"></table>
+						<script type="text/html" id="toolbarDemo">
+							{{#  if(sbState =='1' && sbState !='2'){ }}
+							<div class="layui-btn-container">
+								<button class="layui-btn layui-btn-sm AM_PAYROLL_ADD" lay-event="selectRy">添加人员</button>
+								<button class="layui-btn layui-btn-sm AM_PAYROLL_IMPORT" lay-event="importDataBtn">导入</button>
+								<!-- <button class="layui-btn layui-btn-sm AM_PAYROLL_UPDATE_WWKHGZ" lay-event="updateWwkhgz">一键更新维稳工资</button> -->
+							</div>
+							{{#  } }}
+						</script>
+
+						<script type="text/html" id="barDemo">
+							<a class="layui-btn layui-btn-xs AM_PAYROLL_VIEW" lay-event="view">查看</a>
+							{{#  if(sbState =='1' || sbState =='2'){ }}
+							<a class="layui-btn layui-btn-xs AM_PAYROLL_UPDATE" lay-event="edit">编辑</a>
+							<a class="layui-btn layui-btn-danger layui-btn-xs AM_PAYROLL_DELETE" lay-event="del">删除</a>
+							{{#  } }}
+						</script>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 导入 -->
+	<div class="layui-fluid" id="importDataPage" style="display:none;">
+		<form class="layui-form layui-form-pane" action="" lay-filter="importDataForm" id="importDataForm">
+			<div class="layui-form-item">
+				<div class="layui-upload">
+					<input type="file" id="file" name="file"/>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				模板下载
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-upload">
+					<button type="button" class="layui-btn layui-btn-normal" id="downloadTemplate">工资记录</button>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				操作方式
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-upload">
+					<input name="isUpdate" value="0" type="radio" checked="" title="存在数据时跳过">
+					<input name="isUpdate" value="1" type="radio" title="存在数据时覆盖">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<button type="button" id="importDataSubmit" lay-filter="importDataSubmit" style="display:none" lay-submit></button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

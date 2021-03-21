@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.login.ILoginLogsDAO">
+	<insert id="add" parameterType="com.greathack.homlin.pojo.login.LoginLog">
+    INSERT INTO loginlogs(logUnique,loginInstanceUnique,optType,loginCode,loginIp,loginRegion,createTime,remark)
+    VALUES(#{logUnique},#{loginInstanceUnique},#{optType},#{loginCode},#{loginIp},#{loginRegion},#{createTime},#{remark})
+ 	</insert>
+ 	
+ 	<delete id="delete" parameterType="java.lang.Long">
+	    DELETE FROM loginlogs 
+	    WHERE logUnique=${value}
+  	</delete>
+  	
+  	<update id="update" parameterType="com.greathack.homlin.pojo.login.LoginLog">
+	    UPDATE loginlogs
+	    SET 
+	    loginInstanceUnique=#{loginInstanceUnique},
+	    optType=#{optType},
+	    loginCode=#{loginCode},
+	    loginIp=#{loginIp},
+	    loginRegion=#{loginRegion},
+	    remark=#{remark}
+	    WHERE logUnique=#{logUnique}
+  	</update>
+  	
+	<select id="findById" parameterType="java.lang.Long" resultType="com.greathack.homlin.pojo.login.LoginLog" >
+		select * from loginlogs where logUnique=${value}
+	</select>
+	
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.login.LoginLog"  resultType="com.greathack.homlin.pojo.login.LoginLog" >
+		select * from loginlogs where 1=1
+		<if test="loginInstanceUnique != null"> and loginInstanceUnique=#{loginInstanceUnique}</if>
+		<if test="optType != null"> and optType=#{optType}</if>
+		<if test="loginCode != null"> and loginCode=#{loginCode}</if>
+		<if test="loginIp != null"> and loginIp=#{loginIp}</if>
+		<if test="loginRegion != null"> and loginRegion=#{loginRegion}</if>
+		order by logUnique desc
+	</select>
+	
+</mapper>

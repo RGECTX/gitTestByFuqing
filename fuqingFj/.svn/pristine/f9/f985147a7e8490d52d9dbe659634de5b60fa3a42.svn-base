@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.greathack.homlin.daointerface.auxiliary.IAuxSjqkDAO">
+	<parameterMap id="parameterAuxSjqk" type="com.greathack.homlin.pojo.auxiliary.AuxSjqk">
+    	<parameter property="id"/>
+    	<parameter property="instanceId"/>
+    	<parameter property="idcard"/>
+    	<parameter property="sjrq"/>
+    	<parameter property="sjlb"/>
+		<parameter property="sjmc"/>
+		<parameter property="sjyy"/>
+		<parameter property="pzdw"/>
+		<parameter property="createBy"/>
+		<parameter property="createTime"/>
+		<parameter property="outkey1"/>
+		<parameter property="outkey2"/>
+		<parameter property="bak1"/>
+		<parameter property="bak2"/>
+  	</parameterMap>
+
+	<resultMap id="resultAuxSjqk" type="com.greathack.homlin.pojo.auxiliary.AuxSjqk">
+		<result column="id" property="id" />
+		<result column="instance_id" property="instanceId" />
+		<result column="idcard" property="idcard" />
+		<result column="sjrq" property="sjrq" />
+		<result column="sjlb" property="sjlb" />
+		<result column="sjmc" property="sjmc" />
+		<result column="sjyy" property="sjyy" />
+		<result column="pzdw" property="pzdw" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="outkey1" property="outkey1" />
+		<result column="outkey2" property="outkey2" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<insert id="add" parameterMap="parameterAuxSjqk">
+    INSERT INTO aux_sjqk(id,instance_id,idcard,sjrq,sjlb,sjmc,sjyy,pzdw,create_by,create_time,outkey1,outkey2,bak1,bak2)
+    	VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+ 	</insert>
+
+ 	<delete id="delete" parameterType="java.lang.String">
+  	 	DELETE FROM aux_sjqk WHERE id=${value}
+  	</delete>
+
+	<update id="update" parameterMap="parameterAuxSjqk">
+		update aux_sjqk
+		set
+		instance_id=#{instanceId},
+		idcard=#{idcard},
+		sjrq=#{sjrq},
+		sjlb=#{sjlb},
+		sjmc=#{sjmc},
+		sjyy=#{sjyy},
+		pzdw=#{pzdw},
+		create_by=#{createBy},
+		create_time=#{createTime},
+		outkey1=#{outkey1},
+		outkey2=#{outkey2},
+		bak1=#{bak1},
+		bak2=#{bak2}
+		where id=#{id}
+  	</update>
+
+	<select id="findById" parameterType="java.lang.String" resultMap="resultAuxSjqk" >
+		select * from aux_sjqk where id = ${value}
+	</select>
+
+	<select id="findByExample" parameterType="com.greathack.homlin.pojo.auxiliary.AuxSjqk"  resultMap="resultAuxSjqk" >
+		select * from aux_sjqk where 1=1
+		<if test="instanceId != null"> and instance_id=#{instanceId}</if>
+		<if test="idcard != null"> and idcard=#{idcard}</if>
+		<if test="sjrq != null"> and sjrq=#{sjrq}</if>
+		<if test="sjlb != null"> and sjlb=#{sjlb}</if>
+		<if test="sjmc != null"> and sjmc=#{sjmc}</if>
+		<if test="sjyy != null"> and sjyy=#{sjyy}</if>
+		<if test="pzdw != null"> and pzdw=#{pzdw}</if>
+		<if test="createBy != null and createBy !='' ">and createBy=#{createBy}</if>
+		<if test="createTime != null and createTime !='' ">and createTime=#{createTime}</if>
+		<if test="outkey1 != null"> and outkey1=#{outkey1}</if>
+		<if test="outkey2 != null"> and outkey2=#{outkey2}</if>
+		<if test="bak1 != null"> and bak1=#{bak1}</if>
+		<if test="bak2 != null"> and bak2=#{bak2}</if>
+	</select>
+
+	<select id="findAll" resultMap="resultAuxSjqk" >
+		select * from aux_sjqk
+	</select>
+
+</mapper>

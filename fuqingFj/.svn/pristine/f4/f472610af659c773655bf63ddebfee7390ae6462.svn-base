@@ -1,0 +1,15 @@
+
+package com.greathack.homlin.daointerface.auxiliary;
+
+import com.greathack.homlin.daointerface.system.IBaseDAO;
+import com.greathack.homlin.pojo.auxiliary.AuxFjbzfp;
+import com.greathack.homlin.pojo.auxiliary.AuxFjbzfpSearchCriteria;
+
+import java.util.List;
+
+public interface IAuxFjbzfpDAO extends IBaseDAO<AuxFjbzfp,Long> {
+    List<AuxFjbzfp> search(AuxFjbzfpSearchCriteria auxFjbzfpSearchCriteria);
+    long getSearchResultCount(AuxFjbzfpSearchCriteria auxFjbzfpSearchCriteria);
+
+}
+
